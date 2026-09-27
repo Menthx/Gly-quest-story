@@ -1,0 +1,13 @@
+html,
+body {
+  margin: 0;
+  height: 100%;
+  background: #000;
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}

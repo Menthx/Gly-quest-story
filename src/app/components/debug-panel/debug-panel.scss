@@ -1,0 +1,75 @@
+.panel {
+  position: fixed;
+  top: 12px;
+  left: 12px;
+  z-index: 30;
+  width: min(320px, calc(100vw - 24px));
+  max-height: calc(100dvh - 24px);
+  overflow: auto;
+  padding: 12px 14px;
+  border-radius: 10px;
+  color: #eee;
+  background: rgba(10, 10, 20, 0.88);
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+p {
+  margin: 8px 0;
+}
+
+code,
+pre,
+kbd {
+  font-family: ui-monospace, monospace;
+}
+
+pre {
+  margin: 8px 0;
+  padding: 8px;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.08);
+  font-size: 12px;
+  white-space: pre;
+  overflow-x: auto;
+}
+
+kbd {
+  padding: 0 4px;
+  border: 1px solid #888;
+  border-radius: 3px;
+}
+
+.muted {
+  opacity: 0.65;
+}
+
+.help {
+  font-style: italic;
+}
+
+.modes,
+.actions {
+  display: flex;
+  gap: 6px;
+}
+
+button {
+  flex: 1;
+  padding: 6px 8px;
+  border: 1px solid #666;
+  border-radius: 6px;
+  color: #eee;
+  background: #222;
+  font: inherit;
+  cursor: pointer;
+
+  &.active {
+    border-color: #ff4081;
+    background: #4a1830;
+  }
+
+  &:hover {
+    background: #333;
+  }
+}

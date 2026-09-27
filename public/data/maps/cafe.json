@@ -1,0 +1,78 @@
+{
+  "$schema": "../../../schemas/map.schema.json",
+  "id": "cafe",
+  "name": "Le café",
+  "background": "assets/backgrounds/cafe.svg",
+  "onEnter": "entree-cafe",
+  "regions": [
+    {
+      "id": "comptoir",
+      "label": "Le comptoir",
+      "shape": {
+        "type": "rect",
+        "x": 10,
+        "y": 40,
+        "width": 50,
+        "height": 28
+      },
+      "action": {
+        "type": "dialogue",
+        "dialogue": "comptoir"
+      }
+    },
+    {
+      "id": "menu",
+      "label": "Le menu",
+      "shape": {
+        "type": "rect",
+        "x": 70,
+        "y": 25,
+        "width": 18,
+        "height": 20
+      },
+      "action": {
+        "type": "dialogue",
+        "dialogue": "menu"
+      }
+    },
+    {
+      "id": "sortie",
+      "label": "Sortir",
+      "shape": {
+        "type": "rect",
+        "x": 30,
+        "y": 90,
+        "width": 40,
+        "height": 10
+      },
+      "action": {
+        "type": "goto",
+        "map": "couloir"
+      },
+      "arrow": "down"
+    }
+  ],
+  "dialogues": {
+    "entree-cafe": {
+      "lines": [
+        {
+          "text": "Une odeur de chocolat chaud flotte dans l'air."
+        }
+      ]
+    },
+    "comptoir": {
+      "lines": [
+        {
+          "text": "Le comptoir est vide. Le serveur doit être en pause."
+        }
+      ]
+    },
+    "menu": {
+      "lines": [
+        {
+          "text": "Chocolat chaud : 2 €. Croissant : 1,50 €."
+        }
+      ]
+    }
+  }
+}

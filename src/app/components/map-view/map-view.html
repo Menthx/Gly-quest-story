@@ -1,0 +1,99 @@
+<div class="screen">
+  @if (map.error()) {
+    <div class="error">
+      <p>Impossible de charger la map « {{ id() }} ».</p>
+      <p class="detail">{{ map.error()?.message }}</p>
+    </div>
+  }
+
+  @if (map.value(); as m) {
+    <div
+      #stage
+      class="stage"
+      [class.debug]="debug.enabled()"
+      [style.--ar]="aspectRatio()"
+      (pointermove)="onPointerMove($event, stage)"
+      (pointerdown)="onPointerDown($event, stage)"
+      (pointerup)="onPointerUp()"
+      (pointerleave)="onPointerLeave()"
+    >
+      <img #bg class="background" [src]="m.background" [alt]="m.name" draggable="false" (load)="onImageLoad(bg)" />
+
+      <svg class="regions" viewBox="0 0 100 100" preserveAspectRatio="none">
+        @for (r of regions(); track r.region.id) {
+          @if (r.region.shape.type === 'rect') {
+            <rect
+              class="region"
+              [class.exit]="r.region.action.type === 'goto'"
+              [attr.x]="r.region.shape.x"
+              [attr.y]="r.region.shape.y"
+              [attr.width]="r.region.shape.width"
+              [attr.height]="r.region.shape.height"
+              vector-effect="non-scaling-stroke"
+              role="button"
+              tabindex="0"
+              [attr.aria-label]="r.region.label ?? r.region.id"
+              (click)="activate(r.region)"
+              (keydown.enter)="onRegionEnter($event, r.region)"
+              (mouseenter)="hovered.set(r.region)"
+              (mouseleave)="hovered.set(null)"
+            />
+          } @else {
+            <polygon
+              class="region"
+              [class.exit]="r.region.action.type === 'goto'"
+              [attr.points]="r.points"
+              vector-effect="non-scaling-stroke"
+              role="button"
+              tabindex="0"
+              [attr.aria-label]="r.region.label ?? r.region.id"
+              (click)="activate(r.region)"
+              (keydown.enter)="onRegionEnter($event, r.region)"
+              (mouseenter)="hovered.set(r.region)"
+              (mouseleave)="hovered.set(null)"
+            />
+          }
+        }
+
+        @if (draft(); as d) {
+          @if (d.type === 'rect') {
+            <rect class="draft" [attr.x]="d.x" [attr.y]="d.y" [attr.width]="d.width" [attr.height]="d.height" vector-effect="non-scaling-stroke" />
+          } @else {
+            <polygon class="draft" [attr.points]="draftPoints()" vector-effect="non-scaling-stroke" />
+          }
+        }
+      </svg>
+
+      @for (r of regions(); track r.region.id) {
+        @if (r.arrow) {
+          <span class="arrow" [style.left.%]="r.centerX" [style.top.%]="r.centerY" aria-hidden="true">{{ r.arrow }}</span>
+        }
+        @if (debug.enabled()) {
+          <span class="debug-label" [style.left.%]="r.centerX" [style.top.%]="r.centerY">{{ r.region.id }}</span>
+        }
+      }
+
+      @if (hovered()?.label; as label) {
+        @if (!dialogue.isOpen() && !debug.enabled()) {
+          <div class="hover-label">{{ label }}</div>
+        }
+      }
+    </div>
+  } @else if (map.isLoading()) {
+    <p class="loading">Chargement…</p>
+  }
+
+  <app-map-menu [currentId]="id()" (selectMap)="goTo($event)" />
+  <app-dialogue-box (goto)="goTo($event)" />
+
+  @if (debug.enabled()) {
+    <app-debug-panel
+      [mapId]="id()"
+      [cursor]="cursor()"
+      [draft]="draft()"
+      [mode]="drawMode()"
+      (modeChange)="setDrawMode($event)"
+      (clear)="draft.set(null)"
+    />
+  }
+</div>

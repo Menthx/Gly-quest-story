@@ -1,39 +1,54 @@
 {
   "$schema": "../../schemas/game.schema.json",
-  "title": "Gly Quest Story",
-  "startMap": "chambre",
+  "title": "Glyglyland et l'énergie ancienne",
+  "titleBackground": "assets/backgrounds/train-exterieur.jpg",
+  "startMap": "train-interieur",
   "characters": {
-    "lea": {
-      "name": "Léa",
-      "portrait": "assets/characters/lea.svg",
-      "color": "#ff8fbf"
+    "joueur": {
+      "name": "{pseudo}",
+      "color": "#f2d48a"
     },
-    "max": {
-      "name": "Max",
-      "portrait": "assets/characters/max.svg",
-      "color": "#8fc1ff"
+    "annonce": {
+      "name": "Annonce",
+      "color": "#9fd3ff"
     }
   },
+  "quests": [
+    {
+      "id": "avant-arrivee",
+      "title": "Avant l'arrivée",
+      "if": ["depart"],
+      "ifNot": ["arrivee"],
+      "objectives": [
+        {
+          "text": "Fouiller la valise",
+          "done": "lettre-lue"
+        },
+        {
+          "text": "Explorer l'extérieur du train",
+          "done": "licorne-vue"
+        }
+      ]
+    }
+  ],
   "maps": [
     {
-      "id": "chambre",
-      "name": "La chambre",
-      "file": "data/maps/chambre.json"
+      "id": "train-interieur",
+      "name": "Train (intérieur)",
+      "file": "data/maps/train-interieur.json",
+      "inMenu": false
     },
     {
-      "id": "couloir",
-      "name": "Le couloir",
-      "file": "data/maps/couloir.json"
+      "id": "train-exterieur",
+      "name": "Train (extérieur)",
+      "file": "data/maps/train-exterieur.json",
+      "inMenu": false
     },
     {
-      "id": "cour",
-      "name": "La cour",
-      "file": "data/maps/cour.json"
-    },
-    {
-      "id": "cafe",
-      "name": "Le café",
-      "file": "data/maps/cafe.json"
+      "id": "inter-scene-1-2",
+      "name": "Vers la bibliothèque",
+      "file": "data/maps/inter-scene-1-2.json",
+      "inMenu": false
     }
   ]
 }

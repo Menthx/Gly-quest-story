@@ -1,0 +1,55 @@
+{
+  "$schema": "../../../schemas/map.schema.json",
+  "id": "train-exterieur",
+  "name": "Train (extérieur)",
+  "background": "assets/backgrounds/train-exterieur.jpg",
+  "regions": [
+    {
+      "id": "licorne",
+      "label": "La peluche licorne",
+      "shape": {
+        "type": "polygon",
+        "points": [
+          [53.6, 54.2],
+          [55.5, 55.9],
+          [57.1, 60.9],
+          [56.8, 64.1],
+          [52.6, 64.4],
+          [52.2, 59.3],
+          [52.8, 55.6]
+        ]
+      },
+      "action": {
+        "type": "dialogue",
+        "dialogue": "licorne"
+      }
+    },
+    {
+      "id": "vers-interieur",
+      "label": "Retourner dans le wagon",
+      "shape": {
+        "type": "rect",
+        "x": 90.5,
+        "y": 28,
+        "width": 9,
+        "height": 50
+      },
+      "action": {
+        "type": "goto",
+        "map": "train-interieur"
+      },
+      "arrow": "right"
+    }
+  ],
+  "dialogues": {
+    "licorne": {
+      "setFlags": ["licorne-vue"],
+      "lines": [
+        {
+          "character": "joueur",
+          "text": "Une peluche orpheline, laissons-la ici au cas où son/sa propriétaire passe par ici."
+        }
+      ]
+    }
+  }
+}

@@ -6,18 +6,35 @@
     </div>
   }
 
-  @if (map.value(); as m) {
+  @if (map.value()?.interlude; as interlude) {
+    <div class="interlude" [style.background]="map.value()?.backgroundColor">
+      <p>{{ interludeText() }}</p>
+      @if (interlude.next) {
+        <button type="button" (click)="goTo(interlude.next)">Suite</button>
+      }
+    </div>
+  } @else if (map.value(); as m) {
     <div
       #stage
       class="stage"
       [class.debug]="debug.enabled()"
       [style.--ar]="aspectRatio()"
+      [style.background]="m.backgroundColor"
       (pointermove)="onPointerMove($event, stage)"
       (pointerdown)="onPointerDown($event, stage)"
       (pointerup)="onPointerUp()"
       (pointerleave)="onPointerLeave()"
     >
-      <img #bg class="background" [src]="m.background" [alt]="m.name" draggable="false" (load)="onImageLoad(bg)" />
+      @if (m.background) {
+        <img
+          #bg
+          class="background"
+          [src]="m.background"
+          [alt]="m.name"
+          draggable="false"
+          (load)="onImageLoad(bg)"
+        />
+      }
 
       <svg class="regions" viewBox="0 0 100 100" preserveAspectRatio="none">
         @for (r of regions(); track r.region.id) {
@@ -57,19 +74,38 @@
 
         @if (draft(); as d) {
           @if (d.type === 'rect') {
-            <rect class="draft" [attr.x]="d.x" [attr.y]="d.y" [attr.width]="d.width" [attr.height]="d.height" vector-effect="non-scaling-stroke" />
+            <rect
+              class="draft"
+              [attr.x]="d.x"
+              [attr.y]="d.y"
+              [attr.width]="d.width"
+              [attr.height]="d.height"
+              vector-effect="non-scaling-stroke"
+            />
           } @else {
-            <polygon class="draft" [attr.points]="draftPoints()" vector-effect="non-scaling-stroke" />
+            <polygon
+              class="draft"
+              [attr.points]="draftPoints()"
+              vector-effect="non-scaling-stroke"
+            />
           }
         }
       </svg>
 
       @for (r of regions(); track r.region.id) {
         @if (r.arrow) {
-          <span class="arrow" [style.left.%]="r.centerX" [style.top.%]="r.centerY" aria-hidden="true">{{ r.arrow }}</span>
+          <span
+            class="arrow"
+            [style.left.%]="r.centerX"
+            [style.top.%]="r.centerY"
+            aria-hidden="true"
+            >{{ r.arrow }}</span
+          >
         }
         @if (debug.enabled()) {
-          <span class="debug-label" [style.left.%]="r.centerX" [style.top.%]="r.centerY">{{ r.region.id }}</span>
+          <span class="debug-label" [style.left.%]="r.centerX" [style.top.%]="r.centerY">{{
+            r.region.id
+          }}</span>
         }
       }
 
@@ -78,13 +114,15 @@
           <div class="hover-label">{{ label }}</div>
         }
       }
+
+      <app-quest-panel />
+      <app-dialogue-box (goto)="goTo($event)" />
     </div>
   } @else if (map.isLoading()) {
     <p class="loading">Chargement…</p>
   }
 
   <app-map-menu [currentId]="id()" (selectMap)="goTo($event)" />
-  <app-dialogue-box (goto)="goTo($event)" />
 
   @if (debug.enabled()) {
     <app-debug-panel

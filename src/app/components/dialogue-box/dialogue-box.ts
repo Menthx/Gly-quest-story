@@ -2,6 +2,7 @@ import { Component, computed, inject, output } from '@angular/core';
 import { DialogueChoice } from '../../models/game.models';
 import { DialogueService } from '../../services/dialogue.service';
 import { GameDataService } from '../../services/game-data.service';
+import { GameStateService } from '../../services/game-state.service';
 
 /** Popup de dialogue : portrait du personnage, nom, texte et choix éventuels. */
 @Component({
@@ -15,17 +16,22 @@ import { GameDataService } from '../../services/game-data.service';
 export class DialogueBox {
   protected readonly dialogue = inject(DialogueService);
   private readonly data = inject(GameDataService);
+  private readonly state = inject(GameStateService);
 
   /** Demande un changement de map (choix avec `goto`). */
   readonly goto = output<string>();
 
   protected readonly line = this.dialogue.currentLine;
+  protected readonly text = computed(() => this.state.format(this.line()?.text ?? ''));
   protected readonly character = computed(() => {
     const id = this.line()?.character;
-    return id ? (this.data.config()?.characters[id] ?? { name: id, portrait: '' }) : null;
+    if (!id) return null;
+    const character = this.data.config()?.characters[id] ?? { name: id };
+    return { ...character, name: this.state.format(character.name) };
   });
 
   protected choose(choice: DialogueChoice): void {
+    this.state.setFlags(choice.setFlags);
     if (choice.next) {
       this.dialogue.jumpTo(choice.next);
     } else {

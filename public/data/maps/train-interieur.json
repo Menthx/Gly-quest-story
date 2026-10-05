@@ -1,0 +1,95 @@
+{
+  "$schema": "../../../schemas/map.schema.json",
+  "id": "train-interieur",
+  "name": "Train (intérieur)",
+  "background": "assets/backgrounds/train-interieur.jpg",
+  "triggers": [
+    {
+      "dialogue": "annonce-depart"
+    },
+    {
+      "dialogue": "annonce-arrivee",
+      "if": ["lettre-lue", "licorne-vue"]
+    }
+  ],
+  "regions": [
+    {
+      "id": "valise",
+      "label": "La valise",
+      "shape": {
+        "type": "polygon",
+        "points": [
+          [68.5, 50.0],
+          [69.8, 49.1],
+          [76.0, 49.7],
+          [78.3, 50.7],
+          [78.1, 64.1],
+          [75.0, 64.3],
+          [68.9, 61.9]
+        ]
+      },
+      "action": {
+        "type": "dialogue",
+        "dialogue": "valise"
+      }
+    },
+    {
+      "id": "vers-exterieur",
+      "label": "Sortir sur la plateforme",
+      "ifNot": ["arrivee"],
+      "shape": {
+        "type": "rect",
+        "x": 0,
+        "y": 25,
+        "width": 5,
+        "height": 50
+      },
+      "action": {
+        "type": "goto",
+        "map": "train-exterieur"
+      },
+      "arrow": "left"
+    }
+  ],
+  "dialogues": {
+    "annonce-depart": {
+      "setFlags": ["depart"],
+      "lines": [
+        {
+          "character": "annonce",
+          "text": "« Bienvenue dans ce train direct à destination de Glyglyland, le train va partir. Prenez garde à la fermeture des portes, attention au départ. »"
+        }
+      ]
+    },
+    "valise": {
+      "setFlags": ["lettre-lue"],
+      "lines": [
+        {
+          "text": "À l'intérieur de la valise, il y a une lettre."
+        },
+        {
+          "text": "La lettre indique un stage à Glyglyland. (contenu à venir)"
+        }
+      ]
+    },
+    "annonce-arrivee": {
+      "setFlags": ["arrivee"],
+      "lines": [
+        {
+          "character": "annonce",
+          "text": "« Le train arrive en gare de Glyglyland, tous les passagers sont invités à descendre. »"
+        },
+        {
+          "character": "joueur",
+          "text": "Je rassemble mes affaires et je descends du train.",
+          "choices": [
+            {
+              "text": "Suite",
+              "goto": "inter-scene-1-2"
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

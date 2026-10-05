@@ -1,0 +1,36 @@
+<div
+  class="screen"
+  [style.background-image]="
+    config()?.titleBackground ? 'url(' + config()?.titleBackground + ')' : null
+  "
+>
+  @if (save(); as s) {
+    <div class="card">
+      <h1>{{ config()?.title }}</h1>
+      <p class="save">
+        Partie de <strong>{{ s.pseudo }}</strong>
+        @if (saveMapName(); as mapName) {
+          <br /><span class="where">{{ mapName }}</span>
+        }
+      </p>
+      <button type="button" class="primary" (click)="resume()">Reprendre la partie</button>
+      <button type="button" (click)="newGame()">Nouvelle partie</button>
+    </div>
+  } @else {
+    <form class="card" (ngSubmit)="play()">
+      <h1>{{ config()?.title }}</h1>
+      <label for="pseudo">Ton pseudo</label>
+      <input
+        id="pseudo"
+        name="pseudo"
+        autocomplete="off"
+        maxlength="20"
+        required
+        autofocus
+        [ngModel]="pseudo()"
+        (ngModelChange)="pseudo.set($event)"
+      />
+      <button type="submit" class="primary" [disabled]="!pseudo().trim()">Jouer</button>
+    </form>
+  }
+</div>

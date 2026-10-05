@@ -1,0 +1,39 @@
+{
+  "$schema": "../../schemas/game.schema.json",
+  "title": "Gly Quest Story",
+  "startMap": "chambre",
+  "characters": {
+    "lea": {
+      "name": "Léa",
+      "portrait": "assets/characters/lea.svg",
+      "color": "#ff8fbf"
+    },
+    "max": {
+      "name": "Max",
+      "portrait": "assets/characters/max.svg",
+      "color": "#8fc1ff"
+    }
+  },
+  "maps": [
+    {
+      "id": "chambre",
+      "name": "La chambre",
+      "file": "data/maps/chambre.json"
+    },
+    {
+      "id": "couloir",
+      "name": "Le couloir",
+      "file": "data/maps/couloir.json"
+    },
+    {
+      "id": "cour",
+      "name": "La cour",
+      "file": "data/maps/cour.json"
+    },
+    {
+      "id": "cafe",
+      "name": "Le café",
+      "file": "data/maps/cafe.json"
+    }
+  ]
+}

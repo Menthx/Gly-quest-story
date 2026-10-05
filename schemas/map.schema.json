@@ -1,0 +1,107 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Map",
+  "description": "Une map = un background, ses zones cliquables et ses dialogues. Coordonnées en % de l'image (0 à 100).",
+  "type": "object",
+  "required": ["id", "name", "background", "regions", "dialogues"],
+  "properties": {
+    "$schema": { "type": "string" },
+    "id": { "type": "string" },
+    "name": { "type": "string" },
+    "background": { "type": "string", "description": "Image de fond, relative à public/." },
+    "onEnter": { "type": "string", "description": "Id du dialogue joué à la première arrivée sur la map." },
+    "regions": { "type": "array", "items": { "$ref": "#/$defs/region" } },
+    "dialogues": { "type": "object", "additionalProperties": { "$ref": "#/$defs/dialogue" } }
+  },
+  "$defs": {
+    "percent": { "type": "number", "minimum": 0, "maximum": 100 },
+    "region": {
+      "type": "object",
+      "required": ["id", "shape", "action"],
+      "additionalProperties": false,
+      "properties": {
+        "id": { "type": "string" },
+        "label": { "type": "string", "description": "Texte affiché au survol." },
+        "shape": {
+          "oneOf": [
+            {
+              "type": "object",
+              "required": ["type", "x", "y", "width", "height"],
+              "additionalProperties": false,
+              "properties": {
+                "type": { "const": "rect" },
+                "x": { "$ref": "#/$defs/percent" },
+                "y": { "$ref": "#/$defs/percent" },
+                "width": { "$ref": "#/$defs/percent" },
+                "height": { "$ref": "#/$defs/percent" }
+              }
+            },
+            {
+              "type": "object",
+              "required": ["type", "points"],
+              "additionalProperties": false,
+              "properties": {
+                "type": { "const": "polygon" },
+                "points": {
+                  "type": "array",
+                  "minItems": 3,
+                  "items": { "type": "array", "prefixItems": [{ "$ref": "#/$defs/percent" }, { "$ref": "#/$defs/percent" }], "minItems": 2, "maxItems": 2 }
+                }
+              }
+            }
+          ]
+        },
+        "action": {
+          "oneOf": [
+            {
+              "type": "object",
+              "required": ["type", "dialogue"],
+              "additionalProperties": false,
+              "properties": { "type": { "const": "dialogue" }, "dialogue": { "type": "string" } }
+            },
+            {
+              "type": "object",
+              "required": ["type", "map"],
+              "additionalProperties": false,
+              "properties": { "type": { "const": "goto" }, "map": { "type": "string" } }
+            }
+          ]
+        },
+        "arrow": { "enum": ["left", "right", "up", "down"], "description": "Flèche affichée dans la zone (sorties)." }
+      }
+    },
+    "dialogue": {
+      "type": "object",
+      "required": ["lines"],
+      "additionalProperties": false,
+      "properties": {
+        "lines": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "required": ["text"],
+            "additionalProperties": false,
+            "properties": {
+              "character": { "type": "string", "description": "Id du personnage (game.json). Absent = narrateur." },
+              "text": { "type": "string" },
+              "choices": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "required": ["text"],
+                  "additionalProperties": false,
+                  "properties": {
+                    "text": { "type": "string" },
+                    "next": { "type": "string", "description": "Id du dialogue suivant. Absent = ferme le dialogue." },
+                    "goto": { "type": "string", "description": "Id de la map où aller après ce choix." }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

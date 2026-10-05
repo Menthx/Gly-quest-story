@@ -1,0 +1,38 @@
+<aside class="panel">
+  <header>
+    <strong>Mode debug</strong> · map <code>{{ mapId() }}</code>
+  </header>
+
+  <p class="cursor">
+    Curseur :
+    @if (cursor(); as c) {
+      <code>x {{ c.x }} % · y {{ c.y }} %</code>
+    } @else {
+      <span class="muted">hors de l'image</span>
+    }
+  </p>
+
+  <div class="modes" role="radiogroup" aria-label="Forme à dessiner">
+    <button type="button" [class.active]="mode() === 'rect'" (click)="modeChange.emit('rect')">Rectangle</button>
+    <button type="button" [class.active]="mode() === 'polygon'" (click)="modeChange.emit('polygon')">Polygone</button>
+  </div>
+  <p class="help">
+    @if (mode() === 'rect') {
+      Clique-glisse sur l'image pour tracer un rectangle.
+    } @else {
+      Clique sur l'image pour ajouter chaque sommet du polygone.
+    }
+  </p>
+
+  @if (snippet(); as json) {
+    <pre>{{ json }}</pre>
+    <div class="actions">
+      <button type="button" (click)="copy()">{{ copied() ? 'Copié !' : 'Copier le JSON' }}</button>
+      <button type="button" (click)="clear.emit()">Effacer</button>
+    </div>
+  }
+
+  <p class="muted">
+    Bleu = dialogue, jaune = sortie vers une autre map. <kbd>D</kbd> pour quitter, <kbd>Échap</kbd> pour effacer.
+  </p>
+</aside>

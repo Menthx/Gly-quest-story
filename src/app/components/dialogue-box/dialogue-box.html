@@ -1,0 +1,23 @@
+@if (line(); as l) {
+  <div class="overlay" (click)="dialogue.next()">
+    @if (character()?.portrait; as portrait) {
+      <img class="portrait" [src]="portrait" [alt]="character()?.name" />
+    }
+    <div class="box" [class.narrator]="!character()">
+      @if (character(); as c) {
+        <div class="name" [style.color]="c.color">{{ c.name }}</div>
+      }
+      <p class="text">{{ l.text }}</p>
+
+      @if (l.choices?.length) {
+        <div class="choices">
+          @for (choice of l.choices; track $index) {
+            <button type="button" (click)="$event.stopPropagation(); choose(choice)">{{ choice.text }}</button>
+          }
+        </div>
+      } @else {
+        <span class="continue" aria-hidden="true">▼</span>
+      }
+    </div>
+  </div>
+}

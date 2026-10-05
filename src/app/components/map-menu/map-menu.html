@@ -1,0 +1,14 @@
+@if (maps().length > 1) {
+  <nav class="menu" [class.open]="open()">
+    <button type="button" class="toggle" [attr.aria-expanded]="open()" (click)="open.set(!open())">🗺 Carte</button>
+    @if (open()) {
+      <ul>
+        @for (m of maps(); track m.id) {
+          <li>
+            <button type="button" [class.current]="m.id === currentId()" (click)="pick(m.id)">{{ m.name }}</button>
+          </li>
+        }
+      </ul>
+    }
+  </nav>
+}

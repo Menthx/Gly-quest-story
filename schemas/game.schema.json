@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "game.json",
+  "description": "Index du jeu : personnages, maps et map de départ.",
+  "type": "object",
+  "required": ["title", "startMap", "maps", "characters"],
+  "properties": {
+    "$schema": { "type": "string" },
+    "title": { "type": "string", "description": "Titre du jeu (onglet du navigateur)." },
+    "startMap": { "type": "string", "description": "Id de la map affichée au lancement." },
+    "maps": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "name", "file"],
+        "additionalProperties": false,
+        "properties": {
+          "id": { "type": "string" },
+          "name": { "type": "string", "description": "Nom affiché dans le menu Carte." },
+          "file": { "type": "string", "description": "Chemin du JSON de la map, relatif à public/." },
+          "inMenu": { "type": "boolean", "description": "false = cachée du menu (accessible seulement par une sortie)." }
+        }
+      }
+    },
+    "characters": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "required": ["name", "portrait"],
+        "additionalProperties": false,
+        "properties": {
+          "name": { "type": "string" },
+          "portrait": { "type": "string", "description": "Image du personnage, relative à public/." },
+          "color": { "type": "string", "description": "Couleur CSS du nom dans la boîte de dialogue." }
+        }
+      }
+    }
+  }
+}

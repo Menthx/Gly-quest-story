@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" width="1600" height="900">
+<rect width="1600" height="585.0" fill="#8ecae6"/>
+<rect y="585.0" width="1600" height="315.0" fill="#7fb069"/>
+<polygon points="240,630 272,360 128,360 352,72 576,360 432,360 464,630" fill="#3a7d44" stroke="#0003" stroke-width="4"/>
+<text x="352" y="396" font-family="sans-serif" font-size="30" fill="#fff" stroke="#0006" stroke-width="1" text-anchor="middle" dominant-baseline="middle">Arbre</text>
+<rect x="720" y="522" width="352" height="108" rx="8" fill="#a0522d" stroke="#0003" stroke-width="4"/>
+<text x="896" y="576" font-family="sans-serif" font-size="30" fill="#fff" stroke="#0006" stroke-width="1" text-anchor="middle" dominant-baseline="middle">Banc</text>
+<polygon points="1200,765 1232,360 1280,279 1312,225 1344,279 1392,360 1424,765" fill="#3d7dd8" stroke="#0003" stroke-width="4"/>
+<text x="1312" y="433" font-family="sans-serif" font-size="30" fill="#fff" stroke="#0006" stroke-width="1" text-anchor="middle" dominant-baseline="middle">Max</text>
+<text x="800.0" y="70" font-family="sans-serif" font-size="56" font-weight="bold" fill="#fff" fill-opacity="0.85" text-anchor="middle">La cour</text>
+<text x="800.0" y="115" font-family="sans-serif" font-size="26" fill="#fff" fill-opacity="0.6" text-anchor="middle">(background provisoire)</text>
+</svg>

@@ -7,12 +7,14 @@
       @if (character(); as c) {
         <div class="name" [style.color]="c.color">{{ c.name }}</div>
       }
-      <p class="text">{{ l.text }}</p>
+      <p class="text">{{ text() }}</p>
 
       @if (l.choices?.length) {
         <div class="choices">
           @for (choice of l.choices; track $index) {
-            <button type="button" (click)="$event.stopPropagation(); choose(choice)">{{ choice.text }}</button>
+            <button type="button" (click)="$event.stopPropagation(); choose(choice)">
+              {{ choice.text }}
+            </button>
           }
         </div>
       } @else {

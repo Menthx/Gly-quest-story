@@ -1,0 +1,22 @@
+<div
+  class="screen"
+  [style.background-image]="
+    config()?.titleBackground ? 'url(' + config()?.titleBackground + ')' : null
+  "
+>
+  <form class="card" (ngSubmit)="play()">
+    <h1>{{ config()?.title }}</h1>
+    <label for="pseudo">Ton pseudo</label>
+    <input
+      id="pseudo"
+      name="pseudo"
+      autocomplete="off"
+      maxlength="20"
+      required
+      autofocus
+      [ngModel]="pseudo()"
+      (ngModelChange)="pseudo.set($event)"
+    />
+    <button type="submit" [disabled]="!pseudo().trim()">Jouer</button>
+  </form>
+</div>

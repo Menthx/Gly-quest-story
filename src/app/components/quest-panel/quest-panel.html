@@ -1,0 +1,13 @@
+@if (quests().length) {
+  <aside class="panel" aria-label="Quête en cours">
+    <div class="heading">Quête en cours</div>
+    @for (quest of quests(); track quest.id) {
+      <div class="title">{{ quest.title }}</div>
+      <ul>
+        @for (o of quest.objectives; track $index) {
+          <li [class.done]="o.done">{{ o.text }}</li>
+        }
+      </ul>
+    }
+  </aside>
+}

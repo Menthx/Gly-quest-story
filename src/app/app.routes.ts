@@ -1,16 +1,22 @@
 import { inject } from '@angular/core';
 import { Router, Routes } from '@angular/router';
 import { MapView } from './components/map-view/map-view';
-import { GameDataService } from './services/game-data.service';
+import { TitleScreen } from './components/title-screen/title-screen';
+import { DebugService } from './services/debug.service';
+import { GameStateService } from './services/game-state.service';
 
-/** Redirige vers la map de départ définie dans game.json. */
-const toStartMap = async () => {
-  const router = inject(Router);
-  const config = await inject(GameDataService).loadConfig();
-  return router.createUrlTree(['/map', config.startMap]);
+/**
+ * Pas de pseudo (nouvelle visite, page rechargée) : retour à l'écran titre.
+ * En mode debug on entre directement, pour retoucher les zones d'une map sans repasser par le titre.
+ */
+const requirePseudo = () => {
+  const state = inject(GameStateService);
+  if (!state.pseudo() && inject(DebugService).enabled()) state.start('Testeur');
+  return !!state.pseudo() || inject(Router).createUrlTree(['/start']);
 };
 
 export const routes: Routes = [
-  { path: 'map/:id', component: MapView },
-  { path: '**', canActivate: [toStartMap], children: [] },
+  { path: 'start', component: TitleScreen },
+  { path: 'map/:id', component: MapView, canActivate: [requirePseudo] },
+  { path: '**', redirectTo: 'start' },
 ];

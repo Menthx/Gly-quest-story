@@ -1,20 +1,31 @@
-import { Component, computed, effect, inject, input, resource, signal } from '@angular/core';
+import {
+  Component,
+  computed,
+  effect,
+  inject,
+  input,
+  resource,
+  signal,
+  untracked,
+} from '@angular/core';
 import { Router } from '@angular/router';
 import { Region, Shape } from '../../models/game.models';
 import { DebugService } from '../../services/debug.service';
 import { DialogueService } from '../../services/dialogue.service';
 import { GameDataService } from '../../services/game-data.service';
+import { GameStateService } from '../../services/game-state.service';
 import { boundingBox, polygonPoints, round } from '../../utils/shapes';
 import { DebugPanel, DrawMode } from '../debug-panel/debug-panel';
 import { DialogueBox } from '../dialogue-box/dialogue-box';
 import { MapMenu } from '../map-menu/map-menu';
+import { QuestPanel } from '../quest-panel/quest-panel';
 
 const ARROWS = { left: '◀', right: '▶', up: '▲', down: '▼' } as const;
 
-/** Affiche une map : background, zones cliquables, dialogue, menu et outils de debug. */
+/** Affiche une map : background, zones cliquables, dialogue, quête, menu et outils de debug (ou un interlude). */
 @Component({
   selector: 'app-map-view',
-  imports: [DialogueBox, MapMenu, DebugPanel],
+  imports: [DialogueBox, MapMenu, DebugPanel, QuestPanel],
   templateUrl: './map-view.html',
   styleUrl: './map-view.scss',
   host: {
@@ -27,6 +38,7 @@ export class MapView {
 
   private readonly data = inject(GameDataService);
   private readonly router = inject(Router);
+  private readonly state = inject(GameStateService);
   protected readonly dialogue = inject(DialogueService);
   protected readonly debug = inject(DebugService);
 
@@ -39,17 +51,25 @@ export class MapView {
   protected readonly aspectRatio = signal(16 / 9);
   protected readonly hovered = signal<Region | null>(null);
 
+  protected readonly interludeText = computed(() => {
+    const interlude = this.map.value()?.interlude;
+    return interlude ? this.state.format(interlude.text) : '';
+  });
+
+  /** Zones visibles : en jeu, seulement celles dont la condition est remplie ; en debug, toutes. */
   protected readonly regions = computed(() =>
-    (this.map.value()?.regions ?? []).map((region) => {
-      const box = boundingBox(region.shape);
-      return {
-        region,
-        points: region.shape.type === 'polygon' ? polygonPoints(region.shape.points) : '',
-        centerX: box.x + box.width / 2,
-        centerY: box.y + box.height / 2,
-        arrow: region.arrow ? ARROWS[region.arrow] : null,
-      };
-    }),
+    (this.map.value()?.regions ?? [])
+      .filter((region) => this.debug.enabled() || this.state.check(region))
+      .map((region) => {
+        const box = boundingBox(region.shape);
+        return {
+          region,
+          points: region.shape.type === 'polygon' ? polygonPoints(region.shape.points) : '',
+          centerX: box.x + box.width / 2,
+          centerY: box.y + box.height / 2,
+          arrow: region.arrow ? ARROWS[region.arrow] : null,
+        };
+      }),
   );
 
   // --- Outils de debug ---
@@ -63,10 +83,12 @@ export class MapView {
   private dragStart: { x: number; y: number } | null = null;
 
   constructor() {
-    // Dialogue d'arrivée (joué une seule fois par map).
+    // Triggers : à l'arrivée sur la map, puis à chaque fermeture de dialogue.
     effect(() => {
       const map = this.map.value();
-      if (map) this.dialogue.playIntro(map);
+      if (map && this.map.status() === 'resolved' && !this.dialogue.isOpen()) {
+        untracked(() => this.dialogue.runTriggers(map));
+      }
     });
     // Nouvelle map : on oublie le survol et le tracé en cours.
     effect(() => {
@@ -109,7 +131,8 @@ export class MapView {
   }
 
   protected onKeydown(event: KeyboardEvent): void {
-    if (event.target instanceof HTMLInputElement || event.target instanceof HTMLTextAreaElement) return;
+    if (event.target instanceof HTMLInputElement || event.target instanceof HTMLTextAreaElement)
+      return;
     if (event.key === 'd' || event.key === 'D') {
       this.debug.toggle();
       this.draft.set(null);

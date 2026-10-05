@@ -13,7 +13,7 @@ npm test           # tests unitaires
 npm run build      # version de production dans dist/
 ```
 
-Le joueur donne d'abord son pseudo sur l'écran titre. Recharger la page ramène à l'écran titre (la progression n'est pas encore sauvegardée).
+Le joueur donne d'abord son pseudo sur l'écran titre. La partie est sauvegardée automatiquement dans le navigateur (localStorage) : au rechargement, l'écran titre propose **Reprendre la partie** ou **Nouvelle partie**. Si un dialogue était affiché, il reprend à son début. Le mode debug ne sauvegarde pas, pour ne pas écraser la vraie partie.
 
 ## Où est le contenu
 

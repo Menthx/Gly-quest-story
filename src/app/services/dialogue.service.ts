@@ -9,8 +9,13 @@ export class DialogueService {
   private readonly map = signal<GameMap | null>(null);
   private readonly dialogue = signal<Dialogue | null>(null);
   private readonly index = signal(0);
-  /** Triggers déjà joués, sous la forme `map/dialogue`. */
-  private readonly triggersPlayed = new Set<string>();
+  /** Dialogue à rouvrir à l'arrivée sur la map, après une reprise de partie. */
+  private pendingResume: { mapId: string; dialogueId: string } | null = null;
+
+  /** Triggers déjà joués, sous la forme `map/dialogue` (sauvegardés avec la partie). */
+  readonly triggersPlayed = signal<ReadonlySet<string>>(new Set());
+  /** Id du dialogue ouvert, `null` si aucun (sauvegardé avec la partie). */
+  readonly openId = signal<string | null>(null);
 
   readonly isOpen = computed(() => this.dialogue() !== null);
   readonly currentLine = computed<DialogueLine | null>(
@@ -25,8 +30,17 @@ export class DialogueService {
     }
     this.map.set(map);
     this.dialogue.set(dialogue);
+    this.openId.set(dialogueId);
     this.index.set(0);
     this.state.setFlags(dialogue.setFlags);
+  }
+
+  /** Reprise de partie : rouvre au début le dialogue qui était affiché au moment de la sauvegarde. */
+  resumePending(map: GameMap): void {
+    const pending = this.pendingResume;
+    if (!pending || pending.mapId !== map.id) return;
+    this.pendingResume = null;
+    this.open(map, pending.dialogueId);
   }
 
   /**
@@ -35,11 +49,12 @@ export class DialogueService {
    */
   runTriggers(map: GameMap): void {
     if (this.isOpen()) return;
+    const played = this.triggersPlayed();
     const trigger = map.triggers?.find(
-      (t) => !this.triggersPlayed.has(`${map.id}/${t.dialogue}`) && this.state.check(t),
+      (t) => !played.has(`${map.id}/${t.dialogue}`) && this.state.check(t),
     );
     if (!trigger) return;
-    this.triggersPlayed.add(`${map.id}/${trigger.dialogue}`);
+    this.triggersPlayed.set(new Set([...played, `${map.id}/${trigger.dialogue}`]));
     this.open(map, trigger.dialogue);
   }
 
@@ -63,12 +78,17 @@ export class DialogueService {
 
   close(): void {
     this.dialogue.set(null);
+    this.openId.set(null);
     this.index.set(0);
   }
 
-  /** Nouvelle partie : les triggers peuvent se rejouer. */
-  reset(): void {
+  /** Nouvelle partie (sans argument) ou reprise d'une sauvegarde. */
+  reset(
+    triggersPlayed: string[] = [],
+    resume: { mapId: string; dialogueId: string } | null = null,
+  ): void {
     this.close();
-    this.triggersPlayed.clear();
+    this.triggersPlayed.set(new Set(triggersPlayed));
+    this.pendingResume = resume;
   }
 }

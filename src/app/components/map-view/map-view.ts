@@ -83,11 +83,15 @@ export class MapView {
   private dragStart: { x: number; y: number } | null = null;
 
   constructor() {
-    // Triggers : à l'arrivée sur la map, puis à chaque fermeture de dialogue.
+    // À l'arrivée sur la map puis à chaque fermeture de dialogue : position du joueur, reprise de partie, triggers.
     effect(() => {
       const map = this.map.value();
       if (map && this.map.status() === 'resolved' && !this.dialogue.isOpen()) {
-        untracked(() => this.dialogue.runTriggers(map));
+        untracked(() => {
+          this.state.currentMap.set(map.id);
+          this.dialogue.resumePending(map);
+          this.dialogue.runTriggers(map);
+        });
       }
     });
     // Nouvelle map : on oublie le survol et le tracé en cours.

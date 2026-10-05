@@ -6,11 +6,14 @@ import { Condition } from '../models/game.models';
 export class GameStateService {
   readonly pseudo = signal('');
   readonly flags = signal<ReadonlySet<string>>(new Set());
+  /** Map où se trouve le joueur. */
+  readonly currentMap = signal<string | null>(null);
 
-  /** Nouvelle partie. */
-  start(pseudo: string): void {
+  /** Nouvelle partie, ou reprise avec les flags et la map d'une sauvegarde. */
+  start(pseudo: string, flags: string[] = [], currentMap: string | null = null): void {
     this.pseudo.set(pseudo.trim());
-    this.flags.set(new Set());
+    this.flags.set(new Set(flags));
+    this.currentMap.set(currentMap);
   }
 
   setFlags(flags: string[] | undefined): void {

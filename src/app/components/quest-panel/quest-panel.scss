@@ -1,11 +1,20 @@
-/* Cadre flouté en haut à droite de la scène (maquette slide 3). */
-.panel {
+/* Colonne en haut à droite de la scène (maquette slide 3) : un cadre flouté par quête en cours. */
+.quests {
   position: absolute;
   top: 2.5%;
   right: 1.5%;
   z-index: 10;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6em;
   width: 19%;
   min-width: 170px;
+  font-size: clamp(11px, 1cqw, 18px);
+  pointer-events: none;
+}
+
+.panel {
+  box-sizing: border-box;
   padding: 0.8em 1em;
   border: 1px solid rgba(255, 255, 255, 0.35);
   border-radius: 10px;
@@ -13,10 +22,7 @@
   background: rgba(20, 18, 35, 0.45);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  font-size: clamp(11px, 1cqw, 18px);
   text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
-  pointer-events: none;
-  animation: fade-in 0.3s ease-out;
 }
 
 .heading {
@@ -51,7 +57,6 @@ li {
 
   &.done {
     opacity: 0.6;
-    text-decoration: line-through;
 
     &::before {
       content: '✓';
@@ -59,8 +64,118 @@ li {
   }
 }
 
-@keyframes fade-in {
+/* Le trait est un fond dont la largeur s'anime : il suit le texte, même sur plusieurs lignes. */
+.text {
+  position: relative;
+  background: linear-gradient(currentColor, currentColor) no-repeat 0 58% / 0 0.09em;
+
+  .done & {
+    background-size: 100% 0.09em;
+  }
+}
+
+/* Objectif rempli sous les yeux du joueur : une étoile file sur le texte et le barre. */
+$strike: 1s;
+$delay: 0.25s;
+
+li.striking {
+  animation: dim $strike ease-out $delay backwards;
+
+  &::before {
+    animation: pop 0.4s ease-out ($delay + $strike) backwards;
+  }
+
+  .text {
+    animation: strike $strike ease-in-out $delay backwards;
+  }
+}
+
+.star {
+  position: absolute;
+  top: 50%;
+  left: 100%;
+  color: #f2d48a;
+  font-size: 1.3em;
+  line-height: 1;
+  text-shadow:
+    0 0 6px #f2d48a,
+    0 0 14px rgba(242, 212, 138, 0.7);
+  opacity: 0;
+  transform: translate(-50%, -50%);
+  animation: star $strike ease-in-out $delay backwards;
+}
+
+@keyframes strike {
+  from {
+    background-size: 0 0.09em;
+  }
+}
+
+@keyframes dim {
+  from {
+    opacity: 1;
+  }
+}
+
+@keyframes pop {
+  from {
+    transform: scale(0);
+  }
+  60% {
+    transform: scale(1.5);
+  }
+}
+
+@keyframes star {
+  from {
+    left: 0;
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.4) rotate(0);
+  }
+  15% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1.2) rotate(70deg);
+  }
+  85% {
+    opacity: 1;
+  }
+  to {
+    left: 100%;
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.8) rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  li.striking,
+  li.striking::before,
+  li.striking .text,
+  .star {
+    animation-duration: 1ms;
+  }
+}
+
+/* Nouvelle quête : apparaît au centre de la scène (--dx / --dy, calculés à l'entrée), puis rejoint sa place. */
+.panel.arriving {
+  animation: arrive 2.2s both;
+}
+
+@keyframes arrive {
   from {
     opacity: 0;
+    transform: translate(var(--dx), var(--dy)) scale(1.1);
+    animation-timing-function: ease-out;
+  }
+  18% {
+    opacity: 1;
+    transform: translate(var(--dx), var(--dy)) scale(1.4);
+  }
+  60% {
+    transform: translate(var(--dx), var(--dy)) scale(1.4);
+    animation-timing-function: ease-in-out;
+  }
+  to {
+    opacity: 1;
+    transform: none;
   }
 }

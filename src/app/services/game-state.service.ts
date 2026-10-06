@@ -8,12 +8,15 @@ export class GameStateService {
   readonly flags = signal<ReadonlySet<string>>(new Set());
   /** Map où se trouve le joueur. */
   readonly currentMap = signal<string | null>(null);
+  /** Incrémenté à chaque nouvelle partie ou reprise de sauvegarde. */
+  readonly run = signal(0);
 
   /** Nouvelle partie, ou reprise avec les flags et la map d'une sauvegarde. */
   start(pseudo: string, flags: string[] = [], currentMap: string | null = null): void {
     this.pseudo.set(pseudo.trim());
     this.flags.set(new Set(flags));
     this.currentMap.set(currentMap);
+    this.run.update((n) => n + 1);
   }
 
   setFlags(flags: string[] | undefined): void {

@@ -102,6 +102,16 @@
             >{{ r.arrow }}</span
           >
         }
+        @if (r.region.button) {
+          <span
+            class="region-button"
+            [class.hovered]="hovered() === r.region"
+            [style.left.%]="r.centerX"
+            [style.top.%]="r.centerY"
+            aria-hidden="true"
+            >{{ r.region.button }}</span
+          >
+        }
         @if (debug.enabled()) {
           <span class="debug-label" [style.left.%]="r.centerX" [style.top.%]="r.centerY">{{
             r.region.id

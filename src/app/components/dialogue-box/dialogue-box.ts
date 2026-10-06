@@ -23,6 +23,10 @@ export class DialogueBox {
 
   protected readonly line = this.dialogue.currentLine;
   protected readonly text = computed(() => this.state.format(this.line()?.text ?? ''));
+  /** Choix de la réplique dont la condition (`if` / `ifNot`) est remplie. */
+  protected readonly choices = computed(() =>
+    (this.line()?.choices ?? []).filter((c) => this.state.check(c)),
+  );
   protected readonly character = computed(() => {
     const id = this.line()?.character;
     if (!id) return null;
@@ -42,7 +46,7 @@ export class DialogueBox {
 
   protected onKeydown(event: KeyboardEvent): void {
     // Ignoré si une zone vient d'ouvrir le dialogue avec Entrée, ou si des choix sont affichés (boutons).
-    if (!this.dialogue.isOpen() || event.defaultPrevented || this.line()?.choices?.length) return;
+    if (!this.dialogue.isOpen() || event.defaultPrevented || this.choices().length) return;
     if (event.key === 'Enter' || event.key === ' ') {
       event.preventDefault();
       this.dialogue.next();

@@ -70,6 +70,10 @@
           "color": {
             "type": "string",
             "description": "Couleur CSS du nom dans la boîte de dialogue."
+          },
+          "portraitFull": {
+            "type": "boolean",
+            "description": "true = portrait plein écran (personnage devant un décor, image 16/9) qui couvre la scène."
           }
         }
       }
@@ -115,8 +119,7 @@
             "items": {
               "type": "object",
               "required": [
-                "text",
-                "done"
+                "text"
               ],
               "additionalProperties": false,
               "properties": {
@@ -126,8 +129,42 @@
                 "done": {
                   "type": "string",
                   "description": "Flag qui coche l'objectif."
+                },
+                "count": {
+                  "type": "array",
+                  "minItems": 1,
+                  "items": {
+                    "type": "string"
+                  },
+                  "description": "Compteur « texte X/N » : flags comptés, objectif coché quand tous sont posés."
+                },
+                "if": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  },
+                  "description": "L'objectif n'apparaît que si tous ces flags sont posés."
+                },
+                "ifNot": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  },
+                  "description": "L'objectif disparaît dès qu'un de ces flags est posé."
                 }
-              }
+              },
+              "anyOf": [
+                {
+                  "required": [
+                    "done"
+                  ]
+                },
+                {
+                  "required": [
+                    "count"
+                  ]
+                }
+              ]
             }
           }
         }

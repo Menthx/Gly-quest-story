@@ -1,0 +1,139 @@
+{
+  "$schema": "../../../schemas/map.schema.json",
+  "id": "biblio-bureau",
+  "name": "Bibliothèque : le bureau",
+  "background": "assets/backgrounds/biblio-bureau.jpg",
+  "setFlags": ["bureau-vu"],
+  "triggers": [
+    {
+      "dialogue": "arrivee"
+    }
+  ],
+  "regions": [
+    {
+      "id": "naevys",
+      "label": "Naevys",
+      "ifNot": ["visite-terminee"],
+      "shape": {
+        "type": "rect",
+        "x": 54,
+        "y": 47,
+        "width": 9.5,
+        "height": 14
+      },
+      "action": {
+        "type": "dialogue",
+        "dialogue": "naevys"
+      }
+    },
+    {
+      "id": "retour",
+      "label": "Retour dans la bibliothèque",
+      "shape": {
+        "type": "rect",
+        "x": 30,
+        "y": 88,
+        "width": 40,
+        "height": 12
+      },
+      "action": {
+        "type": "goto",
+        "map": "bibliotheque"
+      },
+      "arrow": "down"
+    }
+  ],
+  "dialogues": {
+    "arrivee": {
+      "lines": [
+        {
+          "text": "« Au centre se trouve le bureau de Dame Naevys. Les étagères sont remplies d'ouvrages de magie divers et variés. Au fond se trouve un sol arcanique pour pratiquer la magie. »"
+        }
+      ]
+    },
+    "naevys": {
+      "lines": [
+        {
+          "character": "naevys",
+          "text": "« Tu as besoin de quelque chose, mon enfant ? »",
+          "choices": [
+            {
+              "text": "« À quoi sert cette bibliothèque ? »",
+              "next": "naevys-bibliotheque"
+            },
+            {
+              "text": "« Y a-t-il un moyen de neutraliser totalement les énergies ? »",
+              "next": "naevys-energies"
+            },
+            {
+              "text": "« Je retourne visiter. »",
+              "next": "naevys-au-revoir"
+            },
+            {
+              "text": "« J'ai fini de faire le tour, qu'est-ce que je peux faire maintenant ? »",
+              "next": "naevys-fin-visite",
+              "if": [
+                "foyer-vu",
+                "bureau-vu",
+                "coin-douillet-vu",
+                "serre-vue",
+                "cours-vu",
+                "pergola-vue"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "naevys-bibliotheque": {
+      "lines": [
+        {
+          "character": "naevys",
+          "text": "« C'est le point central des recherches magiques et des archives de Glyglyland. En cette période, je consacre tout mon temps aux recherches sur les énergies et aux préparatifs du rituel. »"
+        },
+        {
+          "character": "naevys",
+          "text": "« Le reste de l'année, je mène différentes missions en parallèle : tenir les archives à jour, faire des cultures de plantes magiques, et parfois j'apporte mon aide à qui veut bien passer la porte de cet humble endroit. »"
+        }
+      ]
+    },
+    "naevys-energies": {
+      "lines": [
+        {
+          "character": "naevys",
+          "text": "« Malheureusement, on ne sait pas si c'est possible, c'est pour ça que nous devons mettre notre effort sur les recherches lorsque l'Énergie est présente. »"
+        },
+        {
+          "character": "naevys",
+          "text": "« J'ai tout de même une théorie : nous avons constaté que certaines actions avec le flux d'Énergie permettent d'en réduire l'intensité. Je t'en parlerai un peu plus tard, mon enfant. »"
+        }
+      ]
+    },
+    "naevys-au-revoir": {
+      "lines": [
+        {
+          "character": "naevys",
+          "text": "« N'hésite pas si tu as des questions. Reviens me voir quand tu auras fait le tour du propriétaire ! »"
+        }
+      ]
+    },
+    "naevys-fin-visite": {
+      "lines": [
+        {
+          "character": "naevys",
+          "text": "« Super ! Alors, ton premier ressenti sur les lieux ? »",
+          "choices": [
+            {
+              "text": "« Rien d'anormal, il me semble ? »",
+              "setFlags": ["visite-terminee"]
+            },
+            {
+              "text": "« Est-ce qu'il est possible de ressentir l'énergie en ce moment même ? »",
+              "setFlags": ["visite-terminee"]
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

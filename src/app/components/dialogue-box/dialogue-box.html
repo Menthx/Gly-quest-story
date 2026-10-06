@@ -1,7 +1,12 @@
-@if (line(); as l) {
+@if (line()) {
   <div class="overlay" (click)="dialogue.next()">
     @if (character()?.portrait; as portrait) {
-      <img class="portrait" [src]="portrait" [alt]="character()?.name" />
+      <img
+        class="portrait"
+        [class.full]="character()?.portraitFull"
+        [src]="portrait"
+        [alt]="character()?.name"
+      />
     }
     <div class="box" [class.narrator]="!character()">
       @if (character(); as c) {
@@ -9,9 +14,9 @@
       }
       <p class="text">{{ text() }}</p>
 
-      @if (l.choices?.length) {
+      @if (choices().length) {
         <div class="choices">
-          @for (choice of l.choices; track $index) {
+          @for (choice of choices(); track $index) {
             <button type="button" (click)="$event.stopPropagation(); choose(choice)">
               {{ choice.text }}
             </button>

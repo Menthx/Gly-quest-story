@@ -11,6 +11,12 @@
     "annonce": {
       "name": "Annonce",
       "color": "#9fd3ff"
+    },
+    "naevys": {
+      "name": "Naevys",
+      "portrait": "assets/characters/naevys.jpg",
+      "portraitFull": true,
+      "color": "#a8e6cf"
     }
   },
   "quests": [
@@ -27,6 +33,34 @@
         {
           "text": "Explorer l'extérieur du train",
           "done": "licorne-vue"
+        }
+      ]
+    },
+    {
+      "id": "visite-bibliotheque",
+      "title": "Visite la bibliothèque",
+      "if": ["mission-visite"],
+      "ifNot": ["visite-terminee"],
+      "objectives": [
+        {
+          "text": "Bibliothèque",
+          "count": ["foyer-vu", "bureau-vu", "coin-douillet-vu"]
+        },
+        {
+          "text": "Jardin",
+          "count": ["serre-vue", "cours-vu", "pergola-vue"]
+        },
+        {
+          "text": "Retourne voir Naevys",
+          "done": "visite-terminee",
+          "if": [
+            "foyer-vu",
+            "bureau-vu",
+            "coin-douillet-vu",
+            "serre-vue",
+            "cours-vu",
+            "pergola-vue"
+          ]
         }
       ]
     }
@@ -48,6 +82,48 @@
       "id": "inter-scene-1-2",
       "name": "Vers la bibliothèque",
       "file": "data/maps/inter-scene-1-2.json",
+      "inMenu": false
+    },
+    {
+      "id": "bibliotheque",
+      "name": "Bibliothèque",
+      "file": "data/maps/bibliotheque.json",
+      "inMenu": false
+    },
+    {
+      "id": "biblio-foyer",
+      "name": "Bibliothèque : le foyer",
+      "file": "data/maps/biblio-foyer.json",
+      "inMenu": false
+    },
+    {
+      "id": "biblio-bureau",
+      "name": "Bibliothèque : le bureau",
+      "file": "data/maps/biblio-bureau.json",
+      "inMenu": false
+    },
+    {
+      "id": "biblio-coin-douillet",
+      "name": "Bibliothèque : le coin douillet",
+      "file": "data/maps/biblio-coin-douillet.json",
+      "inMenu": false
+    },
+    {
+      "id": "jardin-serre",
+      "name": "Jardin : la serre",
+      "file": "data/maps/jardin-serre.json",
+      "inMenu": false
+    },
+    {
+      "id": "jardin-cours",
+      "name": "Jardin : la cour",
+      "file": "data/maps/jardin-cours.json",
+      "inMenu": false
+    },
+    {
+      "id": "jardin-pergola",
+      "name": "Jardin : la pergola",
+      "file": "data/maps/jardin-pergola.json",
       "inMenu": false
     }
   ]

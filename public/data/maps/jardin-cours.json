@@ -1,0 +1,87 @@
+{
+  "$schema": "../../../schemas/map.schema.json",
+  "id": "jardin-cours",
+  "name": "Jardin : la cour",
+  "background": "assets/backgrounds/jardin-cours.jpg",
+  "setFlags": ["cours-vu"],
+  "regions": [
+    {
+      "id": "citrouilles",
+      "label": "Les citrouilles du jardin",
+      "shape": {
+        "type": "rect",
+        "x": 63,
+        "y": 35,
+        "width": 17,
+        "height": 15
+      },
+      "action": {
+        "type": "dialogue",
+        "dialogue": "citrouilles"
+      }
+    },
+    {
+      "id": "champignon",
+      "label": "Le champignon du jardin",
+      "shape": {
+        "type": "rect",
+        "x": 33,
+        "y": 72,
+        "width": 36,
+        "height": 27
+      },
+      "action": {
+        "type": "dialogue",
+        "dialogue": "champignon"
+      }
+    },
+    {
+      "id": "vers-pergola",
+      "label": "Monter à la pergola",
+      "shape": {
+        "type": "rect",
+        "x": 38.5,
+        "y": 36,
+        "width": 8,
+        "height": 11
+      },
+      "action": {
+        "type": "goto",
+        "map": "jardin-pergola"
+      },
+      "arrow": "up"
+    },
+    {
+      "id": "vers-serre",
+      "label": "Retourner à la serre",
+      "shape": {
+        "type": "rect",
+        "x": 90,
+        "y": 30,
+        "width": 10,
+        "height": 50
+      },
+      "action": {
+        "type": "goto",
+        "map": "jardin-serre"
+      },
+      "arrow": "right"
+    }
+  ],
+  "dialogues": {
+    "citrouilles": {
+      "lines": [
+        {
+          "text": "Les citrouilles du jardin. (texte à venir)"
+        }
+      ]
+    },
+    "champignon": {
+      "lines": [
+        {
+          "text": "Le champignon du jardin. (texte à venir)"
+        }
+      ]
+    }
+  }
+}

@@ -70,8 +70,12 @@ const useFlags = (cond, where) => {
 for (const q of game.quests ?? []) {
   const where = `${gameFile} quête « ${q.id} »`;
   useFlags(q, where);
-  for (const o of q.objectives ?? [])
-    flagsUsed.push({ flag: o.done, where: `${where}, objectif « ${o.text} »` });
+  for (const o of q.objectives ?? []) {
+    const w = `${where}, objectif « ${o.text} »`;
+    useFlags(o, w);
+    for (const f of [...(o.done ? [o.done] : []), ...(o.count ?? [])])
+      flagsUsed.push({ flag: f, where: w });
+  }
 }
 
 // --- maps ---
@@ -91,6 +95,7 @@ for (const entry of game.maps ?? []) {
   if (map.id !== entry.id)
     errors.push(`${file} : id « ${map.id} » différent de celui de game.json (« ${entry.id} »)`);
   checkImage(map.background, `${file} background`);
+  for (const f of map.setFlags ?? []) flagsSet.add(f);
 
   const dialogues = map.dialogues ?? {};
   const referenced = new Set();
@@ -126,6 +131,7 @@ for (const entry of game.maps ?? []) {
         errors.push(`${file} ${where} : personnage « ${line.character} » absent de game.json`);
       }
       for (const c of line.choices ?? []) {
+        useFlags(c, `${file} ${where}, choix « ${c.text} »`);
         for (const f of c.setFlags ?? []) flagsSet.add(f);
         if (c.next) refDialogue(c.next, `${where}, choix « ${c.text} »`);
         if (c.goto) refMap(c.goto, `${where}, choix « ${c.text} »`);

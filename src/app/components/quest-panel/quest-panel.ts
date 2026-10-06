@@ -17,10 +17,14 @@ export class QuestPanel {
       .filter((q) => this.state.check(q))
       .map((q) => ({
         ...q,
-        objectives: q.objectives.map((o) => ({
-          text: this.state.format(o.text),
-          done: this.state.has(o.done),
-        })),
+        objectives: q.objectives
+          .filter((o) => this.state.check(o))
+          .map((o) => {
+            const text = this.state.format(o.text);
+            if (!o.count?.length) return { text, done: !!o.done && this.state.has(o.done) };
+            const n = o.count.filter((f) => this.state.has(f)).length;
+            return { text: `${text} : ${n}/${o.count.length}`, done: n === o.count.length };
+          }),
       })),
   );
 }

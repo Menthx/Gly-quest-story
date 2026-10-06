@@ -62,7 +62,7 @@ export class DialogueService {
   next(): void {
     const dialogue = this.dialogue();
     const line = this.currentLine();
-    if (!dialogue || line?.choices?.length) return;
+    if (!dialogue || line?.choices?.some((c) => this.state.check(c))) return;
     if (this.index() + 1 < dialogue.lines.length) {
       this.index.update((i) => i + 1);
     } else {

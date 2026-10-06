@@ -33,9 +33,13 @@ public/
 │   └── maps/
 │       ├── train-interieur.json  ← scène 1
 │       ├── train-exterieur.json  ← scène 1
-│       └── inter-scene-1-2.json  ← texte de transition vers la scène 2
+│       ├── inter-scene-1-2.json  ← texte de transition vers la scène 2
+│       ├── bibliotheque.json     ← scène 2 : vue d'ensemble (accueil de Naevys, accès aux lieux)
+│       ├── biblio-*.json         ← scène 2 : foyer, bureau, coin douillet
+│       └── jardin-*.json         ← scène 2 : serre, cour, pergola
 └── assets/
-    └── backgrounds/              ← images de fond
+    ├── backgrounds/              ← images de fond
+    └── characters/               ← portraits des personnages
 schemas/                          ← schémas JSON : autocomplétion et vérification dans VS Code
 ```
 
@@ -71,8 +75,9 @@ Tous les chemins d'images sont relatifs à `public/`. Partout dans les textes, `
 }
 ```
 
-- Un personnage sans `portrait` parle sans image (le joueur, une annonce…). Avec un `portrait`, l'image s'affiche au-dessus de la zone de texte.
+- Un personnage sans `portrait` parle sans image (le joueur, une annonce…). Avec un `portrait`, l'image s'affiche au-dessus de la zone de texte. Avec `"portraitFull": true`, le portrait est une image plein écran (personnage devant un décor, comme `naevys.jpg`) qui couvre la scène pendant qu'il parle.
 - Une quête s'affiche dans le cadre « Quête en cours » tant que sa condition est remplie ; chaque objectif se coche quand son flag `done` est posé.
+- Un objectif peut être un compteur : `{ "text": "Jardin", "count": ["serre-vue", "cours-vu", "pergola-vue"] }` affiche « Jardin : 1/3 » et se coche quand tous les flags sont posés. Un objectif peut aussi porter `if` / `ifNot` pour n'apparaître qu'au bon moment (ex. « Retourne voir Naevys » quand tout est exploré).
 
 ### Une map
 
@@ -122,7 +127,8 @@ Tous les chemins d'images sont relatifs à `public/`. Partout dans les textes, `
 
 - **Coordonnées en % de l'image** (0 à 100) : les zones suivent l'image quelle que soit la taille de l'écran.
 - **Formes** : `rect` (x, y, largeur, hauteur) ou `polygon` (`"points": [[x, y], ...]`) pour épouser un objet. La forme s'illumine au survol.
-- **Actions** : `dialogue` ouvre un dialogue de la map, `goto` change de map. `arrow` affiche une flèche dans la zone.
+- **Actions** : `dialogue` ouvre un dialogue de la map, `goto` change de map. `arrow` affiche une flèche dans la zone, `button` un bouton toujours visible (ex. `"button": "Porte"`).
+- **`setFlags` sur la map** : flags posés dès qu'on y arrive (ex. `"setFlags": ["serre-vue"]` pour compter un lieu visité).
 - **Dialogues** : une suite de répliques ; `character` absent = narration. Une réplique peut proposer des `choices` (boutons) qui enchaînent sur un autre dialogue (`next`), changent de map (`goto`), posent des flags (`setFlags`) ou ferment le dialogue.
 
 ### Flags, conditions et triggers
@@ -130,7 +136,7 @@ Tous les chemins d'images sont relatifs à `public/`. Partout dans les textes, `
 C'est ce qui rend l'histoire conditionnelle :
 
 - un dialogue (ou un choix) pose des **flags** avec `setFlags` ;
-- une zone, une quête ou un trigger peut porter une **condition** : `if` (tous ces flags posés) et/ou `ifNot` (aucun de ces flags) ;
+- une zone, une quête, un objectif, un choix ou un trigger peut porter une **condition** : `if` (tous ces flags posés) et/ou `ifNot` (aucun de ces flags) ;
 - les **triggers** d'une map lancent un dialogue tout seuls, une seule fois, dès que leur condition est remplie : à l'arrivée sur la map et après chaque dialogue.
 
 ### Interlude (fond uni)

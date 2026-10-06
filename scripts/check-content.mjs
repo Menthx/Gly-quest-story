@@ -125,6 +125,7 @@ for (const entry of game.maps ?? []) {
 
   for (const [id, d] of Object.entries(dialogues)) {
     for (const f of d.setFlags ?? []) flagsSet.add(f);
+    if (d.next) refDialogue(d.next, `dialogue « ${id} », fin`);
     (d.lines ?? []).forEach((line, i) => {
       const where = `dialogue « ${id} », réplique ${i + 1}`;
       if (line.character && !(line.character in characters)) {

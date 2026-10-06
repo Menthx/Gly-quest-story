@@ -86,6 +86,7 @@
       ]
     },
     "naevys-bibliotheque": {
+      "next": "naevys",
       "lines": [
         {
           "character": "naevys",
@@ -98,6 +99,7 @@
       ]
     },
     "naevys-energies": {
+      "next": "naevys",
       "lines": [
         {
           "character": "naevys",

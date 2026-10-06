@@ -1,4 +1,5 @@
 import { AnimationCallbackEvent, Component, Injectable, computed, inject } from '@angular/core';
+import { DialogueService } from '../../services/dialogue.service';
 import { GameDataService } from '../../services/game-data.service';
 import { GameStateService } from '../../services/game-state.service';
 
@@ -27,6 +28,7 @@ export class QuestPanel {
   private readonly data = inject(GameDataService);
   private readonly state = inject(GameStateService);
   private readonly memory = inject(QuestMemory);
+  private readonly dialogue = inject(DialogueService);
 
   protected readonly quests = computed(() => {
     const memory = this.memory;
@@ -62,23 +64,27 @@ export class QuestPanel {
         memory.arrived.delete(id);
       }
     }
-    return quests.map((q) => {
-      let struck = memory.struck.get(q.id);
-      if (!struck) {
-        // Objectifs déjà remplis quand la quête apparaît : barrés d'office, sans animation.
-        struck = new Set(q.objectives.filter((o) => o.done).map((o) => o.index));
-        memory.struck.set(q.id, struck);
-      }
-      return {
-        ...q,
-        objectives: q.objectives.map(({ index, text, done }) => ({
-          index,
-          text,
-          done,
-          striking: done && !struck.has(index),
-        })),
-      };
-    });
+    // Une quête qui n'est pas encore arrivée attend la fin du dialogue en cours pour faire son entrée.
+    const dialogueOpen = this.dialogue.isOpen();
+    return quests
+      .filter((q) => !dialogueOpen || memory.arrived.has(q.id))
+      .map((q) => {
+        let struck = memory.struck.get(q.id);
+        if (!struck) {
+          // Objectifs déjà remplis quand la quête apparaît : barrés d'office, sans animation.
+          struck = new Set(q.objectives.filter((o) => o.done).map((o) => o.index));
+          memory.struck.set(q.id, struck);
+        }
+        return {
+          ...q,
+          objectives: q.objectives.map(({ index, text, done }) => ({
+            index,
+            text,
+            done,
+            striking: done && !struck.has(index),
+          })),
+        };
+      });
   });
 
   /** Objectif barré : l'animation ne se rejouera pas au prochain affichage du cadre. */

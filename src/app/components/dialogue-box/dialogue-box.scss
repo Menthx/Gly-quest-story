@@ -21,6 +21,19 @@
   pointer-events: none;
   filter: drop-shadow(0 0 12px rgba(0, 0, 0, 0.5));
   animation: slide-up 0.25s ease-out;
+
+  /* Personnage déjà posé dans un décor (image 16/9) : l'image couvre toute la scène. */
+  &.full {
+    inset: 0;
+    left: 0;
+    transform: none;
+    width: 100%;
+    height: 100%;
+    max-width: none;
+    object-fit: cover;
+    filter: none;
+    animation: fade-in 0.25s ease-out;
+  }
 }
 
 /* Zone de texte floutée en bas de l'écran (maquette slide 3). */

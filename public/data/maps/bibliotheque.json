@@ -1,0 +1,185 @@
+{
+  "$schema": "../../../schemas/map.schema.json",
+  "id": "bibliotheque",
+  "name": "Bibliothèque",
+  "background": "assets/backgrounds/bibliotheque.jpg",
+  "triggers": [
+    {
+      "dialogue": "accueil"
+    }
+  ],
+  "regions": [
+    {
+      "id": "foyer",
+      "label": "Le foyer",
+      "if": ["mission-visite"],
+      "shape": {
+        "type": "rect",
+        "x": 0,
+        "y": 30,
+        "width": 22,
+        "height": 42
+      },
+      "action": {
+        "type": "goto",
+        "map": "biblio-foyer"
+      }
+    },
+    {
+      "id": "bureau",
+      "label": "Le bureau",
+      "if": ["mission-visite"],
+      "shape": {
+        "type": "rect",
+        "x": 31,
+        "y": 12,
+        "width": 40,
+        "height": 58
+      },
+      "action": {
+        "type": "goto",
+        "map": "biblio-bureau"
+      }
+    },
+    {
+      "id": "coin-douillet",
+      "label": "Le coin douillet",
+      "if": ["mission-visite"],
+      "shape": {
+        "type": "rect",
+        "x": 82,
+        "y": 10,
+        "width": 18,
+        "height": 62
+      },
+      "action": {
+        "type": "goto",
+        "map": "biblio-coin-douillet"
+      }
+    },
+    {
+      "id": "porte-jardin",
+      "label": "Aller au jardin",
+      "button": "Porte",
+      "if": ["mission-visite"],
+      "shape": {
+        "type": "rect",
+        "x": 85,
+        "y": 83,
+        "width": 13,
+        "height": 11
+      },
+      "action": {
+        "type": "goto",
+        "map": "jardin-serre"
+      }
+    }
+  ],
+  "dialogues": {
+    "accueil": {
+      "lines": [
+        {
+          "text": "« Je vois une personne en pleine réflexion. Je m'approche d'elle. »"
+        },
+        {
+          "character": "joueur",
+          "text": "« Excusez-moi... »"
+        },
+        {
+          "text": "Elle lève les yeux vers moi."
+        },
+        {
+          "character": "naevys",
+          "text": "« Oui ? En quoi puis-je t'aider, mon enfant ? »"
+        },
+        {
+          "character": "joueur",
+          "text": "« Je cherche Dame Naevys, je suis son/sa nouvelle assistant·e. »"
+        },
+        {
+          "character": "naevys",
+          "text": "« Oh ! Alors tu dois être {pseudo}. Enchantée, je suis Naevys, ton arrivée tombe à pic ! Tu n'imagines pas à quel point j'étais impatiente de t'accueillir. Es-tu prêt·e à te mettre au travail ? »",
+          "choices": [
+            {
+              "text": "« Je suis là pour ça ! Par quoi on commence ? »",
+              "next": "accueil-glyglyland"
+            },
+            {
+              "text": "« Il y a tant de travail que ça ?? »",
+              "next": "accueil-glyglyland"
+            }
+          ]
+        }
+      ]
+    },
+    "accueil-glyglyland": {
+      "lines": [
+        {
+          "character": "naevys",
+          "text": "« Haha, je vois que j'ai piqué ta curiosité... j'aime ça ! »"
+        },
+        {
+          "character": "naevys",
+          "text": "« Laisse-moi d'abord te parler de Glyglyland. Chaque année, quand l'automne cède la place à l'hiver, le royaume subit d'étranges transformations. »"
+        },
+        {
+          "character": "naevys",
+          "text": "« Une énergie ancienne ressurgit à cette période, et elle donne lieu à toutes sortes de phénomènes étranges : transformation du royaume, disparitions, malédictions… »"
+        },
+        {
+          "character": "naevys",
+          "text": "« L'année dernière, nous en avons payé le prix fort : Saku, l'animal gardien de notre grande Glyctatrice, a été corrompu par les ténèbres. Nous ne pouvons pas subir une telle tragédie une seconde fois. »"
+        },
+        {
+          "character": "naevys",
+          "text": "« C'est pourquoi nous devons trouver une solution pour réduire l'impact de cette énergie sur le royaume avant les prochaines vagues. »"
+        },
+        {
+          "character": "naevys",
+          "text": "« Seulement voilà... nous ne pouvons étudier cette énergie que lorsqu'elle apparaît. C'est pour cette raison que j'avais besoin d'un assistant, et te voilà ! Il y a encore beaucoup de choses à faire avant que le pic d'énergie atteigne son paroxysme. Chaque minute compte ! »"
+        },
+        {
+          "character": "naevys",
+          "text": "« Cela fait peut-être beaucoup d'infos en une fois, désolée ! »",
+          "choices": [
+            {
+              "text": "« Non ça va, j'étais préparé·e ! »",
+              "next": "accueil-exploration"
+            },
+            {
+              "text": "« C'est vrai que ça a l'air un peu compliqué... »",
+              "next": "accueil-exploration"
+            }
+          ]
+        }
+      ]
+    },
+    "accueil-exploration": {
+      "lines": [
+        {
+          "character": "naevys",
+          "text": "« Que dirais-tu d'explorer un peu ton nouveau lieu de travail ? Quoi de mieux, pour te familiariser avec notre nouvel environnement, que de laisser libre cours à ta curiosité ? »",
+          "choices": [
+            {
+              "text": "« D'accord, j'y vais de ce pas ! »",
+              "next": "accueil-fin"
+            },
+            {
+              "text": "« Merci, je vais en avoir besoin. »",
+              "next": "accueil-fin"
+            }
+          ]
+        }
+      ]
+    },
+    "accueil-fin": {
+      "setFlags": ["mission-visite"],
+      "lines": [
+        {
+          "character": "naevys",
+          "text": "« N'hésite pas si tu as des questions. Reviens me voir quand tu auras fait ton tour du propriétaire ! »"
+        }
+      ]
+    }
+  }
+}

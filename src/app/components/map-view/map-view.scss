@@ -91,6 +91,7 @@ app-debug-panel {
 }
 
 .arrow,
+.region-button,
 .debug-label {
   position: absolute;
   transform: translate(-50%, -50%);
@@ -102,6 +103,24 @@ app-debug-panel {
   color: #fff;
   text-shadow: 0 0 6px rgba(0, 0, 0, 0.8);
   animation: pulse 1.6s ease-in-out infinite;
+}
+
+/* Bouton toujours visible (ex. « Porte ») : c'est la zone en dessous qui reçoit le clic. */
+.region-button {
+  padding: 0.5em 1.4em;
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  border-radius: 999px;
+  color: #fff;
+  background: rgba(20, 18, 35, 0.45);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  font-size: clamp(13px, 1.3cqw, 22px);
+  white-space: nowrap;
+  transition: background 0.15s;
+
+  &.hovered {
+    background: rgba(242, 212, 138, 0.35);
+  }
 }
 
 @keyframes pulse {

@@ -1,0 +1,69 @@
+{
+  "$schema": "../../../schemas/map.schema.json",
+  "id": "jardin-serre",
+  "name": "Jardin : la serre",
+  "background": "assets/backgrounds/jardin-serre.jpg",
+  "setFlags": ["serre-vue"],
+  "regions": [
+    {
+      "id": "jardiniere",
+      "label": "La jardinière",
+      "shape": {
+        "type": "polygon",
+        "points": [
+          [66.5, 58],
+          [91.5, 58],
+          [91, 72],
+          [88, 86],
+          [70, 86],
+          [67, 70]
+        ]
+      },
+      "action": {
+        "type": "dialogue",
+        "dialogue": "jardiniere"
+      }
+    },
+    {
+      "id": "vers-cours",
+      "label": "Aller dans la cour du jardin",
+      "shape": {
+        "type": "rect",
+        "x": 41,
+        "y": 10,
+        "width": 22,
+        "height": 42
+      },
+      "action": {
+        "type": "goto",
+        "map": "jardin-cours"
+      },
+      "arrow": "up"
+    },
+    {
+      "id": "porte-biblio",
+      "label": "Retourner à la bibliothèque",
+      "button": "Porte",
+      "shape": {
+        "type": "rect",
+        "x": 43,
+        "y": 84,
+        "width": 14,
+        "height": 11
+      },
+      "action": {
+        "type": "goto",
+        "map": "bibliotheque"
+      }
+    }
+  ],
+  "dialogues": {
+    "jardiniere": {
+      "lines": [
+        {
+          "text": "« L'endroit parfait pour faire pousser des herbes magiques. »"
+        }
+      ]
+    }
+  }
+}

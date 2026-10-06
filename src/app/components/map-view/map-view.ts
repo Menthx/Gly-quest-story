@@ -96,6 +96,7 @@ export class MapView {
           if (this.leavingTo && this.leavingTo !== map.id) return;
           this.leavingTo = null;
           this.state.currentMap.set(map.id);
+          this.state.setFlags(map.setFlags);
           this.dialogue.resumePending(map);
           this.dialogue.runTriggers(map);
         });

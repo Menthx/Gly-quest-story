@@ -40,10 +40,16 @@ export interface Quest extends Condition {
   objectives: QuestObjective[];
 }
 
-export interface QuestObjective {
+/**
+ * Objectif de quête : coché par un flag (`done`), ou compteur « texte X/N » coché quand tous les flags
+ * de `count` sont posés. `if` / `ifNot` : l'objectif n'apparaît que si sa condition est remplie.
+ */
+export interface QuestObjective extends Condition {
   text: string;
   /** Flag qui coche l'objectif. */
-  done: string;
+  done?: string;
+  /** Flags comptés pour la progression (ex. lieux visités). */
+  count?: string[];
 }
 
 export interface MapEntry {
@@ -63,6 +69,8 @@ export interface Character {
   portrait?: string;
   /** Couleur du nom dans la boîte de dialogue (optionnel). */
   color?: string;
+  /** `true` : le portrait est une image plein écran (personnage devant un décor) qui couvre la scène. */
+  portraitFull?: boolean;
 }
 
 /** Fichier `maps/<id>.json`. */
@@ -83,6 +91,8 @@ export interface GameMap {
   triggers?: Trigger[];
   /** Écran de transition : un texte centré sur fond uni (ex. entre deux scènes). */
   interlude?: Interlude;
+  /** Flags posés à l'arrivée sur la map (ex. lieu visité, pour une quête d'exploration). */
+  setFlags?: string[];
 }
 
 export interface Trigger extends Condition {
@@ -134,6 +144,8 @@ export interface Region extends Condition {
   action: RegionAction;
   /** Affiche une flèche dans la zone (pratique pour les sorties sur les bords). */
   arrow?: 'left' | 'right' | 'up' | 'down';
+  /** Affiche un bouton toujours visible avec ce texte au centre de la zone (ex. « Porte »). */
+  button?: string;
 }
 
 export interface Dialogue {
@@ -150,7 +162,8 @@ export interface DialogueLine {
   choices?: DialogueChoice[];
 }
 
-export interface DialogueChoice {
+/** Un choix avec `if` / `ifNot` n'est proposé que si sa condition est remplie. */
+export interface DialogueChoice extends Condition {
   text: string;
   /** Id du dialogue suivant (dans la même map). Absent = ferme le dialogue. */
   next?: string;

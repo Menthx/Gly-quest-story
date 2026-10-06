@@ -1,0 +1,56 @@
+{
+  "$schema": "../../../schemas/map.schema.json",
+  "id": "jardin-pergola",
+  "name": "Jardin : la pergola",
+  "background": "assets/backgrounds/jardin-pergola.jpg",
+  "setFlags": ["pergola-vue"],
+  "regions": [
+    {
+      "id": "pergola",
+      "label": "La pergola",
+      "shape": {
+        "type": "polygon",
+        "points": [
+          [38, 22],
+          [50, 7],
+          [70, 4],
+          [84, 18],
+          [76, 22],
+          [76, 68],
+          [60, 70],
+          [45, 68],
+          [43, 24]
+        ]
+      },
+      "action": {
+        "type": "dialogue",
+        "dialogue": "pergola"
+      }
+    },
+    {
+      "id": "vers-cours",
+      "label": "Redescendre dans la cour",
+      "shape": {
+        "type": "rect",
+        "x": 56,
+        "y": 72,
+        "width": 20,
+        "height": 18
+      },
+      "action": {
+        "type": "goto",
+        "map": "jardin-cours"
+      },
+      "arrow": "down"
+    }
+  ],
+  "dialogues": {
+    "pergola": {
+      "lines": [
+        {
+          "text": "« Pour prendre une pause en plein air. »"
+        }
+      ]
+    }
+  }
+}

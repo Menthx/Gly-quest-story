@@ -81,6 +81,13 @@
           "description": "Map suivante (bouton Suite). Absent = pas de bouton."
         }
       }
+    },
+    "setFlags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Flags posés à l'arrivée sur la map (ex. lieu visité)."
     }
   },
   "$defs": {
@@ -225,6 +232,10 @@
             "type": "string"
           },
           "description": "La zone disparaît dès qu'un de ces flags est posé."
+        },
+        "button": {
+          "type": "string",
+          "description": "Bouton toujours visible avec ce texte au centre de la zone (ex. Porte)."
         }
       }
     },
@@ -278,6 +289,20 @@
                         "type": "string"
                       },
                       "description": "Flags posés quand on choisit cette option."
+                    },
+                    "if": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      },
+                      "description": "Le choix n'est proposé que si tous ces flags sont posés."
+                    },
+                    "ifNot": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      },
+                      "description": "Le choix disparaît dès qu'un de ces flags est posé."
                     }
                   }
                 }

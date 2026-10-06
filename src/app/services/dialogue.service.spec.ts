@@ -55,6 +55,24 @@ describe('DialogueService', () => {
     service.runTriggers(map);
     expect(service.currentLine()?.text).toBe('Fin');
   });
+
+  it("n'attend pas de choix quand aucun choix n'a sa condition remplie", () => {
+    const m: GameMap = {
+      id: 'choix',
+      name: 'Choix',
+      dialogues: {
+        d: { lines: [{ text: 'Question', choices: [{ text: 'Fini', if: ['tout-vu'] }] }] },
+      },
+    };
+    service.open(m, 'd');
+    service.next();
+    expect(service.isOpen()).toBe(false);
+
+    state.setFlags(['tout-vu']);
+    service.open(m, 'd');
+    service.next(); // ignoré : le choix est proposé
+    expect(service.currentLine()?.text).toBe('Question');
+  });
 });
 
 describe('GameStateService', () => {

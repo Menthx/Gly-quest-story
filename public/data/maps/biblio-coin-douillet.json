@@ -1,0 +1,39 @@
+{
+  "$schema": "../../../schemas/map.schema.json",
+  "id": "biblio-coin-douillet",
+  "name": "Bibliothèque : le coin douillet",
+  "background": "assets/backgrounds/biblio-coin-douillet.jpg",
+  "setFlags": ["coin-douillet-vu"],
+  "triggers": [
+    {
+      "dialogue": "arrivee"
+    }
+  ],
+  "regions": [
+    {
+      "id": "retour",
+      "label": "Retour dans la bibliothèque",
+      "shape": {
+        "type": "rect",
+        "x": 30,
+        "y": 88,
+        "width": 40,
+        "height": 12
+      },
+      "action": {
+        "type": "goto",
+        "map": "bibliotheque"
+      },
+      "arrow": "down"
+    }
+  ],
+  "dialogues": {
+    "arrivee": {
+      "lines": [
+        {
+          "text": "« Les étagères sont remplies de livres de recettes et d'ingrédients divers pour la préparation de potions. »"
+        }
+      ]
+    }
+  }
+}

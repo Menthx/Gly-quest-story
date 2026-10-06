@@ -1,4 +1,4 @@
-import { Component, computed, inject, output } from '@angular/core';
+import { Component, computed, inject, linkedSignal, output } from '@angular/core';
 import { DialogueChoice } from '../../models/game.models';
 import { DialogueService } from '../../services/dialogue.service';
 import { GameDataService } from '../../services/game-data.service';
@@ -23,11 +23,28 @@ export class DialogueBox {
 
   protected readonly line = this.dialogue.currentLine;
   protected readonly text = computed(() => this.state.format(this.line()?.text ?? ''));
+  /** Choix de la réplique dont la condition (`if` / `ifNot`) est remplie. */
+  protected readonly choices = computed(() =>
+    (this.line()?.choices ?? []).filter((c) => this.state.check(c)),
+  );
   protected readonly character = computed(() => {
     const id = this.line()?.character;
     if (!id) return null;
     const character = this.data.config()?.characters[id] ?? { name: id };
     return { ...character, name: this.state.format(character.name) };
+  });
+  /**
+   * Image plein écran (`portraitFull`) : une fois que ce personnage a parlé, elle reste affichée
+   * sur les répliques suivantes (joueur, narration) jusqu'à la fermeture du dialogue.
+   */
+  protected readonly fullPortrait = linkedSignal<ReturnType<typeof this.line>, string | null>({
+    source: this.line,
+    computation: (line, previous) => {
+      if (!line) return null;
+      const character = line.character ? this.data.config()?.characters[line.character] : null;
+      if (character?.portraitFull) return character.portrait ?? null;
+      return previous?.value ?? null;
+    },
   });
 
   protected choose(choice: DialogueChoice): void {
@@ -42,7 +59,7 @@ export class DialogueBox {
 
   protected onKeydown(event: KeyboardEvent): void {
     // Ignoré si une zone vient d'ouvrir le dialogue avec Entrée, ou si des choix sont affichés (boutons).
-    if (!this.dialogue.isOpen() || event.defaultPrevented || this.line()?.choices?.length) return;
+    if (!this.dialogue.isOpen() || event.defaultPrevented || this.choices().length) return;
     if (event.key === 'Enter' || event.key === ' ') {
       event.preventDefault();
       this.dialogue.next();

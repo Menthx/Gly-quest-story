@@ -4,6 +4,7 @@
   "name": "Vers la bibliothèque",
   "backgroundColor": "#1c1730",
   "interlude": {
-    "text": "À la sortie du train, je me rends directement à la bibliothèque de Glyglyland. Je me demande si ça va bien se passer !"
+    "text": "À la sortie du train, je me rends directement à la bibliothèque de Glyglyland. Je me demande si ça va bien se passer !",
+    "next": "bibliotheque"
   }
 }

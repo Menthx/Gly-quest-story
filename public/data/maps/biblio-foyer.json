@@ -1,0 +1,61 @@
+{
+  "$schema": "../../../schemas/map.schema.json",
+  "id": "biblio-foyer",
+  "name": "Bibliothèque : le foyer",
+  "background": "assets/backgrounds/biblio-foyer.jpg",
+  "setFlags": ["foyer-vu"],
+  "triggers": [
+    {
+      "dialogue": "arrivee"
+    }
+  ],
+  "regions": [
+    {
+      "id": "livre-histoire",
+      "label": "Livre : L'histoire de Glyglyland",
+      "shape": {
+        "type": "rect",
+        "x": 20.5,
+        "y": 43,
+        "width": 5,
+        "height": 8
+      },
+      "action": {
+        "type": "dialogue",
+        "dialogue": "livre-histoire"
+      }
+    },
+    {
+      "id": "retour",
+      "label": "Retour dans la bibliothèque",
+      "shape": {
+        "type": "rect",
+        "x": 30,
+        "y": 88,
+        "width": 40,
+        "height": 12
+      },
+      "action": {
+        "type": "goto",
+        "map": "bibliotheque"
+      },
+      "arrow": "down"
+    }
+  ],
+  "dialogues": {
+    "arrivee": {
+      "lines": [
+        {
+          "text": "« Étagères pleines à craquer de livres de tous genres. »"
+        }
+      ]
+    },
+    "livre-histoire": {
+      "lines": [
+        {
+          "text": "Un livre : « L'histoire de Glyglyland ». (contenu à venir)"
+        }
+      ]
+    }
+  }
+}

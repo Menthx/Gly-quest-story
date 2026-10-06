@@ -81,6 +81,11 @@ export class MapView {
     return d?.type === 'polygon' ? polygonPoints(d.points) : '';
   });
   private dragStart: { x: number; y: number } | null = null;
+  /**
+   * Map vers laquelle on part, le temps qu'elle s'affiche. Un choix « Suite » avec `goto` ferme le
+   * dialogue avant le changement de map : sans ce verrou, les triggers de la map qu'on quitte se lanceraient.
+   */
+  private leavingTo: string | null = null;
 
   constructor() {
     // À l'arrivée sur la map puis à chaque fermeture de dialogue : position du joueur, reprise de partie, triggers.
@@ -88,6 +93,8 @@ export class MapView {
       const map = this.map.value();
       if (map && this.map.status() === 'resolved' && !this.dialogue.isOpen()) {
         untracked(() => {
+          if (this.leavingTo && this.leavingTo !== map.id) return;
+          this.leavingTo = null;
           this.state.currentMap.set(map.id);
           this.dialogue.resumePending(map);
           this.dialogue.runTriggers(map);
@@ -130,8 +137,12 @@ export class MapView {
   }
 
   protected goTo(mapId: string): void {
+    this.leavingTo = mapId;
     this.dialogue.close();
-    this.router.navigate(['/map', mapId]);
+    // Navigation refusée ou annulée : on reste sur cette map, le verrou est levé.
+    this.router.navigate(['/map', mapId]).then((ok) => {
+      if (!ok && this.leavingTo === mapId) this.leavingTo = null;
+    });
   }
 
   protected onKeydown(event: KeyboardEvent): void {

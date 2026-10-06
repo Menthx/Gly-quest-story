@@ -10,8 +10,17 @@ Il faut **Node 22.22.3+ ou 24.15+** (exigence d'Angular 22).
 npm install
 npm start          # http://localhost:4200
 npm test           # tests unitaires
+npm run check      # vérifie le contenu JSON (à lancer après chaque modification de scène)
 npm run build      # version de production dans dist/
 ```
+
+`npm run check` signale les fautes de frappe qui, sinon, bloqueraient la partie sans aucune erreur : clé inconnue, map, dialogue, personnage ou image introuvable, flag testé (`if`, `ifNot`, objectif de quête) mais jamais posé par un `setFlags`.
+
+## Mise en ligne
+
+À chaque PR, GitHub vérifie le contenu, lance les tests et construit le site. À chaque push sur `main`, le jeu est publié sur GitHub Pages : https://menthx.github.io/Gly-quest-story/
+
+À faire une seule fois : dans le repo GitHub, **Settings › Pages › Source : GitHub Actions**.
 
 Le joueur donne d'abord son pseudo sur l'écran titre. La partie est sauvegardée automatiquement dans le navigateur (localStorage) : au rechargement, l'écran titre propose **Reprendre la partie** ou **Nouvelle partie**. Si un dialogue était affiché, il reprend à son début. Le mode debug ne sauvegarde pas, pour ne pas écraser la vraie partie.
 

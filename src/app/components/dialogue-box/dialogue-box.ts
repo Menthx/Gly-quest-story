@@ -1,4 +1,4 @@
-import { Component, computed, inject, output } from '@angular/core';
+import { Component, computed, inject, linkedSignal, output } from '@angular/core';
 import { DialogueChoice } from '../../models/game.models';
 import { DialogueService } from '../../services/dialogue.service';
 import { GameDataService } from '../../services/game-data.service';
@@ -32,6 +32,19 @@ export class DialogueBox {
     if (!id) return null;
     const character = this.data.config()?.characters[id] ?? { name: id };
     return { ...character, name: this.state.format(character.name) };
+  });
+  /**
+   * Image plein écran (`portraitFull`) : une fois que ce personnage a parlé, elle reste affichée
+   * sur les répliques suivantes (joueur, narration) jusqu'à la fermeture du dialogue.
+   */
+  protected readonly fullPortrait = linkedSignal<ReturnType<typeof this.line>, string | null>({
+    source: this.line,
+    computation: (line, previous) => {
+      if (!line) return null;
+      const character = line.character ? this.data.config()?.characters[line.character] : null;
+      if (character?.portraitFull) return character.portrait ?? null;
+      return previous?.value ?? null;
+    },
   });
 
   protected choose(choice: DialogueChoice): void {

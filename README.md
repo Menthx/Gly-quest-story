@@ -75,7 +75,7 @@ Tous les chemins d'images sont relatifs à `public/`. Partout dans les textes, `
 }
 ```
 
-- Un personnage sans `portrait` parle sans image (le joueur, une annonce…). Avec un `portrait`, l'image s'affiche au-dessus de la zone de texte. Avec `"portraitFull": true`, le portrait est une image plein écran (personnage devant un décor, comme `naevys.jpg`) qui couvre la scène pendant qu'il parle.
+- Un personnage sans `portrait` parle sans image (le joueur, une annonce…). Avec un `portrait`, l'image s'affiche au-dessus de la zone de texte. Avec `"portraitFull": true`, le portrait est une image plein écran (personnage devant un décor, comme `naevys.jpg`) qui couvre la scène dès qu'il parle, et reste affichée jusqu'à la fin du dialogue (répliques du joueur comprises).
 - Une quête s'affiche dans le cadre « Quête en cours » tant que sa condition est remplie ; chaque objectif se coche quand son flag `done` est posé.
 - Un objectif peut être un compteur : `{ "text": "Jardin", "count": ["serre-vue", "cours-vu", "pergola-vue"] }` affiche « Jardin : 1/3 » et se coche quand tous les flags sont posés. Un objectif peut aussi porter `if` / `ifNot` pour n'apparaître qu'au bon moment (ex. « Retourne voir Naevys » quand tout est exploré).
 

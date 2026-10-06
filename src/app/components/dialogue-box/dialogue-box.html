@@ -1,12 +1,10 @@
 @if (line()) {
   <div class="overlay" (click)="dialogue.next()">
-    @if (character()?.portrait; as portrait) {
-      <img
-        class="portrait"
-        [class.full]="character()?.portraitFull"
-        [src]="portrait"
-        [alt]="character()?.name"
-      />
+    @if (fullPortrait(); as full) {
+      <img class="portrait full" [src]="full" alt="" />
+    }
+    @if (!character()?.portraitFull && character()?.portrait) {
+      <img class="portrait" [src]="character()?.portrait" [alt]="character()?.name" />
     }
     <div class="box" [class.narrator]="!character()">
       @if (character(); as c) {

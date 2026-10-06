@@ -58,13 +58,15 @@ export class DialogueService {
     this.open(map, trigger.dialogue);
   }
 
-  /** Passe à la réplique suivante, ou ferme s'il n'y en a plus. Ignoré si la réplique propose des choix. */
+  /** Passe à la réplique suivante ; après la dernière, enchaîne sur `next` ou ferme. Ignoré si la réplique propose des choix. */
   next(): void {
     const dialogue = this.dialogue();
     const line = this.currentLine();
     if (!dialogue || line?.choices?.some((c) => this.state.check(c))) return;
     if (this.index() + 1 < dialogue.lines.length) {
       this.index.update((i) => i + 1);
+    } else if (dialogue.next) {
+      this.jumpTo(dialogue.next);
     } else {
       this.close();
     }

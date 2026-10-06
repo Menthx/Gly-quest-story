@@ -14,6 +14,7 @@ const map: GameMap = {
     suite: { setFlags: ['a'], lines: [{ character: 'joueur', text: 'Trois' }] },
     autre: { setFlags: ['b'], lines: [{ text: 'Quatre' }] },
     fin: { lines: [{ text: 'Fin' }] },
+    question: { next: 'intro', lines: [{ text: 'Réponse' }] },
   },
 };
 
@@ -38,6 +39,13 @@ describe('DialogueService', () => {
     expect(service.currentLine()?.text).toBe('Trois');
     service.next();
     expect(service.isOpen()).toBe(false);
+  });
+
+  it('enchaîne sur le dialogue `next` après la dernière réplique', () => {
+    service.open(map, 'question');
+    service.next();
+    expect(service.isOpen()).toBe(true);
+    expect(service.currentLine()?.text).toBe('Un');
   });
 
   it('joue chaque trigger une fois, quand sa condition est remplie', () => {

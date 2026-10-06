@@ -1,13 +1,29 @@
-@if (quests().length) {
-  <aside class="panel" aria-label="Quête en cours">
-    <div class="heading">Quête en cours</div>
-    @for (quest of quests(); track quest.id) {
+<div class="quests">
+  @for (quest of quests(); track quest.id) {
+    <aside
+      class="panel"
+      aria-label="Quête en cours"
+      (animate.enter)="enter($event, quest.id)"
+      (animate.leave)="leave($event)"
+    >
+      <div class="heading">Quête en cours</div>
       <div class="title">{{ quest.title }}</div>
       <ul>
-        @for (o of quest.objectives; track $index) {
-          <li [class.done]="o.done">{{ o.text }}</li>
+        @for (o of quest.objectives; track o.index) {
+          <li
+            [class.done]="o.done"
+            [class.striking]="o.striking"
+            (animationend)="struck(quest.id, o.index)"
+          >
+            <span class="text"
+              >{{ o.text }}
+              @if (o.striking) {
+                <span class="star" aria-hidden="true">★</span>
+              }
+            </span>
+          </li>
         }
       </ul>
-    }
-  </aside>
-}
+    </aside>
+  }
+</div>

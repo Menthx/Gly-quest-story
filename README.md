@@ -129,7 +129,7 @@ Tous les chemins d'images sont relatifs à `public/`. Partout dans les textes, `
 - **Formes** : `rect` (x, y, largeur, hauteur) ou `polygon` (`"points": [[x, y], ...]`) pour épouser un objet. La forme s'illumine au survol.
 - **Actions** : `dialogue` ouvre un dialogue de la map, `goto` change de map. `arrow` affiche une flèche dans la zone, `button` un bouton toujours visible (ex. `"button": "Porte"`).
 - **`setFlags` sur la map** : flags posés dès qu'on y arrive (ex. `"setFlags": ["serre-vue"]` pour compter un lieu visité).
-- **Dialogues** : une suite de répliques ; `character` absent = narration. Une réplique peut proposer des `choices` (boutons) qui enchaînent sur un autre dialogue (`next`), changent de map (`goto`), posent des flags (`setFlags`) ou ferment le dialogue.
+- **Dialogues** : une suite de répliques ; `character` absent = narration. Une réplique peut proposer des `choices` (boutons) qui enchaînent sur un autre dialogue (`next`), changent de map (`goto`), posent des flags (`setFlags`) ou ferment le dialogue. Un dialogue peut aussi avoir son propre `next` : à la fin de sa dernière réplique, il enchaîne sur ce dialogue au lieu de se fermer (ex. revenir à la question de départ pour choisir une autre option).
 
 ### Flags, conditions et triggers
 

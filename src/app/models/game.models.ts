@@ -150,6 +150,8 @@ export interface Region extends Condition {
 
 export interface Dialogue {
   lines: DialogueLine[];
+  /** Id du dialogue enchaîné après la dernière réplique (même map). Absent = ferme le dialogue. */
+  next?: string;
   /** Flags posés quand ce dialogue s'ouvre (servent aux conditions, quêtes et triggers). */
   setFlags?: string[];
 }

@@ -316,6 +316,10 @@
             "type": "string"
           },
           "description": "Flags posés à l'ouverture du dialogue."
+        },
+        "next": {
+          "type": "string",
+          "description": "Id du dialogue enchaîné après la dernière réplique (même map). Absent = ferme le dialogue."
         }
       }
     }

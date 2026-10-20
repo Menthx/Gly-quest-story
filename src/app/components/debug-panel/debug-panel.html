@@ -1,38 +1,198 @@
-<aside class="panel">
+<aside class="panel" [class.collapsed]="collapsed()">
   <header>
-    <strong>Mode debug</strong> · map <code>{{ mapId() }}</code>
+    <span
+      ><strong>Mode debug</strong> · map <code>{{ mapId() }}</code></span
+    >
+    <button
+      type="button"
+      class="small"
+      [attr.aria-expanded]="!collapsed()"
+      (click)="collapsed.set(!collapsed())"
+    >
+      {{ collapsed() ? 'Déplier' : 'Replier' }}
+    </button>
   </header>
 
-  <p class="cursor">
-    Curseur :
-    @if (cursor(); as c) {
-      <code>x {{ c.x }} % · y {{ c.y }} %</code>
-    } @else {
-      <span class="muted">hors de l'image</span>
-    }
-  </p>
-
-  <div class="modes" role="radiogroup" aria-label="Forme à dessiner">
-    <button type="button" [class.active]="mode() === 'rect'" (click)="modeChange.emit('rect')">Rectangle</button>
-    <button type="button" [class.active]="mode() === 'polygon'" (click)="modeChange.emit('polygon')">Polygone</button>
-  </div>
-  <p class="help">
-    @if (mode() === 'rect') {
-      Clique-glisse sur l'image pour tracer un rectangle.
-    } @else {
-      Clique sur l'image pour ajouter chaque sommet du polygone.
-    }
-  </p>
-
-  @if (snippet(); as json) {
-    <pre>{{ json }}</pre>
-    <div class="actions">
-      <button type="button" (click)="copy()">{{ copied() ? 'Copié !' : 'Copier le JSON' }}</button>
-      <button type="button" (click)="clear.emit()">Effacer</button>
+  @if (!collapsed()) {
+    <div class="tabs" role="tablist" aria-label="Outils de debug">
+      <button
+        type="button"
+        role="tab"
+        [class.active]="debug.tab() === 'partie'"
+        [attr.aria-selected]="debug.tab() === 'partie'"
+        (click)="debug.tab.set('partie')"
+      >
+        Partie
+      </button>
+      <button
+        type="button"
+        role="tab"
+        [class.active]="debug.tab() === 'zones'"
+        [attr.aria-selected]="debug.tab() === 'zones'"
+        (click)="debug.tab.set('zones')"
+      >
+        Zones
+      </button>
     </div>
-  }
 
-  <p class="muted">
-    Bleu = dialogue, jaune = sortie vers une autre map. <kbd>D</kbd> pour quitter, <kbd>Échap</kbd> pour effacer.
-  </p>
+    @if (debug.tab() === 'partie') {
+      <p class="help">
+        Le jeu reste jouable. Les zones masquées par leur condition sont en pointillés.
+      </p>
+
+      <section>
+        <label class="row">
+          <span>Aller à</span>
+          <select [value]="mapId()" (change)="goto.emit($any($event.target).value)">
+            @for (m of config()?.maps ?? []; track m.id) {
+              <option [value]="m.id">{{ m.name }} ({{ m.id }})</option>
+            }
+          </select>
+        </label>
+        <p>
+          Dialogue ouvert :
+          @if (dialogue.openId(); as d) {
+            <code>{{ d }}</code>
+          } @else {
+            <span class="muted">aucun</span>
+          }
+        </p>
+      </section>
+
+      <details open>
+        <summary>Flags ({{ state.flags().size }} posés)</summary>
+        <div class="row">
+          <input
+            type="text"
+            placeholder="Filtrer ou ajouter un flag"
+            aria-label="Filtrer ou ajouter un flag"
+            [value]="flagFilter()"
+            (input)="flagFilter.set($any($event.target).value)"
+            (keydown.enter)="addFlag()"
+          />
+          <button type="button" class="small" (click)="clearFlags()">Tout retirer</button>
+        </div>
+        <ul class="flags">
+          @for (f of flags(); track f.id) {
+            <li>
+              <label [class.on]="f.on">
+                <input type="checkbox" [checked]="f.on" (change)="state.toggleFlag(f.id)" />
+                <code>{{ f.id }}</code>
+                @if (!f.known) {
+                  <span class="muted" title="Ce flag n'apparaît nulle part dans le contenu"
+                    >(inconnu)</span
+                  >
+                }
+              </label>
+            </li>
+          } @empty {
+            <li class="muted">Aucun flag. <kbd>Entrée</kbd> pour poser « {{ flagFilter() }} ».</li>
+          }
+        </ul>
+      </details>
+
+      @if (dialogueIds().length) {
+        <details>
+          <summary>Dialogues de la map ({{ dialogueIds().length }})</summary>
+          <ul class="list">
+            @for (id of dialogueIds(); track id) {
+              <li>
+                <button type="button" class="link" (click)="openDialogue(id)">
+                  ▶ <code>{{ id }}</code>
+                </button>
+              </li>
+            }
+          </ul>
+        </details>
+      }
+
+      @if (triggers().length) {
+        <details open>
+          <summary>Triggers de la map</summary>
+          <ul class="list">
+            @for (t of triggers(); track t.key) {
+              <li>
+                <code>{{ t.dialogue }}</code>
+                @if (t.played) {
+                  <span class="tag done">joué</span>
+                  <button type="button" class="small" (click)="replayTrigger(t.key)">
+                    Rejouer
+                  </button>
+                } @else if (t.blocked) {
+                  <span class="tag">en attente</span>
+                  <span class="why">{{ t.blocked }}</span>
+                } @else {
+                  <span class="tag ready">prêt</span>
+                }
+              </li>
+            }
+          </ul>
+        </details>
+      }
+
+      <details open>
+        <summary>Quêtes</summary>
+        <ul class="list">
+          @for (q of quests(); track q.id) {
+            <li [class.muted]="!q.active">
+              {{ q.title }}
+              @if (q.active) {
+                <span class="tag ready">en cours · {{ q.progress }}</span>
+              } @else {
+                <span class="why">{{ q.blocked }}</span>
+              }
+            </li>
+          }
+        </ul>
+      </details>
+
+      <div class="actions">
+        <button type="button" (click)="restart()">Recommencer la partie</button>
+      </div>
+    } @else {
+      <p class="cursor">
+        Curseur :
+        @if (cursor(); as c) {
+          <code>x {{ c.x }} % · y {{ c.y }} %</code>
+        } @else {
+          <span class="muted">hors de l'image</span>
+        }
+      </p>
+
+      <div class="modes" role="radiogroup" aria-label="Forme à dessiner">
+        <button type="button" [class.active]="mode() === 'rect'" (click)="modeChange.emit('rect')">
+          Rectangle
+        </button>
+        <button
+          type="button"
+          [class.active]="mode() === 'polygon'"
+          (click)="modeChange.emit('polygon')"
+        >
+          Polygone
+        </button>
+      </div>
+      <p class="help">
+        @if (mode() === 'rect') {
+          Clique-glisse sur l'image pour tracer un rectangle.
+        } @else {
+          Clique sur l'image pour ajouter chaque sommet du polygone.
+        }
+      </p>
+
+      @if (snippet(); as json) {
+        <pre>{{ json }}</pre>
+        <div class="actions">
+          <button type="button" (click)="copy()">
+            {{ copied() ? 'Copié !' : 'Copier le JSON' }}
+          </button>
+          <button type="button" (click)="clear.emit()">Effacer</button>
+        </div>
+      }
+    }
+
+    <p class="muted">
+      Bleu = dialogue, jaune = sortie, pointillés = condition non remplie. <kbd>D</kbd> pour
+      quitter, <kbd>Échap</kbd> pour effacer le tracé.
+    </p>
+  }
 </aside>

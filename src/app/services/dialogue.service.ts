@@ -84,6 +84,11 @@ export class DialogueService {
     this.index.set(0);
   }
 
+  /** Mode debug : le trigger pourra se rejouer (clé `map/dialogue`). */
+  forgetTrigger(key: string): void {
+    this.triggersPlayed.update((played) => new Set([...played].filter((k) => k !== key)));
+  }
+
   /** Nouvelle partie (sans argument) ou reprise d'une sauvegarde. */
   reset(
     triggersPlayed: string[] = [],

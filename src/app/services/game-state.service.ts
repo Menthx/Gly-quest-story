@@ -24,6 +24,16 @@ export class GameStateService {
     this.flags.update((current) => new Set([...current, ...flags]));
   }
 
+  /** Pose ou retire un flag (mode debug). */
+  toggleFlag(flag: string, on = !this.has(flag)): void {
+    this.flags.update((current) => {
+      const next = new Set(current);
+      if (on) next.add(flag);
+      else next.delete(flag);
+      return next;
+    });
+  }
+
   has(flag: string): boolean {
     return this.flags().has(flag);
   }

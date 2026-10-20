@@ -60,6 +60,8 @@ export class DialogueBox {
   protected onKeydown(event: KeyboardEvent): void {
     // Ignoré si une zone vient d'ouvrir le dialogue avec Entrée, ou si des choix sont affichés (boutons).
     if (!this.dialogue.isOpen() || event.defaultPrevented || this.choices().length) return;
+    // Saisie dans le panneau de debug : ce n'est pas pour le dialogue.
+    if (event.target instanceof Element && event.target.closest('app-debug-panel')) return;
     if (event.key === 'Enter' || event.key === ' ') {
       event.preventDefault();
       this.dialogue.next();

@@ -152,16 +152,26 @@ C'est ce qui rend l'histoire conditionnelle :
 
 `next` affiche un bouton « Suite » vers la map indiquée.
 
-## Définir les zones cliquables : le mode debug
+## Le mode debug
 
-Appuie sur **D** (ou ajoute `?debug` à l'URL, ex. `http://localhost:4200/?debug#/map/train-exterieur`, qui saute aussi l'écran titre) :
+Appuie sur **D** (ou ajoute `?debug` à l'URL, ex. `http://localhost:4200/?debug#/map/train-exterieur`, qui saute aussi l'écran titre ; `?debug=zones` ouvre directement l'onglet Zones). Toutes les zones s'affichent avec leur id, même celles masquées par une condition (bleu = dialogue, jaune = sortie, pointillés = condition non remplie). Le panneau en haut à gauche a deux onglets et peut être replié.
 
-- toutes les zones s'affichent avec leur id, même celles masquées par une condition (bleu = dialogue, jaune = sortie) ;
+**Partie** : pour tester l'histoire sans la rejouer depuis le début. Le jeu reste jouable.
+
+- **Aller à** : saute sur n'importe quelle map ;
+- **Flags** : coche ou décoche n'importe quel flag du jeu ; le champ filtre la liste, **Entrée** pose un flag qui n'existe pas encore ;
+- **Dialogues de la map** : ouvre directement n'importe quel dialogue ;
+- **Triggers** : joué, prêt ou en attente (avec les flags qui manquent ou qui bloquent), et **Rejouer** pour relancer un trigger déjà vu ;
+- **Quêtes** : en cours (avec la progression) ou pourquoi elles ne s'affichent pas ;
+- **Recommencer la partie** : efface flags et triggers et revient à la map de départ.
+
+**Zones** : pour définir les zones cliquables.
+
 - la position du curseur s'affiche en % ;
 - **Rectangle** : clique-glisse sur l'image ; **Polygone** : clique chaque sommet ;
 - le JSON de la zone s'affiche, **Copier le JSON** puis colle-le dans `regions` et ajuste `id`, `label` et `action`.
 
-**D** à nouveau pour revenir au jeu, **Échap** pour effacer le tracé.
+**D** à nouveau pour revenir au jeu, **Échap** pour effacer le tracé. Le mode debug ne sauvegarde pas : la vraie partie reste intacte.
 
 ## Navigation entre les maps
 
@@ -170,4 +180,4 @@ Appuie sur **D** (ou ajoute `?debug` à l'URL, ex. `http://localhost:4200/?debug
 
 ## Ajouter un background
 
-Dépose l'image dans `public/assets/backgrounds/` (JPG, PNG, WebP…) et mets son chemin dans `background`. Le ratio de l'écran s'adapte à celui de l'image (les deux images du train sont en 1920×1080). Trace ensuite les zones avec le mode debug.
+Dépose l'image dans `public/assets/backgrounds/` (JPG, PNG, WebP…) et mets son chemin dans `background`. Le ratio de l'écran s'adapte à celui de l'image (les deux images du train sont en 1920×1080). Trace ensuite les zones avec le mode debug (onglet Zones).

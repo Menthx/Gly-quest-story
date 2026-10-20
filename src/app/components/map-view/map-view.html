@@ -18,6 +18,7 @@
       #stage
       class="stage"
       [class.debug]="debug.enabled()"
+      [class.drawing]="debug.drawing()"
       [style.--ar]="aspectRatio()"
       [style.background]="m.backgroundColor"
       (pointermove)="onPointerMove($event, stage)"
@@ -42,6 +43,7 @@
             <rect
               class="region"
               [class.exit]="r.region.action.type === 'goto'"
+              [class.inactive]="!r.active"
               [attr.x]="r.region.shape.x"
               [attr.y]="r.region.shape.y"
               [attr.width]="r.region.shape.width"
@@ -59,6 +61,7 @@
             <polygon
               class="region"
               [class.exit]="r.region.action.type === 'goto'"
+              [class.inactive]="!r.active"
               [attr.points]="r.points"
               vector-effect="non-scaling-stroke"
               role="button"
@@ -113,9 +116,13 @@
           >
         }
         @if (debug.enabled()) {
-          <span class="debug-label" [style.left.%]="r.centerX" [style.top.%]="r.centerY">{{
-            r.region.id
-          }}</span>
+          <span
+            class="debug-label"
+            [class.inactive]="!r.active"
+            [style.left.%]="r.centerX"
+            [style.top.%]="r.centerY"
+            >{{ r.region.id }}</span
+          >
         }
       }
 
@@ -137,11 +144,13 @@
   @if (debug.enabled()) {
     <app-debug-panel
       [mapId]="id()"
+      [map]="map.value()"
       [cursor]="cursor()"
       [draft]="draft()"
       [mode]="drawMode()"
       (modeChange)="setDrawMode($event)"
       (clear)="draft.set(null)"
+      (goto)="goTo($event)"
     />
   }
 </div>

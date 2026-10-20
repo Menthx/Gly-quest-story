@@ -75,10 +75,7 @@ app-debug-panel {
 }
 
 .stage.debug {
-  cursor: crosshair;
-
   .region {
-    cursor: crosshair;
     filter: none;
     fill: rgba(0, 200, 255, 0.18);
     stroke: #00c8ff;
@@ -87,7 +84,25 @@ app-debug-panel {
       fill: rgba(255, 200, 0, 0.18);
       stroke: #ffc800;
     }
+
+    &:hover,
+    &:focus-visible {
+      fill: rgba(255, 255, 255, 0.3);
+    }
+
+    /* Condition non remplie : affichée, mais pas cliquable. */
+    &.inactive {
+      fill: transparent;
+      stroke-dasharray: 6 4;
+      cursor: not-allowed;
+    }
   }
+}
+
+/* Onglet « Zones » : les clics tracent une zone. */
+.stage.drawing,
+.stage.drawing .region {
+  cursor: crosshair;
 }
 
 .arrow,
@@ -136,6 +151,11 @@ app-debug-panel {
   color: #fff;
   background: rgba(0, 0, 0, 0.7);
   white-space: nowrap;
+
+  &.inactive {
+    opacity: 0.6;
+    text-decoration: line-through;
+  }
 }
 
 .hover-label {

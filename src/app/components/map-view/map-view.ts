@@ -56,14 +56,19 @@ export class MapView {
     return interlude ? this.state.format(interlude.text) : '';
   });
 
-  /** Zones visibles : en jeu, seulement celles dont la condition est remplie ; en debug, toutes. */
+  /**
+   * Zones visibles : en jeu, seulement celles dont la condition est remplie ; en debug, toutes
+   * (`active` : la condition est remplie, la zone est cliquable).
+   */
   protected readonly regions = computed(() =>
     (this.map.value()?.regions ?? [])
-      .filter((region) => this.debug.enabled() || this.state.check(region))
-      .map((region) => {
+      .map((region) => ({ region, active: this.state.check(region) }))
+      .filter(({ active }) => active || this.debug.enabled())
+      .map(({ region, active }) => {
         const box = boundingBox(region.shape);
         return {
           region,
+          active,
           points: region.shape.type === 'polygon' ? polygonPoints(region.shape.points) : '',
           centerX: box.x + box.width / 2,
           centerY: box.y + box.height / 2,
@@ -117,7 +122,7 @@ export class MapView {
   }
 
   protected activate(region: Region): void {
-    if (this.debug.enabled() || this.dialogue.isOpen()) return;
+    if (this.debug.drawing() || this.dialogue.isOpen() || !this.state.check(region)) return;
     const map = this.map.value();
     if (!map) return;
     switch (region.action.type) {
@@ -132,7 +137,7 @@ export class MapView {
 
   /** Entrée sur une zone ayant le focus. Si elle ouvre un dialogue, cette touche ne doit pas aussi le faire avancer. */
   protected onRegionEnter(event: Event, region: Region): void {
-    if (this.debug.enabled() || this.dialogue.isOpen()) return;
+    if (this.debug.drawing() || this.dialogue.isOpen()) return;
     event.preventDefault();
     this.activate(region);
   }
@@ -147,7 +152,11 @@ export class MapView {
   }
 
   protected onKeydown(event: KeyboardEvent): void {
-    if (event.target instanceof HTMLInputElement || event.target instanceof HTMLTextAreaElement)
+    if (
+      event.target instanceof HTMLInputElement ||
+      event.target instanceof HTMLTextAreaElement ||
+      event.target instanceof HTMLSelectElement
+    )
       return;
     if (event.key === 'd' || event.key === 'D') {
       this.debug.toggle();
@@ -171,7 +180,7 @@ export class MapView {
     if (!this.debug.enabled()) return;
     const p = this.toPercent(event, stage);
     this.cursor.set(p);
-    if (this.dragStart) {
+    if (this.dragStart && this.debug.drawing()) {
       const s = this.dragStart;
       this.draft.set({
         type: 'rect',
@@ -184,7 +193,7 @@ export class MapView {
   }
 
   protected onPointerDown(event: PointerEvent, stage: HTMLElement): void {
-    if (!this.debug.enabled() || event.button !== 0) return;
+    if (!this.debug.drawing() || event.button !== 0) return;
     event.preventDefault();
     const p = this.toPercent(event, stage);
     if (this.drawMode() === 'rect') {

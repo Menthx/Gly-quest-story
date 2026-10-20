@@ -7,20 +7,13 @@
   "regions": [
     {
       "id": "pergola",
-      "label": "La pergola",
+      "label": "La table de la pergola",
       "shape": {
-        "type": "polygon",
-        "points": [
-          [38, 22],
-          [50, 7],
-          [70, 4],
-          [84, 18],
-          [76, 22],
-          [76, 68],
-          [60, 70],
-          [45, 68],
-          [43, 24]
-        ]
+        "type": "rect",
+        "x": 56,
+        "y": 50,
+        "width": 10,
+        "height": 14.5
       },
       "action": {
         "type": "dialogue",

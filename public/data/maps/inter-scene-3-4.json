@@ -1,0 +1,11 @@
+{
+  "$schema": "../../../schemas/map.schema.json",
+  "id": "inter-scene-3-4",
+  "name": "Retour à la bibliothèque",
+  "backgroundColor": "#1c1730",
+  "setFlags": ["nouvelle-journee"],
+  "interlude": {
+    "text": "Je me rends donc à la bibliothèque pour une nouvelle journée.",
+    "next": "bibliotheque"
+  }
+}

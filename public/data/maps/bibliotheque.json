@@ -6,6 +6,10 @@
   "triggers": [
     {
       "dialogue": "accueil"
+    },
+    {
+      "dialogue": "retour",
+      "if": ["nouvelle-journee"]
     }
   ],
   "regions": [
@@ -178,6 +182,41 @@
         {
           "character": "naevys",
           "text": "« N'hésite pas si tu as des questions. Reviens me voir quand tu auras fait ton tour du propriétaire ! »"
+        }
+      ]
+    },
+    "retour": {
+      "lines": [
+        {
+          "character": "joueur",
+          "text": "« J'aperçois Naevys à son bureau, comme à son habitude. »"
+        },
+        {
+          "character": "joueur",
+          "text": "« Bonjour Dame Naevys ! »"
+        },
+        {
+          "character": "naevys",
+          "text": "« Oh, bonjour {pseudo} ! Prêt·e à attaquer cette journée ? »",
+          "choices": [
+            {
+              "text": "« Et comment ! »",
+              "next": "retour-plan"
+            },
+            {
+              "text": "« J'espère que ça va bien se passer… »",
+              "next": "retour-plan"
+            }
+          ]
+        }
+      ]
+    },
+    "retour-plan": {
+      "setFlags": ["rdv-foyer"],
+      "lines": [
+        {
+          "character": "naevys",
+          "text": "« Il est enfin temps que je t'explique le plan que j'ai imaginé. Installons-nous près du foyer. »"
         }
       ]
     }

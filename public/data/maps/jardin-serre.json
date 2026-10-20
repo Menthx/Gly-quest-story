@@ -25,6 +25,44 @@
       }
     },
     {
+      "id": "lavande",
+      "label": "Lavande somnolente",
+      "if": ["mission-ingredients"],
+      "ifNot": ["lavande-prise"],
+      "shape": {
+        "type": "polygon",
+        "points": [
+          [66.5, 58],
+          [91.5, 58],
+          [91, 72],
+          [88, 86],
+          [70, 86],
+          [67, 70]
+        ]
+      },
+      "action": {
+        "type": "dialogue",
+        "dialogue": "lavande"
+      }
+    },
+    {
+      "id": "glycine",
+      "label": "Essence de glycine concentrée",
+      "if": ["mission-ingredients"],
+      "ifNot": ["glycine-prise"],
+      "shape": {
+        "type": "rect",
+        "x": 18.5,
+        "y": 44.5,
+        "width": 11.5,
+        "height": 9
+      },
+      "action": {
+        "type": "dialogue",
+        "dialogue": "glycine"
+      }
+    },
+    {
       "id": "vers-cours",
       "label": "Aller dans la cour du jardin",
       "shape": {
@@ -62,6 +100,22 @@
       "lines": [
         {
           "text": "« L'endroit parfait pour faire pousser des herbes magiques. »"
+        }
+      ]
+    },
+    "lavande": {
+      "setFlags": ["lavande-prise"],
+      "lines": [
+        {
+          "text": "Je cueille quelques brins de lavande somnolente."
+        }
+      ]
+    },
+    "glycine": {
+      "setFlags": ["glycine-prise"],
+      "lines": [
+        {
+          "text": "Je prends une fiole d'essence de glycine concentrée."
         }
       ]
     }

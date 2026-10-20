@@ -28,6 +28,23 @@
       }
     },
     {
+      "id": "acces-bosquet",
+      "label": "Accès au bosquet",
+      "if": ["mission-ingredients"],
+      "ifNot": ["plume-prise"],
+      "shape": {
+        "type": "rect",
+        "x": 22,
+        "y": 46,
+        "width": 16,
+        "height": 22
+      },
+      "action": {
+        "type": "dialogue",
+        "dialogue": "bosquet"
+      }
+    },
+    {
       "id": "vers-cours",
       "label": "Redescendre dans la cour",
       "shape": {
@@ -49,6 +66,23 @@
       "lines": [
         {
           "text": "« Pour prendre une pause en plein air. »"
+        }
+      ]
+    },
+    "bosquet": {
+      "setFlags": ["plume-prise"],
+      "lines": [
+        {
+          "text": "Je me glisse dans le passage pour accéder au bosquet."
+        },
+        {
+          "text": "« Il doit bien y avoir une plume de paon s'il y a un paon dans le coin… »"
+        },
+        {
+          "text": "Je fouille quelques minutes et finis rapidement par tomber sur une plume de paon."
+        },
+        {
+          "text": "Je sors du bosquet pour revenir dans le jardin."
         }
       ]
     }

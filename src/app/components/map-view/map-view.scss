@@ -181,6 +181,8 @@ app-debug-panel {
     line-height: 1.6;
     text-align: center;
     font-style: italic;
+    // Une ligne vide dans le texte de l'interlude sépare deux paragraphes.
+    white-space: pre-line;
   }
 
   button {

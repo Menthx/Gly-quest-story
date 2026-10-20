@@ -11,6 +11,40 @@
   ],
   "regions": [
     {
+      "id": "bocal",
+      "label": "Un bocal vide",
+      "if": ["mission-ingredients"],
+      "ifNot": ["bocal-pris"],
+      "shape": {
+        "type": "rect",
+        "x": 84,
+        "y": 68,
+        "width": 5,
+        "height": 9
+      },
+      "action": {
+        "type": "dialogue",
+        "dialogue": "bocal"
+      }
+    },
+    {
+      "id": "amethyste",
+      "label": "Cristaux d'améthyste",
+      "if": ["mission-ingredients"],
+      "ifNot": ["amethyste-prise"],
+      "shape": {
+        "type": "rect",
+        "x": 89.5,
+        "y": 60,
+        "width": 7,
+        "height": 10
+      },
+      "action": {
+        "type": "dialogue",
+        "dialogue": "amethyste"
+      }
+    },
+    {
       "id": "retour",
       "label": "Retour dans la bibliothèque",
       "shape": {
@@ -32,6 +66,26 @@
       "lines": [
         {
           "text": "« Les étagères sont remplies de livres de recettes et d'ingrédients divers pour la préparation de potions. »"
+        }
+      ]
+    },
+    "bocal": {
+      "setFlags": ["bocal-pris"],
+      "lines": [
+        {
+          "text": "Un bocal vide."
+        },
+        {
+          "character": "joueur",
+          "text": "« Ça me sera utile pour transporter la terre. »"
+        }
+      ]
+    },
+    "amethyste": {
+      "setFlags": ["amethyste-prise"],
+      "lines": [
+        {
+          "text": "Je prends quelques cristaux d'améthyste."
         }
       ]
     }

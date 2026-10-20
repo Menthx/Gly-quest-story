@@ -7,6 +7,10 @@
   "triggers": [
     {
       "dialogue": "arrivee"
+    },
+    {
+      "dialogue": "plan",
+      "if": ["rdv-foyer"]
     }
   ],
   "regions": [
@@ -46,14 +50,94 @@
     "arrivee": {
       "lines": [
         {
-          "text": "« Étagères pleines à craquer de livres de tous genres. »"
+          "text": "« Étagères pleines à craquer de livres et archives en tous genres. »"
         }
       ]
     },
     "livre-histoire": {
       "lines": [
         {
-          "text": "Un livre : « L'histoire de Glyglyland ». (contenu à venir)"
+          "text": "Un livre : « L'histoire de Glyglyland ». Il raconte la fondation de Glyglyland par la Grande Glyctatrice."
+        },
+        {
+          "text": "« Après avoir fui la “Nuit de la cendre”, qui a ravagé bien des contrées dans notre monde, Elyndra, Dame Phyla Miila, erra pendant quelques années jusqu'à trouver un lieu paisible et libre de toute civilisation. Son nouveau foyer, et celui de centaines de personnes aujourd'hui, venait d'être trouvé. »"
+        }
+      ]
+    },
+    "plan": {
+      "lines": [
+        {
+          "character": "naevys",
+          "text": "« Bien, comme tu le sais, Glyglyland doit faire face à la surgescence de l'Énergie tous les ans. »"
+        },
+        {
+          "character": "naevys",
+          "text": "« Après plusieurs années au service de la Grande Glyctatrice, nous avons pu tirer quelques hypothèses au sujet de cette mystérieuse énergie. »"
+        },
+        {
+          "character": "naevys",
+          "text": "« Pour commencer, cette énergie se trouve uniquement au cœur de Glyglyland : il n'y a donc pas de danger en dehors de nos frontières, ni de trace de cette énergie. »"
+        },
+        {
+          "character": "naevys",
+          "text": "« Lors du dernier débordement d'énergie, nous avons fait une découverte très intéressante. Lorsque Saku a été purifié de la corruption, nous avons remarqué que les matériaux locaux étaient particulièrement efficaces. »"
+        },
+        {
+          "character": "naevys",
+          "text": "« On pense donc que pour contrer l'Énergie, nous devons utiliser des ressources locales. »"
+        },
+        {
+          "character": "naevys",
+          "text": "« Voilà donc ce que nous avons prévu avec la Grande Glyctatrice : cette nuit, nous effectuerons un rituel pour capturer une partie de l'Énergie. »"
+        },
+        {
+          "character": "naevys",
+          "text": "« C'est là que tu as ton rôle à jouer ! Ta première mission en tant qu'assistant·e de Naevys, protectrice de Glyglyland, sera de préparer les éléments nécessaires au rituel. »",
+          "choices": [
+            {
+              "text": "« Je serai honoré·e d'apporter mon aide ! »",
+              "next": "plan-liste"
+            },
+            {
+              "text": "« Vous confiez une aussi lourde responsabilité à un·e assistant·e ?? »",
+              "next": "plan-liste"
+            }
+          ]
+        }
+      ]
+    },
+    "plan-liste": {
+      "lines": [
+        {
+          "character": "naevys",
+          "text": "« Ne t'en fais pas, en réalité tout est déjà prêt, mais j'ai beaucoup de choses à faire avant le rituel de ce soir. »"
+        },
+        {
+          "character": "naevys",
+          "text": "« C'est bien pour ça que j'ai besoin d'un·e assistant·e pour m'aider dans mes tâches, haha ! »"
+        },
+        {
+          "character": "naevys",
+          "text": "« Tiens, prends cette liste. Trouve les ingrédients dans la bibliothèque et reviens me voir quand tu auras tout. »",
+          "choices": [
+            {
+              "text": "« OK, c'est parti ! »",
+              "next": "plan-fin"
+            },
+            {
+              "text": "« Je m'en occupe. »",
+              "next": "plan-fin"
+            }
+          ]
+        }
+      ]
+    },
+    "plan-fin": {
+      "setFlags": ["mission-ingredients"],
+      "lines": [
+        {
+          "character": "naevys",
+          "text": "« Merci pour ton aide ! »"
         }
       ]
     }

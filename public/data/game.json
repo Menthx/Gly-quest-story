@@ -63,6 +63,74 @@
           ]
         }
       ]
+    },
+    {
+      "id": "rejoindre-foyer",
+      "title": "Le plan de Naevys",
+      "if": ["rdv-foyer"],
+      "ifNot": ["mission-ingredients"],
+      "objectives": [
+        {
+          "text": "Rejoins Naevys près du foyer",
+          "done": "mission-ingredients"
+        }
+      ]
+    },
+    {
+      "id": "elements-rituel",
+      "title": "Récupère les éléments de la liste",
+      "if": ["mission-ingredients"],
+      "ifNot": ["ingredients-apportes"],
+      "objectives": [
+        {
+          "text": "Essence de glycine concentrée",
+          "done": "glycine-prise"
+        },
+        {
+          "text": "Terre de Glyglyland",
+          "done": "terre-prise"
+        },
+        {
+          "text": "Cristaux d'améthyste",
+          "done": "amethyste-prise"
+        },
+        {
+          "text": "Plume de paon",
+          "done": "plume-prise"
+        },
+        {
+          "text": "Rose",
+          "done": "rose-prise"
+        },
+        {
+          "text": "Lavande somnolente",
+          "done": "lavande-prise"
+        },
+        {
+          "text": "Retourne voir Naevys",
+          "done": "ingredients-apportes",
+          "if": [
+            "glycine-prise",
+            "terre-prise",
+            "amethyste-prise",
+            "plume-prise",
+            "rose-prise",
+            "lavande-prise"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "mise-en-place-rituel",
+      "title": "Mise en place du rituel",
+      "if": ["ingredients-apportes"],
+      "ifNot": ["ingredients-deposes"],
+      "objectives": [
+        {
+          "text": "Dépose les ingrédients sur le sol arcanique",
+          "done": "ingredients-deposes"
+        }
+      ]
     }
   ],
   "maps": [
@@ -124,6 +192,24 @@
       "id": "jardin-pergola",
       "name": "Jardin : la pergola",
       "file": "data/maps/jardin-pergola.json",
+      "inMenu": false
+    },
+    {
+      "id": "inter-scene-2-3",
+      "name": "Vers mon logement",
+      "file": "data/maps/inter-scene-2-3.json",
+      "inMenu": false
+    },
+    {
+      "id": "logement",
+      "name": "Mon logement",
+      "file": "data/maps/logement.json",
+      "inMenu": false
+    },
+    {
+      "id": "inter-scene-3-4",
+      "name": "Retour à la bibliothèque",
+      "file": "data/maps/inter-scene-3-4.json",
       "inMenu": false
     }
   ]

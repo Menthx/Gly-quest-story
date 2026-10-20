@@ -36,7 +36,10 @@ public/
 │       ├── inter-scene-1-2.json  ← texte de transition vers la scène 2
 │       ├── bibliotheque.json     ← scène 2 : vue d'ensemble (accueil de Naevys, accès aux lieux)
 │       ├── biblio-*.json         ← scène 2 : foyer, bureau, coin douillet
-│       └── jardin-*.json         ← scène 2 : serre, cour, pergola
+│       ├── jardin-*.json         ← scène 2 : serre, cour, pergola (scène 5 : ingrédients du rituel)
+│       ├── inter-scene-2-3.json  ← texte de transition vers le logement
+│       ├── logement.json         ← scène 3 : mon logement (fond uni en attendant le visuel)
+│       └── inter-scene-3-4.json  ← texte de transition vers la bibliothèque (scène 4 au foyer, scènes 5-6 au bureau)
 └── assets/
     ├── backgrounds/              ← images de fond
     └── characters/               ← portraits des personnages
@@ -150,7 +153,7 @@ C'est ce qui rend l'histoire conditionnelle :
 }
 ```
 
-`next` affiche un bouton « Suite » vers la map indiquée.
+`next` affiche un bouton « Suite » vers la map indiquée. Une ligne vide dans `text` (`\n\n`) sépare deux paragraphes. Comme toute map, un interlude peut poser des flags avec `setFlags` (ex. `nouvelle-journee` pour lancer la scène 4).
 
 ## Définir les zones cliquables : le mode debug
 

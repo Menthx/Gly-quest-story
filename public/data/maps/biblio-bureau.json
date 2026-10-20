@@ -27,6 +27,61 @@
       }
     },
     {
+      "id": "naevys-ingredients",
+      "label": "Naevys",
+      "if": ["mission-ingredients"],
+      "ifNot": ["ingredients-apportes"],
+      "shape": {
+        "type": "rect",
+        "x": 54,
+        "y": 47,
+        "width": 9.5,
+        "height": 14
+      },
+      "action": {
+        "type": "dialogue",
+        "dialogue": "naevys-ingredients"
+      }
+    },
+    {
+      "id": "sol-arcanique",
+      "label": "Le sol arcanique",
+      "if": ["ingredients-apportes"],
+      "ifNot": ["ingredients-deposes"],
+      "shape": {
+        "type": "polygon",
+        "points": [
+          [48, 52.5],
+          [56, 51],
+          [68, 51.5],
+          [74, 53.5],
+          [72, 56],
+          [50, 56]
+        ]
+      },
+      "action": {
+        "type": "dialogue",
+        "dialogue": "sol-arcanique"
+      }
+    },
+    {
+      "id": "amethyste",
+      "label": "Cristaux d'améthyste",
+      "if": ["mission-ingredients"],
+      "ifNot": ["amethyste-prise"],
+      "shape": {
+        "type": "rect",
+        "x": 37,
+        "y": 33.7,
+        "width": 6,
+        "height": 13.7
+      },
+      "action": {
+        "type": "dialogue",
+        "dialogue": "amethyste"
+      }
+    },
+    {
       "id": "retour",
       "label": "Retour dans la bibliothèque",
       "shape": {
@@ -47,7 +102,7 @@
     "arrivee": {
       "lines": [
         {
-          "text": "« Au centre se trouve le bureau de Dame Naevys. Les étagères sont remplies d'ouvrages de magie divers et variés. Au fond se trouve un sol arcanique pour pratiquer la magie. »"
+          "text": "« Au centre se trouve le bureau de Dame Naevys. Les étagères sont remplies d'ouvrages et d'articles de magie divers et variés. Au fond se trouve un sol arcanique pour pratiquer la magie. Il y a également des reliques entreposées par-ci par-là. »"
         }
       ]
     },
@@ -127,13 +182,110 @@
           "choices": [
             {
               "text": "« Rien d'anormal, il me semble ? »",
-              "setFlags": ["visite-terminee"]
+              "setFlags": ["visite-terminee"],
+              "next": "naevys-fin-journee"
             },
             {
               "text": "« Est-ce qu'il est possible de ressentir l'énergie en ce moment même ? »",
-              "setFlags": ["visite-terminee"]
+              "setFlags": ["visite-terminee"],
+              "next": "naevys-fin-journee"
             }
           ]
+        }
+      ]
+    },
+    "naevys-fin-journee": {
+      "lines": [
+        {
+          "character": "naevys",
+          "text": "« Si tu t'inquiètes de l'Énergie, rassure-toi : il n'est pas simple de la ressentir aussi facilement, même pour moi. Il n'y a pour l'instant pas eu d'événement alarmant cette année, donc nous sommes encore en sécurité. »"
+        },
+        {
+          "character": "naevys",
+          "text": "« Il est déjà tard, je te propose de finir ta journée ici ! »",
+          "choices": [
+            {
+              "text": "« Déjà ??? »",
+              "next": "naevys-bonne-nuit"
+            },
+            {
+              "text": "« Oh ouiiiii, merci beaucoup ! »",
+              "next": "naevys-bonne-nuit"
+            }
+          ]
+        }
+      ]
+    },
+    "naevys-bonne-nuit": {
+      "lines": [
+        {
+          "character": "naevys",
+          "text": "« Haha, je sens qu'on va bien s'amuser avec toi ! Ne t'en fais pas, demain je te mettrai à contribution. Repose-toi bien ce soir, la journée s'annonce intense demain. »",
+          "choices": [
+            {
+              "text": "Suite",
+              "goto": "inter-scene-2-3"
+            }
+          ]
+        }
+      ]
+    },
+    "naevys-ingredients": {
+      "lines": [
+        {
+          "character": "naevys",
+          "text": "« Alors, tu as rassemblé tous les éléments ? »",
+          "choices": [
+            {
+              "text": "« Oui, j'ai tout, voilà ! »",
+              "next": "naevys-rituel",
+              "if": [
+                "glycine-prise",
+                "terre-prise",
+                "amethyste-prise",
+                "plume-prise",
+                "rose-prise",
+                "lavande-prise"
+              ]
+            },
+            {
+              "text": "« Non, pas encore… »",
+              "next": "naevys-compte-sur-toi"
+            }
+          ]
+        }
+      ]
+    },
+    "naevys-compte-sur-toi": {
+      "lines": [
+        {
+          "character": "naevys",
+          "text": "« Je compte sur toi ! »"
+        }
+      ]
+    },
+    "naevys-rituel": {
+      "setFlags": ["ingredients-apportes"],
+      "lines": [
+        {
+          "character": "naevys",
+          "text": "« Parfait, on va pouvoir préparer le rituel pour ce soir. Dépose les ingrédients sur le sol arcanique, juste derrière moi. »"
+        }
+      ]
+    },
+    "sol-arcanique": {
+      "setFlags": ["ingredients-deposes"],
+      "lines": [
+        {
+          "text": "Je dépose les ingrédients sur le sol arcanique. (suite à venir)"
+        }
+      ]
+    },
+    "amethyste": {
+      "setFlags": ["amethyste-prise"],
+      "lines": [
+        {
+          "text": "Je prends quelques cristaux d'améthyste."
         }
       ]
     }

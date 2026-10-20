@@ -1,0 +1,10 @@
+{
+  "$schema": "../../../schemas/map.schema.json",
+  "id": "inter-scene-2-3",
+  "name": "Vers mon logement",
+  "backgroundColor": "#1c1730",
+  "interlude": {
+    "text": "Après avoir salué Dame Naevys, me voilà donc à prendre la direction de mon nouveau logement.\n\nArrivé·e dans mon appartement, je peux enfin me poser un peu, ranger mes quelques affaires et me préparer à ma journée de demain.",
+    "next": "logement"
+  }
+}

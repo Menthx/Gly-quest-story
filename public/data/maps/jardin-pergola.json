@@ -7,24 +7,51 @@
   "regions": [
     {
       "id": "pergola",
-      "label": "La pergola",
+      "label": "La table de la pergola",
       "shape": {
-        "type": "polygon",
-        "points": [
-          [38, 22],
-          [50, 7],
-          [70, 4],
-          [84, 18],
-          [76, 22],
-          [76, 68],
-          [60, 70],
-          [45, 68],
-          [43, 24]
-        ]
+        "type": "rect",
+        "x": 56,
+        "y": 50,
+        "width": 10,
+        "height": 14.5
       },
       "action": {
         "type": "dialogue",
         "dialogue": "pergola"
+      }
+    },
+    {
+      "id": "acces-bosquet",
+      "label": "Accès au bosquet",
+      "if": ["mission-ingredients"],
+      "ifNot": ["plume-prise"],
+      "shape": {
+        "type": "rect",
+        "x": 25,
+        "y": 43.6,
+        "width": 20.4,
+        "height": 27.1
+      },
+      "action": {
+        "type": "dialogue",
+        "dialogue": "bosquet"
+      }
+    },
+    {
+      "id": "roses",
+      "label": "Le parterre de roses",
+      "if": ["mission-ingredients"],
+      "ifNot": ["rose-prise"],
+      "shape": {
+        "type": "rect",
+        "x": 72.6,
+        "y": 66,
+        "width": 16.4,
+        "height": 16.3
+      },
+      "action": {
+        "type": "dialogue",
+        "dialogue": "roses"
       }
     },
     {
@@ -49,6 +76,31 @@
       "lines": [
         {
           "text": "« Pour prendre une pause en plein air. »"
+        }
+      ]
+    },
+    "bosquet": {
+      "setFlags": ["plume-prise"],
+      "lines": [
+        {
+          "text": "Je me glisse dans le passage pour accéder au bosquet."
+        },
+        {
+          "text": "« Il doit bien y avoir une plume de paon s'il y a un paon dans le coin… »"
+        },
+        {
+          "text": "Je fouille quelques minutes et finis rapidement par tomber sur une plume de paon."
+        },
+        {
+          "text": "Je sors du bosquet pour revenir dans le jardin."
+        }
+      ]
+    },
+    "roses": {
+      "setFlags": ["rose-prise"],
+      "lines": [
+        {
+          "text": "Je cueille une rose du parterre."
         }
       ]
     }

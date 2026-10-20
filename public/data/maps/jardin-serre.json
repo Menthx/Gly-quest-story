@@ -25,6 +25,23 @@
       }
     },
     {
+      "id": "lavande",
+      "label": "Lavande somnolente",
+      "if": ["mission-ingredients"],
+      "ifNot": ["lavande-prise"],
+      "shape": {
+        "type": "rect",
+        "x": 67,
+        "y": 51.5,
+        "width": 23.1,
+        "height": 16.3
+      },
+      "action": {
+        "type": "dialogue",
+        "dialogue": "lavande"
+      }
+    },
+    {
       "id": "vers-cours",
       "label": "Aller dans la cour du jardin",
       "shape": {
@@ -62,6 +79,14 @@
       "lines": [
         {
           "text": "« L'endroit parfait pour faire pousser des herbes magiques. »"
+        }
+      ]
+    },
+    "lavande": {
+      "setFlags": ["lavande-prise"],
+      "lines": [
+        {
+          "text": "Je cueille quelques brins de lavande somnolente."
         }
       ]
     }

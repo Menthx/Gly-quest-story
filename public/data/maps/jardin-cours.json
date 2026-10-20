@@ -4,6 +4,12 @@
   "name": "Jardin : la cour",
   "background": "assets/backgrounds/jardin-cours.jpg",
   "setFlags": ["cours-vu"],
+  "triggers": [
+    {
+      "dialogue": "paon",
+      "if": ["pergola-vue"]
+    }
+  ],
   "regions": [
     {
       "id": "citrouilles",
@@ -33,6 +39,40 @@
       "action": {
         "type": "dialogue",
         "dialogue": "champignon"
+      }
+    },
+    {
+      "id": "terre",
+      "label": "De la terre",
+      "if": ["mission-ingredients", "bocal-pris"],
+      "ifNot": ["terre-prise"],
+      "shape": {
+        "type": "rect",
+        "x": 53.8,
+        "y": 77.7,
+        "width": 17.7,
+        "height": 16.3
+      },
+      "action": {
+        "type": "dialogue",
+        "dialogue": "terre"
+      }
+    },
+    {
+      "id": "terre-sans-bocal",
+      "label": "De la terre",
+      "if": ["mission-ingredients"],
+      "ifNot": ["bocal-pris"],
+      "shape": {
+        "type": "rect",
+        "x": 53.8,
+        "y": 77.7,
+        "width": 17.7,
+        "height": 16.3
+      },
+      "action": {
+        "type": "dialogue",
+        "dialogue": "terre-sans-bocal"
       }
     },
     {
@@ -80,6 +120,33 @@
       "lines": [
         {
           "text": "Le champignon du jardin. (texte à venir)"
+        }
+      ]
+    },
+    "paon": {
+      "lines": [
+        {
+          "text": "« Tiens ? J'ai entendu un paon dans le bois ! Mince, je crois que je lui ai fait peur… »"
+        },
+        {
+          "text": "Je crois voir un passage. En me faufilant, je pourrais sûrement atteindre le bosquet juste derrière le jardin… Je ferais mieux de ne pas y aller pour l'instant."
+        }
+      ]
+    },
+    "terre": {
+      "setFlags": ["terre-prise"],
+      "lines": [
+        {
+          "character": "joueur",
+          "text": "« Je prends un peu de terre dans mon bocal. »"
+        }
+      ]
+    },
+    "terre-sans-bocal": {
+      "lines": [
+        {
+          "character": "joueur",
+          "text": "« Il me faudrait un contenant pour transporter la terre. »"
         }
       ]
     }

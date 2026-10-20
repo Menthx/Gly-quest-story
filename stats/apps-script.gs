@@ -24,9 +24,24 @@ const PLAYER_HEADERS = [
   'Parties',
 ];
 
-/** Reçoit `{ events: [...] }` envoyé par le jeu. */
+/**
+ * Le jeu envoie `?d={"events":[...]}` en GET : un POST peut être redirigé par Google avant
+ * d'atteindre le script (plusieurs comptes connectés…) et perdre son contenu en route.
+ * Sans `d`, la page affiche simplement « ok » (test de l'URL dans le navigateur).
+ */
+function doGet(e) {
+  if (e && e.parameter && e.parameter.d) record(JSON.parse(e.parameter.d).events || []);
+  return ContentService.createTextOutput('ok');
+}
+
+/** Ancien format d'envoi (POST), gardé pour compatibilité. */
 function doPost(e) {
-  const events = JSON.parse(e.postData.contents).events || [];
+  record(JSON.parse(e.postData.contents).events || []);
+  return ContentService.createTextOutput('ok');
+}
+
+/** Écrit les événements reçus dans les onglets Événements et Joueurs. */
+function record(events) {
   const lock = LockService.getScriptLock();
   lock.waitLock(20000);
   try {
@@ -50,12 +65,6 @@ function doPost(e) {
   } finally {
     lock.releaseLock();
   }
-  return ContentService.createTextOutput('ok');
-}
-
-/** Ouvrir l'URL de l'application Web dans le navigateur affiche « ok » si tout est en place. */
-function doGet() {
-  return ContentService.createTextOutput('ok');
 }
 
 /** Met à jour la ligne de chaque joueur concerné. */

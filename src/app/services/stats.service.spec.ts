@@ -30,8 +30,10 @@ describe('StatsService', () => {
 
   /** Événements envoyés, sans la date. */
   function sent(): Omit<StatsEvent, 'at'>[] {
-    return fetchSpy.mock.calls.flatMap(([, init]) =>
-      (JSON.parse(init?.body as string).events as StatsEvent[]).map(({ at, ...event }) => event),
+    return fetchSpy.mock.calls.flatMap(([url]) =>
+      (JSON.parse(new URL(url as string).searchParams.get('d')!).events as StatsEvent[]).map(
+        ({ at, ...event }) => event,
+      ),
     );
   }
 
@@ -46,7 +48,9 @@ describe('StatsService', () => {
     stats.flush();
 
     expect(fetchSpy).toHaveBeenCalledTimes(1);
-    expect(fetchSpy.mock.calls[0][0]).toBe('https://script.google.com/macros/s/x/exec');
+    expect(fetchSpy.mock.calls[0][0]).toMatch(
+      /^https:\/\/script\.google\.com\/macros\/s\/x\/exec\?d=/,
+    );
     const player = localStorage.getItem('gly-quest-story/player');
     expect(sent()).toEqual([
       { player, pseudo: 'Gly', type: 'partie', value: 'nouvelle', map: null },
@@ -65,6 +69,17 @@ describe('StatsService', () => {
       ['partie', 'reprise'],
       ['map', 'a'],
     ]);
+  });
+
+  it('répartit les événements en plusieurs requêtes quand l’URL serait trop longue', () => {
+    const { stats, state } = setup('https://exemple/exec');
+    state.start('Gly');
+    TestBed.tick();
+    for (let i = 0; i < 100; i++) stats.choice('dialogue', `choix numéro ${i}`);
+    stats.flush();
+    expect(fetchSpy.mock.calls.length).toBeGreaterThan(1);
+    for (const [url] of fetchSpy.mock.calls) expect((url as string).length).toBeLessThan(6100);
+    expect(sent()).toHaveLength(101);
   });
 
   it('n’envoie rien sans statsUrl ni en mode debug', () => {

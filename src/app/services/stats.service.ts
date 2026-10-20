@@ -6,6 +6,8 @@ import { GameStateService } from './game-state.service';
 const PLAYER_KEY = 'gly-quest-story/player';
 /** Délai avant l'envoi groupé des événements. */
 const FLUSH_DELAY = 3000;
+/** Longueur maximale des données dans l'URL (Apps Script refuse les URL trop longues). */
+const MAX_QUERY = 6000;
 
 /** Un événement de progression, écrit comme une ligne dans le Google Sheet. */
 export interface StatsEvent {
@@ -86,19 +88,29 @@ export class StatsService {
     this.timer = null;
     const url = this.data.config()?.statsUrl;
     if (!url || !this.queue.length) return;
-    const events = this.queue;
-    this.queue = [];
-    // `no-cors` + texte brut : Apps Script n'accepte pas les requêtes CORS « préparées ».
-    // `keepalive` : l'envoi aboutit même si l'onglet se ferme.
-    fetch(url, {
-      method: 'POST',
-      mode: 'no-cors',
-      keepalive: true,
-      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-      body: JSON.stringify({ events }),
-    }).catch(() => {
-      // Hors ligne ou script indisponible : ces statistiques sont perdues, la partie continue.
-    });
+    // Envoi en GET (`?d=...`) : un POST peut être redirigé par Google avant d'atteindre le script
+    // et perdre son contenu. Les événements sont répartis en plusieurs requêtes si l'URL devient longue.
+    // `no-cors` : Apps Script ne renvoie pas d'en-têtes CORS. `keepalive` : l'envoi aboutit même si
+    // l'onglet se ferme.
+    while (this.queue.length) {
+      let count = this.queue.length;
+      let query = this.query(this.queue.slice(0, count));
+      while (count > 1 && query.length > MAX_QUERY) {
+        count = Math.ceil(count / 2);
+        query = this.query(this.queue.slice(0, count));
+      }
+      this.queue = this.queue.slice(count);
+      fetch(`${url}${url.includes('?') ? '&' : '?'}d=${query}`, {
+        mode: 'no-cors',
+        keepalive: true,
+      }).catch(() => {
+        // Hors ligne ou script indisponible : ces statistiques sont perdues, la partie continue.
+      });
+    }
+  }
+
+  private query(events: StatsEvent[]): string {
+    return encodeURIComponent(JSON.stringify({ events }));
   }
 
   private playerId(): string {

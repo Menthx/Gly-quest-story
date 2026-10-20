@@ -26,7 +26,7 @@ export interface GameConfig {
   titleBackground?: string;
   /** Id de la map affichée au lancement. */
   startMap: string;
-  /** URL de l'application Web Apps Script qui reçoit les statistiques (voir le README). */
+  /** URL de l'application Web Apps Script qui reçoit les statistiques (script : `stats/apps-script.gs`). */
   statsUrl?: string;
   /** Liste des maps (sert aussi au menu de navigation). */
   maps: MapEntry[];

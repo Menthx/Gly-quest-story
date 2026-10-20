@@ -1,6 +1,6 @@
 /**
  * Statistiques des joueurs de Glyglyland : reçoit les événements envoyés par le jeu et les range
- * dans ce Google Sheet. Installation : voir la section « Statistiques des joueurs » du README.
+ * dans ce Google Sheet. À coller dans Extensions › Apps Script, puis à déployer en « Application Web ».
  *
  * Onglets :
  * - Événements : une ligne par événement (début de partie, map, flag, choix)

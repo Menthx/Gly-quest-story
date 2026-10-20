@@ -84,7 +84,7 @@
     },
     "statsUrl": {
       "type": "string",
-      "description": "URL de l'application Web Apps Script qui reçoit les statistiques des joueurs (voir la section « Statistiques des joueurs » du README). Absente = aucune statistique envoyée."
+      "description": "URL de l'application Web Apps Script qui reçoit les statistiques des joueurs (script : stats/apps-script.gs). Absente = aucune statistique envoyée."
     },
     "quests": {
       "type": "array",

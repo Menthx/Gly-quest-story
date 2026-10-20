@@ -163,6 +163,29 @@ Appuie sur **D** (ou ajoute `?debug` à l'URL, ex. `http://localhost:4200/?debug
 
 **D** à nouveau pour revenir au jeu, **Échap** pour effacer le tracé.
 
+## Statistiques des joueurs
+
+Le jeu peut envoyer la progression des joueurs vers un **Google Sheet** : début de partie (nouvelle ou reprise), maps visitées, flags posés (donc objectifs et quêtes) et choix de dialogue. Chaque navigateur reçoit un identifiant anonyme aléatoire, envoyé avec le pseudo. Rien n'est envoyé en mode debug, ni si `statsUrl` est absent de `game.json`. Un envoi qui échoue (hors ligne…) n'interrompt jamais la partie.
+
+Installation, une seule fois :
+
+1. Crée un Google Sheet vide (ex. « Glyglyland – stats »).
+2. Dans le Sheet : **Extensions › Apps Script**. Remplace le contenu de `Code.gs` par celui de [`stats/apps-script.gs`](stats/apps-script.gs) et enregistre.
+3. **Déployer › Nouveau déploiement**, type **Application Web**. Exécuter en tant que : **Moi**. Qui a accès : **Tout le monde**. Autorise l'accès quand Google le demande.
+4. Copie l'URL de l'application Web (`https://script.google.com/macros/s/…/exec`) et ajoute-la dans `public/data/game.json` :
+
+   ```json
+   "statsUrl": "https://script.google.com/macros/s/…/exec"
+   ```
+
+Les onglets se créent au premier événement reçu :
+
+- **Synthèse** : nombre de joueurs, joueurs par map et par flag (pour voir où ils s'arrêtent), répartition des choix ;
+- **Joueurs** : une ligne par joueur, avec sa map actuelle, son nombre de flags, son dernier flag et sa dernière activité ;
+- **Événements** : toutes les données brutes, à filtrer à volonté.
+
+Si tu modifies le script plus tard, publie-le avec **Déployer › Gérer les déploiements › Modifier › Nouvelle version** pour garder la même URL. L'URL est publique (elle est dans le code du site) : n'importe qui peut y envoyer des lignes, mais seul toi peux lire le Sheet.
+
 ## Navigation entre les maps
 
 1. **Flèches** : une zone `goto` avec `"arrow"`, placée où l'on veut (bord, porte…). C'est ce qu'utilise la scène 1.

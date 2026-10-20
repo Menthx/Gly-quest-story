@@ -3,6 +3,7 @@ import { DialogueChoice } from '../../models/game.models';
 import { DialogueService } from '../../services/dialogue.service';
 import { GameDataService } from '../../services/game-data.service';
 import { GameStateService } from '../../services/game-state.service';
+import { StatsService } from '../../services/stats.service';
 
 /** Popup de dialogue : portrait du personnage, nom, texte et choix éventuels. */
 @Component({
@@ -17,6 +18,7 @@ export class DialogueBox {
   protected readonly dialogue = inject(DialogueService);
   private readonly data = inject(GameDataService);
   private readonly state = inject(GameStateService);
+  private readonly stats = inject(StatsService);
 
   /** Demande un changement de map (choix avec `goto`). */
   readonly goto = output<string>();
@@ -48,6 +50,7 @@ export class DialogueBox {
   });
 
   protected choose(choice: DialogueChoice): void {
+    this.stats.choice(this.dialogue.openId(), choice.text);
     this.state.setFlags(choice.setFlags);
     if (choice.next) {
       this.dialogue.jumpTo(choice.next);

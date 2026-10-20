@@ -82,6 +82,10 @@
       "type": "string",
       "description": "Image de fond de l'écran titre (saisie du pseudo), relative à public/."
     },
+    "statsUrl": {
+      "type": "string",
+      "description": "URL de l'application Web Apps Script qui reçoit les statistiques des joueurs (script : stats/apps-script.gs). Absente = aucune statistique envoyée."
+    },
     "quests": {
       "type": "array",
       "description": "Quêtes du cadre « Quête en cours », visibles tant que leur condition est remplie.",

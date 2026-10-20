@@ -65,6 +65,23 @@
       }
     },
     {
+      "id": "amethyste",
+      "label": "Cristaux d'améthyste",
+      "if": ["mission-ingredients"],
+      "ifNot": ["amethyste-prise"],
+      "shape": {
+        "type": "rect",
+        "x": 37,
+        "y": 33.7,
+        "width": 6,
+        "height": 13.7
+      },
+      "action": {
+        "type": "dialogue",
+        "dialogue": "amethyste"
+      }
+    },
+    {
       "id": "retour",
       "label": "Retour dans la bibliothèque",
       "shape": {
@@ -261,6 +278,14 @@
       "lines": [
         {
           "text": "Je dépose les ingrédients sur le sol arcanique. (suite à venir)"
+        }
+      ]
+    },
+    "amethyste": {
+      "setFlags": ["amethyste-prise"],
+      "lines": [
+        {
+          "text": "Je prends quelques cristaux d'améthyste."
         }
       ]
     }

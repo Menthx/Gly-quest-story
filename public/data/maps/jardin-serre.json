@@ -30,36 +30,15 @@
       "if": ["mission-ingredients"],
       "ifNot": ["lavande-prise"],
       "shape": {
-        "type": "polygon",
-        "points": [
-          [66.5, 58],
-          [91.5, 58],
-          [91, 72],
-          [88, 86],
-          [70, 86],
-          [67, 70]
-        ]
+        "type": "rect",
+        "x": 67,
+        "y": 51.5,
+        "width": 23.1,
+        "height": 16.3
       },
       "action": {
         "type": "dialogue",
         "dialogue": "lavande"
-      }
-    },
-    {
-      "id": "glycine",
-      "label": "Essence de glycine concentrée",
-      "if": ["mission-ingredients"],
-      "ifNot": ["glycine-prise"],
-      "shape": {
-        "type": "rect",
-        "x": 18.5,
-        "y": 44.5,
-        "width": 11.5,
-        "height": 9
-      },
-      "action": {
-        "type": "dialogue",
-        "dialogue": "glycine"
       }
     },
     {
@@ -108,14 +87,6 @@
       "lines": [
         {
           "text": "Je cueille quelques brins de lavande somnolente."
-        }
-      ]
-    },
-    "glycine": {
-      "setFlags": ["glycine-prise"],
-      "lines": [
-        {
-          "text": "Je prends une fiole d'essence de glycine concentrée."
         }
       ]
     }

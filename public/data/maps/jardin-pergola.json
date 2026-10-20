@@ -34,14 +34,31 @@
       "ifNot": ["plume-prise"],
       "shape": {
         "type": "rect",
-        "x": 22,
-        "y": 46,
-        "width": 16,
-        "height": 22
+        "x": 25,
+        "y": 43.6,
+        "width": 20.4,
+        "height": 27.1
       },
       "action": {
         "type": "dialogue",
         "dialogue": "bosquet"
+      }
+    },
+    {
+      "id": "roses",
+      "label": "Le parterre de roses",
+      "if": ["mission-ingredients"],
+      "ifNot": ["rose-prise"],
+      "shape": {
+        "type": "rect",
+        "x": 72.6,
+        "y": 66,
+        "width": 16.4,
+        "height": 16.3
+      },
+      "action": {
+        "type": "dialogue",
+        "dialogue": "roses"
       }
     },
     {
@@ -83,6 +100,14 @@
         },
         {
           "text": "Je sors du bosquet pour revenir dans le jardin."
+        }
+      ]
+    },
+    "roses": {
+      "setFlags": ["rose-prise"],
+      "lines": [
+        {
+          "text": "Je cueille une rose du parterre."
         }
       ]
     }

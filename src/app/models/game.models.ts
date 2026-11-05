@@ -221,6 +221,12 @@ export interface DialogueLine {
    * dialogue (dialogues enchaînés compris). Prioritaire sur les portraits plein écran. `""` la retire.
    */
   media?: Media;
+  /**
+   * La réplique ne peut pas être passée : elle avance seule quand la vidéo de son `media` est finie
+   * (ex. le lancement du sort). Le `media` doit être une liste dont la vidéo n'est pas la dernière,
+   * puisque la dernière tourne en boucle.
+   */
+  waitMedia?: boolean;
   /** Choix proposés après cette réplique : chaque choix enchaîne sur un autre dialogue ou change de map. */
   choices?: DialogueChoice[];
 }

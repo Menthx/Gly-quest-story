@@ -25,29 +25,71 @@
   pointer-events: none;
 }
 
-.content {
+/* Générique : le texte part du bas de l'écran et sort par le haut. */
+.roll-area {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
+.roll {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 28px;
+  padding: 0 16px;
+  text-align: center;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.7);
+  animation-name: roll;
+  animation-timing-function: linear;
+  animation-fill-mode: forwards;
+
+  p {
+    max-width: 760px;
+    margin: 0;
+    font-size: clamp(1.1rem, 2.4vw, 1.6rem);
+    line-height: 1.7;
+    white-space: pre-line;
+  }
+
+  .title {
+    font-size: clamp(1.6rem, 4vw, 3rem);
+    line-height: 1.3;
+  }
+}
+
+@keyframes roll {
+  to {
+    /* `vh` pour les navigateurs sans `dvh` : sinon le texte resterait sous l'écran. */
+    transform: translateY(calc(-100% - 100vh));
+    transform: translateY(calc(-100% - 100dvh));
+  }
+}
+
+/* Après le générique : l'encadré reste affiché jusqu'au retour à l'accueil. */
+.end {
   position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: safe center;
   gap: 18px;
   height: 100%;
   overflow-y: auto;
-  padding: clamp(24px, 6vh, 64px) 16px;
+  padding: 24px 16px;
   text-align: center;
   text-shadow: 0 1px 4px rgba(0, 0, 0, 0.7);
+  animation: fade-in 1.2s ease-out;
 
   p {
     max-width: 760px;
     margin: 0;
     font-size: clamp(1rem, 2vw, 1.3rem);
     line-height: 1.6;
-    white-space: pre-line;
-  }
-
-  .title {
-    font-size: clamp(1.4rem, 3.4vw, 2.4rem);
-    line-height: 1.3;
   }
 }
 
@@ -57,7 +99,6 @@
   align-items: center;
   gap: 12px;
   max-width: 760px;
-  margin-top: 12px;
   padding: 20px 24px;
   border: 1px solid rgba(255, 255, 255, 0.35);
   border-radius: 16px;

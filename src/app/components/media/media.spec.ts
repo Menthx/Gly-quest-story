@@ -76,6 +76,25 @@ describe('MediaView', () => {
     expect(second.classList.contains('hidden')).toBe(false);
   });
 
+  it('lance la nouvelle vidéo quand le média change pendant la lecture', async () => {
+    const { fixture, el } = await render('loop.mp4');
+    const loop = el.querySelector('video')!;
+    expect(loop.paused).toBe(false);
+
+    // Dans un navigateur, changer la source d'une vidéo en lecture la met en pause : chaque
+    // chemin a donc son propre élément, lancé à son tour.
+    fixture.componentInstance.src.set(['lancement.mp4', 'fond.jpg']);
+    await fixture.whenStable();
+    const lancement = el.querySelector('video')!;
+    expect(lancement).not.toBe(loop);
+    expect(lancement.getAttribute('src')).toBe('lancement.mp4');
+    expect(play.mock.contexts).toEqual([loop, lancement]);
+
+    lancement.dispatchEvent(new Event('ended'));
+    await fixture.whenStable();
+    expect(el.querySelector('img')?.getAttribute('src')).toBe('fond.jpg');
+  });
+
   it('relance sans le son si le navigateur refuse la lecture', async () => {
     play.mockRejectedValueOnce(new DOMException('refusé', 'NotAllowedError'));
     const { el } = await render('assets/videos/sort.mp4');

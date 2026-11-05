@@ -138,6 +138,21 @@ describe('MediaView', () => {
     expect(fond.isConnected).toBe(false);
   });
 
+  it("n'attend pas la fin d'une boucle qui ne joue plus", async () => {
+    const { fixture, el } = await render('loop.mp4');
+    const loop = el.querySelector('video')!;
+    loop.pause();
+    fixture.componentInstance.src.set('lancement.mp4');
+    await fixture.whenStable();
+    const lancement = el.querySelector<HTMLVideoElement>('video[src="lancement.mp4"]')!;
+    expect(lancement.classList.contains('hidden')).toBe(true);
+
+    await new Promise((resolve) => setTimeout(resolve, 600));
+    await fixture.whenStable();
+    expect(lancement.classList.contains('hidden')).toBe(false);
+    expect(play.mock.contexts.at(-1)).toBe(lancement);
+  });
+
   it('ne garde rien quand le média disparaît', async () => {
     const { fixture, el } = await render('loop.mp4');
     fixture.componentInstance.src.set(undefined);

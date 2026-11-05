@@ -75,9 +75,12 @@ interface Item {
     }
   `,
   styles: `
+    /* Contexte d'empilement propre : les z-index internes (ancien média gardé dessous) ne passent
+       jamais au-dessus des éléments posés sur le média par le parent (carte du titre, texte…). */
     :host {
       display: block;
       position: relative;
+      isolation: isolate;
     }
     img,
     video {

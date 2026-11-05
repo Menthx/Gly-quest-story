@@ -64,6 +64,25 @@
   text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
 }
 
+/* Contenu d'une réplique : fondu + léger glissement vers le haut à chaque nouvelle réplique. */
+.line {
+  > .name,
+  > .text {
+    animation: line-in 0.35s ease-out both;
+  }
+
+  > .continue {
+    animation:
+      fade-in 0.35s ease-out both,
+      bounce 1s ease-in-out infinite;
+  }
+}
+
+.choices button {
+  animation: line-in 0.35s ease-out both;
+  animation-delay: 0.15s;
+}
+
 .name {
   display: inline-block;
   margin-bottom: 0.5em;
@@ -123,8 +142,33 @@
   }
 }
 
+@keyframes line-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+}
+
 @keyframes bounce {
   50% {
     transform: translateY(3px);
+  }
+}
+
+/* Mouvement réduit : simple fondu court, sans glissement ni rebond. */
+@media (prefers-reduced-motion: reduce) {
+  .line > .name,
+  .line > .text,
+  .choices button {
+    animation: fade-in 0.15s ease-out both;
+    animation-delay: 0s;
+  }
+
+  .portrait {
+    animation: fade-in 0.15s ease-out;
+  }
+
+  .line > .continue {
+    animation: none;
   }
 }

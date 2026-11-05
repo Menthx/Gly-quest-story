@@ -1,7 +1,7 @@
 @if (line()) {
-  <div class="overlay" (click)="dialogue.next()">
+  <div class="overlay" (click)="advance()">
     @if (sceneMedia(); as media) {
-      <app-media class="portrait full scene" [src]="media" />
+      <app-media class="portrait full scene" [src]="media" (ended)="onSceneEnded()" />
     }
     @for (p of sceneIsVideo() ? [] : fullPortraits(); track p.id) {
       <app-media
@@ -30,7 +30,7 @@
                 </button>
               }
             </div>
-          } @else {
+          } @else if (!waiting()) {
             <span class="continue" aria-hidden="true">▼</span>
           }
         </div>

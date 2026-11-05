@@ -35,6 +35,7 @@ import { isVideo, mediaList } from '../../utils/media';
           disablepictureinpicture
           (loadedmetadata)="$index === 0 && emitRatio(video.videoWidth, video.videoHeight)"
           (ended)="onEnded($index)"
+          (error)="onEnded($index)"
         ></video>
       } @else if ($index === index()) {
         <img
@@ -74,6 +75,8 @@ export class MediaView {
   readonly alt = input('');
   /** Ratio largeur/hauteur du premier média, dès qu'il est connu. */
   readonly ratio = output<number>();
+  /** Une vidéo jouée une seule fois (pas la dernière de la liste) est finie, ou n'a pas pu être lue. */
+  readonly ended = output<void>();
 
   protected readonly isVideo = isVideo;
   protected readonly paths = computed(() => mediaList(this.src()), {
@@ -110,7 +113,9 @@ export class MediaView {
   }
 
   protected onEnded(i: number): void {
-    if (i === this.index() && i + 1 < this.paths().length) this.index.set(i + 1);
+    if (i !== this.index() || i + 1 >= this.paths().length) return;
+    this.index.set(i + 1);
+    this.ended.emit();
   }
 }
 

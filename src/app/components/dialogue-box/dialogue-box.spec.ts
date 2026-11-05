@@ -30,6 +30,12 @@ const map: GameMap = {
         { text: 'Le cercle disparaît.', media: '' },
       ],
     },
+    sort: {
+      lines: [
+        { character: 'naevys', text: 'Scellée !', waitMedia: true, media: ['lancement.mp4', 'fond.jpg'] },
+        { text: 'Le cercle disparaît.', media: '' },
+      ],
+    },
     final: {
       lines: [
         { character: 'phyla', text: 'Le rituel a fonctionné !' },
@@ -110,5 +116,25 @@ describe('DialogueBox', () => {
     dialogue.close();
     await fixture.whenStable();
     expect(portraits()).toEqual([]);
+  });
+
+  it('attend la fin de la vidéo d’une réplique waitMedia, sans pouvoir la passer', async () => {
+    const fixture = TestBed.createComponent(DialogueBox);
+    const dialogue = TestBed.inject(DialogueService);
+    const el = fixture.nativeElement as HTMLElement;
+
+    dialogue.open(map, 'sort');
+    await fixture.whenStable();
+    expect(el.querySelector('.continue')).toBeNull();
+
+    (el.querySelector('.overlay') as HTMLElement).click();
+    document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter' }));
+    await fixture.whenStable();
+    expect(dialogue.currentLine()?.text).toBe('Scellée !');
+
+    el.querySelector('.scene video')!.dispatchEvent(new Event('ended'));
+    await fixture.whenStable();
+    expect(dialogue.currentLine()?.text).toBe('Le cercle disparaît.');
+    expect(el.querySelector('.continue')).not.toBeNull();
   });
 });

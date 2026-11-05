@@ -377,6 +377,10 @@
                 "$ref": "#/$defs/media",
                 "description": "Image ou vidéo plein écran sur la scène à partir de cette réplique, jusqu'à la fin du dialogue (prioritaire sur les portraits plein écran). \"\" la retire."
               },
+              "waitMedia": {
+                "type": "boolean",
+                "description": "La réplique ne peut pas être passée : elle avance seule à la fin de la vidéo de son media (une liste dont la vidéo n'est pas la dernière, la dernière tournant en boucle)."
+              },
               "choices": {
                 "type": "array",
                 "items": {

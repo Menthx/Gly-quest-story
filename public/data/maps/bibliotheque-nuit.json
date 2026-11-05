@@ -213,6 +213,7 @@
         {
           "character": "naevys",
           "text": "« Que l'énergie ancienne soit scellée ! »",
+          "waitMedia": true,
           "media": [
             "assets/videos/lancement-sort-naevys.mp4",
             "assets/backgrounds/biblio-bureau-nuit.jpg"

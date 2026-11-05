@@ -5,11 +5,12 @@ import { MediaView } from './media';
 
 @Component({
   imports: [MediaView],
-  template: `<app-media [src]="src()" alt="Décor" (ratio)="ratio = $event" />`,
+  template: `<app-media [src]="src()" alt="Décor" (ratio)="ratio = $event" (ended)="ended = ended + 1" />`,
 })
 class Host {
   readonly src = signal<Media | undefined>(undefined);
   ratio = 0;
+  ended = 0;
 }
 
 describe('MediaView', () => {
@@ -90,9 +91,19 @@ describe('MediaView', () => {
     expect(lancement.getAttribute('src')).toBe('lancement.mp4');
     expect(play.mock.contexts).toEqual([loop, lancement]);
 
+    expect(fixture.componentInstance.ended).toBe(0);
     lancement.dispatchEvent(new Event('ended'));
     await fixture.whenStable();
     expect(el.querySelector('img')?.getAttribute('src')).toBe('fond.jpg');
+    expect(fixture.componentInstance.ended).toBe(1);
+  });
+
+  it('passe au média suivant si une vidéo ne peut pas être lue', async () => {
+    const { fixture, el } = await render(['absente.mp4', 'fond.jpg']);
+    el.querySelector('video')!.dispatchEvent(new Event('error'));
+    await fixture.whenStable();
+    expect(el.querySelector('img')?.getAttribute('src')).toBe('fond.jpg');
+    expect(fixture.componentInstance.ended).toBe(1);
   });
 
   it('relance sans le son si le navigateur refuse la lecture', async () => {

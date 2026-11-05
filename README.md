@@ -161,6 +161,17 @@ Partout où une image est attendue (`background` d'une map, `portrait`, `titleBa
 { "text": "Naevys se dirige vers le sol arcanique…", "media": "assets/videos/loop-sort-naevys.mp4" }
 ```
 
+- **`"waitMedia": true`** : la réplique ne peut pas être passée (ni clic ni touche) et avance seule à la fin de la vidéo. Le `media` doit être une liste où la vidéo est suivie d'une image, sinon elle tournerait en boucle (`npm run check` le vérifie).
+
+```json
+{
+  "character": "naevys",
+  "text": "« Que l'énergie ancienne soit scellée ! »",
+  "waitMedia": true,
+  "media": ["assets/videos/lancement-sort-naevys.mp4", "assets/backgrounds/biblio-bureau-nuit.jpg"]
+}
+```
+
 Le son est joué si le navigateur l'autorise (c'est le cas après le clic sur « Jouer »), sinon la vidéo est lue sans le son. Pour un chargement rapide, garder les vidéos légères (1080p en H.264, quelques Mo).
 
 ### Interlude (fond uni)

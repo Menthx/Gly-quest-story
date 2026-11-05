@@ -1,0 +1,309 @@
+{
+  "$schema": "../../../schemas/map.schema.json",
+  "id": "bibliotheque-nuit",
+  "name": "Bibliothèque (nuit)",
+  "background": "assets/backgrounds/bibliotheque-nuit.jpg",
+  "triggers": [
+    {
+      "dialogue": "arrivee"
+    }
+  ],
+  "dialogues": {
+    "arrivee": {
+      "lines": [
+        {
+          "text": "Je passe la porte de la bibliothèque et retrouve Dame Naevys à son bureau, comme à son habitude."
+        },
+        {
+          "character": "naevys",
+          "text": "« Ah, te voilà ! Tu es pile à l'heure ! »",
+          "media": "assets/backgrounds/biblio-bureau-nuit.jpg",
+          "choices": [
+            {
+              "text": "« C'est maintenant que le rituel commence ? »",
+              "next": "pret",
+              "setFlags": ["rituel-presse"]
+            },
+            {
+              "text": "« J'ai croisé une personne en entrant. »",
+              "next": "personne",
+              "setFlags": ["curieux-personne"]
+            }
+          ]
+        }
+      ]
+    },
+    "pret": {
+      "lines": [
+        {
+          "character": "naevys",
+          "text": "« Tout à fait, tout semble prêt. On s'y met ? »",
+          "choices": [
+            {
+              "text": "« Allons-y ! »",
+              "next": "deroulement"
+            },
+            {
+              "text": "« Je vous suis. »",
+              "next": "deroulement"
+            }
+          ]
+        }
+      ]
+    },
+    "personne": {
+      "lines": [
+        {
+          "character": "naevys",
+          "text": "« Oh, tu dois parler de notre Grande Glyctatrice ! Nous avons vérifié ensemble les détails du rituel, tu te doutes bien qu'un plan aussi important ne peut pas être fait sans sa validation. Maintenant que tout semble prêt, il ne reste plus qu'à commencer le rituel. On s'y met ? »",
+          "choices": [
+            {
+              "text": "« Allons-y ! »",
+              "next": "deroulement"
+            },
+            {
+              "text": "« Je vous suis. »",
+              "next": "deroulement"
+            }
+          ]
+        }
+      ]
+    },
+    "deroulement": {
+      "lines": [
+        {
+          "character": "naevys",
+          "text": "« Voilà comment cela va se dérouler : après avoir disposé les ingrédients sur le sol arcanique, je commencerai à réciter l'incantation. »"
+        },
+        {
+          "character": "naevys",
+          "text": "« Ta mission sera de noter ce qui se passe pendant le rituel. C'est important pour nous d'avoir des archives, alors ton rôle d'observateur·rice est important ! »"
+        },
+        {
+          "character": "naevys",
+          "text": "« C'est clair pour toi ? Si tu as des questions, c'est maintenant ! »",
+          "choices": [
+            {
+              "text": "« C'est clair pour moi ! »",
+              "next": "materiel"
+            },
+            {
+              "text": "« Je ne suis pas sûr·e d'avoir compris… »",
+              "next": "explication"
+            }
+          ]
+        }
+      ]
+    },
+    "explication": {
+      "next": "materiel",
+      "lines": [
+        {
+          "character": "naevys",
+          "text": "« Ta mission consiste simplement à prendre quelques notes pendant le rituel, rien de plus ! »"
+        }
+      ]
+    },
+    "materiel": {
+      "next": "rituel",
+      "lines": [
+        {
+          "character": "naevys",
+          "text": "« Prends ça, tu vas en avoir besoin. »"
+        },
+        {
+          "text": "Naevys me donne du papier et un crayon."
+        },
+        {
+          "character": "naevys",
+          "text": "« Je te ferai signe quand je commencerai le rituel. Je compte sur toi ! »"
+        }
+      ]
+    },
+    "rituel": {
+      "lines": [
+        {
+          "text": "Naevys se dirige vers le sol arcanique, saisit les ingrédients et les dispose en cercle autour d'elle. Placée au centre du cercle, je ressens qu'elle entre dans un état de concentration extrême, j'ose à peine respirer.",
+          "media": "assets/videos/loop-sort-naevys.mp4"
+        },
+        {
+          "text": "Elle me fait un signe de tête, je comprends que le rituel va commencer."
+        },
+        {
+          "character": "naevys",
+          "text": "« Par les pouvoirs de la Grande Glyctatrice, gardienne des reflets perdus, j'incarne le catalyseur de l'énergie ancienne. »"
+        },
+        {
+          "character": "joueur",
+          "text": "« À ce moment, un cercle magique apparaît sur le sol. »"
+        },
+        {
+          "character": "naevys",
+          "text": "« Tel le majestueux détenteur de mille yeux, je te vois. J'invoque la Glycine sacrée, de ces lianes te voilà saisie… »"
+        },
+        {
+          "character": "joueur",
+          "text": "« La plume de paon et l'essence de glycine… »",
+          "choices": [
+            {
+              "text": "« …ont été absorbées par le flux d'énergie. »",
+              "next": "rituel-terre",
+              "setFlags": ["rituel-energie-1"]
+            },
+            {
+              "text": "« …ont fusionné avec le cercle magique. »",
+              "next": "rituel-terre",
+              "setFlags": ["rituel-magie-1"]
+            }
+          ]
+        }
+      ]
+    },
+    "rituel-terre": {
+      "lines": [
+        {
+          "character": "naevys",
+          "text": "« Par la terre et la pierre, ancre-toi ici-bas, cristallise et stabilise-toi… »"
+        },
+        {
+          "character": "joueur",
+          "text": "« La terre et les améthystes… »",
+          "choices": [
+            {
+              "text": "« …se mettent à vibrer et à graviter autour de Naevys. »",
+              "next": "rituel-lavande",
+              "setFlags": ["rituel-energie-2"]
+            },
+            {
+              "text": "« …entrent en résonance avec le sort et lévitent autour de Naevys. »",
+              "next": "rituel-lavande",
+              "setFlags": ["rituel-magie-2"]
+            }
+          ]
+        }
+      ]
+    },
+    "rituel-lavande": {
+      "lines": [
+        {
+          "character": "naevys",
+          "text": "« Endors-toi dans ton lit fleuri, que le doux parfum de Glyglyland t'enveloppe et t'apporte le repos… »"
+        },
+        {
+          "character": "joueur",
+          "text": "« Une odeur de lavande flotte maintenant dans l'air… »",
+          "choices": [
+            {
+              "text": "« Le flux d'énergie semble s'intensifier autour de Naevys. »",
+              "next": "rituel-fin",
+              "setFlags": ["rituel-energie-3"]
+            },
+            {
+              "text": "« La puissance du sort se concentre autour de Naevys. »",
+              "next": "rituel-fin",
+              "setFlags": ["rituel-magie-3"]
+            }
+          ]
+        }
+      ]
+    },
+    "rituel-fin": {
+      "next": "apres-rituel",
+      "lines": [
+        {
+          "character": "naevys",
+          "text": "« Que l'énergie ancienne soit scellée ! »",
+          "media": [
+            "assets/videos/lancement-sort-naevys.mp4",
+            "assets/backgrounds/biblio-bureau-nuit.jpg"
+          ]
+        }
+      ]
+    },
+    "apres-rituel": {
+      "next": [
+        {
+          "dialogue": "notes-energie",
+          "ifMore": {
+            "flags": ["rituel-energie-1", "rituel-energie-2", "rituel-energie-3"],
+            "than": ["rituel-magie-1", "rituel-magie-2", "rituel-magie-3"]
+          }
+        },
+        {
+          "dialogue": "notes-magie"
+        }
+      ],
+      "lines": [
+        {
+          "text": "Naevys reprend son souffle, le cercle magique disparaît, et l'air devient moins lourd.",
+          "media": ""
+        },
+        {
+          "text": "J'attends quelques instants avant de rompre le silence."
+        },
+        {
+          "character": "joueur",
+          "text": "« Est-ce que le rituel a fonctionné ? »"
+        },
+        {
+          "character": "naevys",
+          "text": "« Je pense qu'il a eu un effet, oui, c'est certain. Nous n'avons plus qu'à patienter jusqu'à la fin de la nuit pour voir si les résultats sont concluants. En attendant, jetons un œil à tes notes. »"
+        },
+        {
+          "text": "Je tends mes notes à Naevys."
+        },
+        {
+          "character": "naevys",
+          "text": "« Hum… Oui, je vois, intéressant. C'est fidèle à ce que j'ai perçu pendant le rituel… »"
+        }
+      ]
+    },
+    "notes-energie": {
+      "next": "notes-fin",
+      "lines": [
+        {
+          "character": "naevys",
+          "text": "« Oh, tu as même ressenti l'énergie ancienne ? »"
+        }
+      ]
+    },
+    "notes-magie": {
+      "next": "notes-fin",
+      "lines": [
+        {
+          "character": "naevys",
+          "text": "« Oh, tu as même ressenti ma magie ? »"
+        }
+      ]
+    },
+    "notes-fin": {
+      "lines": [
+        {
+          "character": "naevys",
+          "text": "« Je sens que ta présence ici va devenir indispensable ! »"
+        },
+        {
+          "text": "Elle m'adresse un sourire et pose mes notes sur son bureau."
+        },
+        {
+          "character": "naevys",
+          "text": "« Tu as fait du bon travail ! Malheureusement, je ne peux pas te laisser partir pour l'instant : nous devons attendre que la nuit passe pour être sûr·es que Glyglyland est en sécurité malgré le rituel. »"
+        },
+        {
+          "character": "naevys",
+          "text": "« Que dirais-tu d'une tasse de thé ? »",
+          "choices": [
+            {
+              "text": "« Pas de problème, avec plaisir ! »",
+              "goto": "inter-scene-7-final"
+            },
+            {
+              "text": "« Bon… D'accord. »",
+              "goto": "inter-scene-7-final"
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

@@ -15,6 +15,15 @@ const map: GameMap = {
     autre: { setFlags: ['b'], lines: [{ text: 'Quatre' }] },
     fin: { lines: [{ text: 'Fin' }] },
     question: { next: 'intro', lines: [{ text: 'Réponse' }] },
+    pensee: {
+      next: [
+        { dialogue: 'pensee-a', ifMore: { flags: ['a1', 'a2', 'a3'], than: ['b1', 'b2', 'b3'] } },
+        { dialogue: 'pensee-b' },
+      ],
+      lines: [{ text: 'Je réfléchis.' }],
+    },
+    'pensee-a': { lines: [{ text: 'Confiant' }] },
+    'pensee-b': { lines: [{ text: 'Inquiet' }] },
   },
 };
 
@@ -81,6 +90,18 @@ describe('DialogueService', () => {
     service.next(); // ignoré : le choix est proposé
     expect(service.currentLine()?.text).toBe('Question');
   });
+
+  it('enchaîne sur la première branche de « next » dont la condition est remplie', () => {
+    state.setFlags(['a1', 'b2', 'a3']);
+    service.open(map, 'pensee');
+    service.next();
+    expect(service.currentLine()?.text).toBe('Confiant');
+
+    state.start('Gly', ['b1', 'b2', 'a3']);
+    service.open(map, 'pensee');
+    service.next();
+    expect(service.currentLine()?.text).toBe('Inquiet');
+  });
 });
 
 describe('GameStateService', () => {
@@ -92,5 +113,18 @@ describe('GameStateService', () => {
     expect(state.check({ if: ['x'] })).toBe(true);
     expect(state.check({ ifNot: ['x'] })).toBe(false);
     expect(state.check({ if: ['x', 'y'] })).toBe(false);
+  });
+
+  it('évalue ifMore : plus de flags posés dans « flags » que dans « than »', () => {
+    const state = TestBed.inject(GameStateService);
+    state.start('Gly', ['r1', 'r3', 'p2']);
+    expect(state.check({ ifMore: { flags: ['r1', 'r2', 'r3'], than: ['p1', 'p2', 'p3'] } })).toBe(
+      true,
+    );
+    expect(state.check({ ifMore: { flags: ['p1', 'p2', 'p3'], than: ['r1', 'r2', 'r3'] } })).toBe(
+      false,
+    );
+    // Égalité : pas de majorité.
+    expect(state.check({ ifMore: { flags: ['r1'], than: ['p2'] } })).toBe(false);
   });
 });

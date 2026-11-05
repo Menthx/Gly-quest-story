@@ -14,7 +14,7 @@ npm run check      # vérifie le contenu JSON (à lancer après chaque modificat
 npm run build      # version de production dans dist/
 ```
 
-`npm run check` signale les fautes de frappe qui, sinon, bloqueraient la partie sans aucune erreur : clé inconnue, map, dialogue, personnage ou image introuvable, flag testé (`if`, `ifNot`, objectif de quête) mais jamais posé par un `setFlags`.
+`npm run check` signale les fautes de frappe qui, sinon, bloqueraient la partie sans aucune erreur : clé inconnue, map, dialogue, personnage ou image introuvable, flag testé (`if`, `ifNot`, `ifMore`, objectif de quête) mais jamais posé par un `setFlags`.
 
 ## Mise en ligne
 
@@ -38,8 +38,15 @@ public/
 │       ├── biblio-*.json         ← scène 2 : foyer, bureau, coin douillet
 │       ├── jardin-*.json         ← scène 2 : serre, cour, pergola (scène 5 : ingrédients du rituel)
 │       ├── inter-scene-2-3.json  ← texte de transition vers le logement
-│       ├── logement.json         ← scène 3 : mon logement (fond uni en attendant le visuel)
-│       └── inter-scene-3-4.json  ← texte de transition vers la bibliothèque (scène 4 au foyer, scènes 5-6 au bureau)
+│       ├── logement.json         ← scène 3 : mon logement le soir (nuit puis réveil en changements de plan)
+│       ├── inter-scene-3-4.json  ← texte de transition vers la bibliothèque (scène 4 au foyer, scènes 5-6 au bureau)
+│       ├── inter-scene-6.json    ← retour au logement
+│       ├── logement-repos.json   ← scène 6 : se reposer avant le rituel
+│       ├── inter-scene-6-7.json  ← trajet de nuit vers la bibliothèque
+│       ├── bibliotheque-nuit.json← scène 7 : le rituel (vidéos du sort)
+│       ├── inter-scene-7-final.json ← la nuit au coin du feu
+│       ├── bibliotheque-matin.json  ← scène finale avec Phyla, puis les crédits
+│       └── credits.json          ← crédits et statistiques
 └── assets/
     ├── backgrounds/              ← images de fond
     ├── characters/               ← portraits des personnages
@@ -79,7 +86,7 @@ Tous les chemins d'images et de vidéos sont relatifs à `public/`. Partout dans
 }
 ```
 
-- Un personnage sans `portrait` parle sans image (le joueur, une annonce…). Avec un `portrait`, l'image s'affiche au-dessus de la zone de texte. Avec `"portraitFull": true`, le portrait est une image plein écran (personnage devant un décor, comme `naevys.jpg`) qui couvre la scène dès qu'il parle, et reste affichée jusqu'à la fin du dialogue (répliques du joueur comprises).
+- Un personnage sans `portrait` parle sans image (le joueur, une annonce…). Avec un `portrait`, l'image s'affiche au-dessus de la zone de texte. Avec `"portraitFull": true`, le portrait est une image 16/9 transparente où le personnage est déjà placé (`naevys.png` à droite, `phyla.png` à gauche), posée sur le décor dès qu'il parle. Elle reste affichée jusqu'à la fin du dialogue (répliques du joueur comprises) ; plusieurs personnages peuvent être à l'écran ensemble, celui qui parle au premier plan. Les portraits sont masqués pendant une vidéo de réplique (`media`), qui montre déjà le personnage.
 - Une quête s'affiche dans le cadre « Quête en cours » tant que sa condition est remplie ; chaque objectif se coche quand son flag `done` est posé.
 - Un objectif peut être un compteur : `{ "text": "Jardin", "count": ["serre-vue", "cours-vu", "pergola-vue"] }` affiche « Jardin : 1/3 » et se coche quand tous les flags sont posés. Un objectif peut aussi porter `if` / `ifNot` pour n'apparaître qu'au bon moment (ex. « Retourne voir Naevys » quand tout est exploré).
 
@@ -133,14 +140,14 @@ Tous les chemins d'images et de vidéos sont relatifs à `public/`. Partout dans
 - **Formes** : `rect` (x, y, largeur, hauteur) ou `polygon` (`"points": [[x, y], ...]`) pour épouser un objet. La forme s'illumine au survol.
 - **Actions** : `dialogue` ouvre un dialogue de la map, `goto` change de map. `arrow` affiche une flèche dans la zone, `button` un bouton toujours visible (ex. `"button": "Porte"`).
 - **`setFlags` sur la map** : flags posés dès qu'on y arrive (ex. `"setFlags": ["serre-vue"]` pour compter un lieu visité).
-- **Dialogues** : une suite de répliques ; `character` absent = narration. Une réplique peut proposer des `choices` (boutons) qui enchaînent sur un autre dialogue (`next`), changent de map (`goto`), posent des flags (`setFlags`) ou ferment le dialogue. Un dialogue peut aussi avoir son propre `next` : à la fin de sa dernière réplique, il enchaîne sur ce dialogue au lieu de se fermer (ex. revenir à la question de départ pour choisir une autre option).
+- **Dialogues** : une suite de répliques ; `character` absent = narration. Une réplique peut proposer des `choices` (boutons) qui enchaînent sur un autre dialogue (`next`), changent de map (`goto`), posent des flags (`setFlags`) ou ferment le dialogue. Un dialogue peut aussi avoir son propre `next` : à la fin de sa dernière réplique, il enchaîne sur ce dialogue au lieu de se fermer (ex. revenir à la question de départ pour choisir une autre option). Ce `next` peut être une liste de branches : le premier dialogue dont la condition est remplie est choisi, ex. `"next": [{ "dialogue": "pensee-confiant", "ifMore": { "flags": [...], "than": [...] } }, { "dialogue": "pensee-peu-assure" }]`.
 
 ### Flags, conditions et triggers
 
 C'est ce qui rend l'histoire conditionnelle :
 
 - un dialogue (ou un choix) pose des **flags** avec `setFlags` ;
-- une zone, une quête, un objectif, un choix ou un trigger peut porter une **condition** : `if` (tous ces flags posés) et/ou `ifNot` (aucun de ces flags) ;
+- une zone, une quête, un objectif, un choix ou un trigger peut porter une **condition** : `if` (tous ces flags posés) et/ou `ifNot` (aucun de ces flags), et/ou `ifMore` (plus de flags posés dans `flags` que dans `than`, pour les textes « si majorité de A ») ;
 - les **triggers** d'une map lancent un dialogue tout seuls, une seule fois, dès que leur condition est remplie : à l'arrivée sur la map et après chaque dialogue.
 
 ### Vidéos

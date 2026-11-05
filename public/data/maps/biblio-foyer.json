@@ -18,11 +18,13 @@
       "id": "livre-histoire",
       "label": "Livre : L'histoire de Glyglyland",
       "shape": {
-        "type": "rect",
-        "x": 20.5,
-        "y": 43,
-        "width": 5,
-        "height": 8
+        "type": "polygon",
+        "points": [
+          [23.7, 43.1],
+          [25.3, 42.8],
+          [25.7, 50.6],
+          [24.1, 50.8]
+        ]
       },
       "action": {
         "type": "dialogue",
@@ -57,7 +59,7 @@
     "livre-histoire": {
       "lines": [
         {
-          "text": "Un livre : « L'histoire de Glyglyland ». Il raconte la fondation de Glyglyland par la Grande Glyctatrice."
+          "text": "« L'histoire de Glyglyland ». Ce livre raconte la fondation de Glyglyland par la Grande Glyctatrice."
         },
         {
           "text": "« Après avoir fui la “Nuit de la cendre”, qui a ravagé bien des contrées dans notre monde, Elyndra, Dame Phyla Miila, erra pendant quelques années jusqu'à trouver un lieu paisible et libre de toute civilisation. Son nouveau foyer, et celui de centaines de personnes aujourd'hui, venait d'être trouvé. »"
@@ -96,11 +98,13 @@
           "choices": [
             {
               "text": "« Je serai honoré·e d'apporter mon aide ! »",
-              "next": "plan-liste"
+              "next": "plan-liste",
+              "setFlags": ["jour2-rassure-2"]
             },
             {
               "text": "« Vous confiez une aussi lourde responsabilité à un·e assistant·e ?? »",
-              "next": "plan-liste"
+              "next": "plan-liste",
+              "setFlags": ["jour2-apprehende-2"]
             }
           ]
         }
@@ -122,11 +126,13 @@
           "choices": [
             {
               "text": "« OK, c'est parti ! »",
-              "next": "plan-fin"
+              "next": "plan-fin",
+              "setFlags": ["jour2-rassure-3"]
             },
             {
               "text": "« Je m'en occupe. »",
-              "next": "plan-fin"
+              "next": "plan-fin",
+              "setFlags": ["jour2-apprehende-3"]
             }
           ]
         }

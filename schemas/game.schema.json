@@ -118,6 +118,29 @@
             },
             "description": "La quête disparaît dès qu'un de ces flags est posé."
           },
+          "ifMore": {
+            "type": "object",
+            "required": [
+              "flags",
+              "than"
+            ],
+            "additionalProperties": false,
+            "description": "Vraie s'il y a plus de flags posés dans flags que dans than (ex. majorité de réponses A).",
+            "properties": {
+              "flags": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "than": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            }
+          },
           "objectives": {
             "type": "array",
             "items": {
@@ -155,6 +178,29 @@
                     "type": "string"
                   },
                   "description": "L'objectif disparaît dès qu'un de ces flags est posé."
+                },
+                "ifMore": {
+                  "type": "object",
+                  "required": [
+                    "flags",
+                    "than"
+                  ],
+                  "additionalProperties": false,
+                  "description": "Vraie s'il y a plus de flags posés dans flags que dans than (ex. majorité de réponses A).",
+                  "properties": {
+                    "flags": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "than": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    }
+                  }
                 }
               },
               "anyOf": [

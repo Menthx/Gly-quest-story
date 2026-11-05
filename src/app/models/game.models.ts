@@ -20,10 +20,18 @@ export type Media = string | string[];
 /**
  * Condition sur les flags (drapeaux) posés par les dialogues.
  * `if` : tous ces flags doivent être posés. `ifNot` : aucun de ces flags ne doit l'être.
+ * `ifMore` : il y a plus de flags posés dans `flags` que dans `than` (ex. majorité de réponses A).
  */
 export interface Condition {
   if?: string[];
   ifNot?: string[];
+  ifMore?: MoreCondition;
+}
+
+/** Vraie quand le nombre de flags posés parmi `flags` dépasse celui parmi `than`. */
+export interface MoreCondition {
+  flags: string[];
+  than: string[];
 }
 
 /** Fichier `game.json`. */
@@ -189,10 +197,19 @@ export interface Region extends Condition {
 
 export interface Dialogue {
   lines: DialogueLine[];
-  /** Id du dialogue enchaîné après la dernière réplique (même map). Absent = ferme le dialogue. */
-  next?: string;
+  /**
+   * Dialogue enchaîné après la dernière réplique (même map). Absent = ferme le dialogue.
+   * Une liste de branches choisit le premier dialogue dont la condition est remplie
+   * (ex. un texte différent selon la majorité des réponses).
+   */
+  next?: string | NextBranch[];
   /** Flags posés quand ce dialogue s'ouvre (servent aux conditions, quêtes et triggers). */
   setFlags?: string[];
+}
+
+/** Branche d'un `next` conditionnel : ce dialogue si la condition est remplie. */
+export interface NextBranch extends Condition {
+  dialogue: string;
 }
 
 export interface DialogueLine {

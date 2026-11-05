@@ -15,11 +15,13 @@
       "label": "Naevys",
       "ifNot": ["visite-terminee"],
       "shape": {
-        "type": "rect",
-        "x": 54,
-        "y": 47,
-        "width": 9.5,
-        "height": 14
+        "type": "polygon",
+        "points": [
+          [54.5, 50.0],
+          [59.1, 49.2],
+          [59.7, 59.0],
+          [55.0, 59.8]
+        ]
       },
       "action": {
         "type": "dialogue",
@@ -32,36 +34,17 @@
       "if": ["mission-ingredients"],
       "ifNot": ["ingredients-apportes"],
       "shape": {
-        "type": "rect",
-        "x": 54,
-        "y": 47,
-        "width": 9.5,
-        "height": 14
-      },
-      "action": {
-        "type": "dialogue",
-        "dialogue": "naevys-ingredients"
-      }
-    },
-    {
-      "id": "sol-arcanique",
-      "label": "Le sol arcanique",
-      "if": ["ingredients-apportes"],
-      "ifNot": ["ingredients-deposes"],
-      "shape": {
         "type": "polygon",
         "points": [
-          [48, 52.5],
-          [56, 51],
-          [68, 51.5],
-          [74, 53.5],
-          [72, 56],
-          [50, 56]
+          [54.5, 50.0],
+          [59.1, 49.2],
+          [59.7, 59.0],
+          [55.0, 59.8]
         ]
       },
       "action": {
         "type": "dialogue",
-        "dialogue": "sol-arcanique"
+        "dialogue": "naevys-ingredients"
       }
     },
     {
@@ -206,11 +189,13 @@
           "choices": [
             {
               "text": "« Déjà ??? »",
-              "next": "naevys-bonne-nuit"
+              "next": "naevys-bonne-nuit",
+              "setFlags": ["jour1-confiant-3"]
             },
             {
               "text": "« Oh ouiiiii, merci beaucoup ! »",
-              "next": "naevys-bonne-nuit"
+              "next": "naevys-bonne-nuit",
+              "setFlags": ["jour1-peu-assure-3"]
             }
           ]
         }
@@ -244,7 +229,6 @@
                 "terre-prise",
                 "amethyste-prise",
                 "plume-prise",
-                "rose-prise",
                 "lavande-prise"
               ]
             },
@@ -269,15 +253,27 @@
       "lines": [
         {
           "character": "naevys",
-          "text": "« Parfait, on va pouvoir préparer le rituel pour ce soir. Dépose les ingrédients sur le sol arcanique, juste derrière moi. »"
-        }
-      ]
-    },
-    "sol-arcanique": {
-      "setFlags": ["ingredients-deposes"],
-      "lines": [
+          "text": "« Parfait, on va pouvoir préparer le rituel pour ce soir. Dépose les ingrédients près du sol arcanique, juste derrière moi. »"
+        },
         {
-          "text": "Je dépose les ingrédients sur le sol arcanique. (suite à venir)"
+          "character": "joueur",
+          "text": "« Je dépose les ingrédients comme demandé. »"
+        },
+        {
+          "character": "naevys",
+          "text": "« Merci pour ton aide ! Comme tu le sais, nous ferons le rituel ce soir, alors ta prochaine mission consiste à… te reposer ! »",
+          "choices": [
+            {
+              "text": "« Déjà ?? Mais il n'est que midi ! »",
+              "next": "naevys-repos",
+              "setFlags": ["jour2-rassure-4"]
+            },
+            {
+              "text": "« Génial, j'ai ma journée libre alors ? »",
+              "next": "naevys-repos",
+              "setFlags": ["jour2-apprehende-4"]
+            }
+          ]
         }
       ]
     },
@@ -286,6 +282,26 @@
       "lines": [
         {
           "text": "Je prends quelques cristaux d'améthyste."
+        }
+      ]
+    },
+    "naevys-repos": {
+      "lines": [
+        {
+          "character": "naevys",
+          "text": "« Eh oui ! Comme tu seras avec moi ce soir, pas question de te faire travailler toute la journée, ce serait du surmenage ! Alors rentre chez toi et repose-toi. Rendez-vous ce soir ici même, dès le coucher du soleil. »",
+          "choices": [
+            {
+              "text": "« Très bien Dame Naevys, à ce soir ! »",
+              "goto": "inter-scene-6",
+              "setFlags": ["jour2-rassure-5"]
+            },
+            {
+              "text": "« Merci beaucoup, à ce soir ! »",
+              "goto": "inter-scene-6",
+              "setFlags": ["jour2-apprehende-5"]
+            }
+          ]
         }
       ]
     }

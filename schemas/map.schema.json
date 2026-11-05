@@ -61,6 +61,29 @@
             "items": {
               "type": "string"
             }
+          },
+          "ifMore": {
+            "type": "object",
+            "required": [
+              "flags",
+              "than"
+            ],
+            "additionalProperties": false,
+            "description": "Vraie s'il y a plus de flags posés dans flags que dans than (ex. majorité de réponses A).",
+            "properties": {
+              "flags": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "than": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            }
           }
         }
       }
@@ -297,6 +320,29 @@
           },
           "description": "La zone disparaît dès qu'un de ces flags est posé."
         },
+        "ifMore": {
+          "type": "object",
+          "required": [
+            "flags",
+            "than"
+          ],
+          "additionalProperties": false,
+          "description": "Vraie s'il y a plus de flags posés dans flags que dans than (ex. majorité de réponses A).",
+          "properties": {
+            "flags": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "than": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        },
         "button": {
           "type": "string",
           "description": "Bouton toujours visible avec ce texte au centre de la zone (ex. Porte)."
@@ -371,6 +417,29 @@
                         "type": "string"
                       },
                       "description": "Le choix disparaît dès qu'un de ces flags est posé."
+                    },
+                    "ifMore": {
+                      "type": "object",
+                      "required": [
+                        "flags",
+                        "than"
+                      ],
+                      "additionalProperties": false,
+                      "description": "Vraie s'il y a plus de flags posés dans flags que dans than (ex. majorité de réponses A).",
+                      "properties": {
+                        "flags": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        },
+                        "than": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        }
+                      }
                     }
                   }
                 }
@@ -386,8 +455,66 @@
           "description": "Flags posés à l'ouverture du dialogue."
         },
         "next": {
-          "type": "string",
-          "description": "Id du dialogue enchaîné après la dernière réplique (même map). Absent = ferme le dialogue."
+          "description": "Dialogue enchaîné après la dernière réplique (même map). Absent = ferme le dialogue. Une liste de branches prend le premier dialogue dont la condition est remplie.",
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "array",
+              "minItems": 1,
+              "items": {
+                "type": "object",
+                "required": [
+                  "dialogue"
+                ],
+                "additionalProperties": false,
+                "properties": {
+                  "dialogue": {
+                    "type": "string",
+                    "description": "Id du dialogue (même map)."
+                  },
+                  "if": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "description": "Branche retenue seulement si tous ces flags sont posés."
+                  },
+                  "ifNot": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "description": "Branche écartée dès qu'un de ces flags est posé."
+                  },
+                  "ifMore": {
+                    "type": "object",
+                    "required": [
+                      "flags",
+                      "than"
+                    ],
+                    "additionalProperties": false,
+                    "description": "Vraie s'il y a plus de flags posés dans flags que dans than (ex. majorité de réponses A).",
+                    "properties": {
+                      "flags": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        }
+                      },
+                      "than": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          ]
         }
       }
     },

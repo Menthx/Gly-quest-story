@@ -11,8 +11,9 @@ const config: GameConfig = {
   startMap: 'a',
   maps: [],
   characters: {
-    naevys: { name: 'Naevys', portrait: 'naevys.jpg', portraitFull: true },
-    phyla: { name: 'Phyla', portrait: 'phyla.png' },
+    naevys: { name: 'Naevys', portrait: 'naevys.png', portraitFull: true },
+    phyla: { name: 'Phyla', portrait: 'phyla.png', portraitFull: true },
+    lea: { name: 'Léa', portrait: 'lea.png' },
   },
 };
 
@@ -25,8 +26,15 @@ const map: GameMap = {
         { character: 'naevys', text: 'Préparons le rituel.' },
         { text: 'Un cercle apparaît.', media: ['lancement.mp4', 'loop.mp4'] },
         { character: 'naevys', text: 'Que l’énergie soit scellée !' },
-        { character: 'phyla', text: 'Bravo !' },
+        { character: 'lea', text: 'Bravo !' },
         { text: 'Le cercle disparaît.', media: '' },
+      ],
+    },
+    final: {
+      lines: [
+        { character: 'phyla', text: 'Le rituel a fonctionné !' },
+        { character: 'naevys', text: 'Dame Phyla, c’est vous !' },
+        { character: 'joueur', text: '…' },
       ],
     },
   },
@@ -43,7 +51,7 @@ describe('DialogueBox', () => {
 
   afterEach(() => vi.restoreAllMocks());
 
-  it('affiche le media d’une réplique par-dessus les portraits plein écran, puis le retire avec ""', async () => {
+  it('affiche le media d’une réplique (vidéo : portraits plein écran masqués), puis le retire avec ""', async () => {
     const fixture = TestBed.createComponent(DialogueBox);
     const dialogue = TestBed.inject(DialogueService);
     const el = fixture.nativeElement as HTMLElement;
@@ -54,26 +62,53 @@ describe('DialogueBox', () => {
 
     dialogue.open(map, 'rituel');
     await fixture.whenStable();
-    expect(shown()).toEqual(['naevys.jpg']);
+    expect(shown()).toEqual(['naevys.png']);
+
+    // Une vidéo montre déjà le personnage : les portraits plein écran sont masqués.
+    dialogue.next();
+    await fixture.whenStable();
+    expect(shown()).toEqual(['lancement.mp4']);
 
     dialogue.next();
     await fixture.whenStable();
     expect(shown()).toEqual(['lancement.mp4']);
 
-    // Naevys parle : la vidéo reste affichée.
+    // Un portrait classique s'affiche par-dessus.
     dialogue.next();
     await fixture.whenStable();
     expect(shown()).toEqual(['lancement.mp4']);
+    expect(el.querySelector('.portrait:not(.full) img')?.getAttribute('src')).toBe('lea.png');
 
-    // Un portrait classique s'affiche par-dessus la vidéo.
+    // media "" : la vidéo est retirée, Naevys (qui a déjà parlé) réapparaît.
     dialogue.next();
     await fixture.whenStable();
-    expect(shown()).toEqual(['lancement.mp4']);
-    expect(el.querySelector('.portrait:not(.full) img')?.getAttribute('src')).toBe('phyla.png');
+    expect(shown()).toEqual(['naevys.png']);
+  });
 
-    // media "" : retour au portrait plein écran de Naevys, qui a déjà parlé.
+  it('garde à l’écran tous les portraits plein écran du dialogue, celui qui parle au premier plan', async () => {
+    const fixture = TestBed.createComponent(DialogueBox);
+    const dialogue = TestBed.inject(DialogueService);
+    const el = fixture.nativeElement as HTMLElement;
+    const portraits = () =>
+      Array.from(el.querySelectorAll('.portrait.full')).map(
+        (p) => `${p.querySelector('img')?.getAttribute('src')}${p.classList.contains('idle') ? ' (idle)' : ''}`,
+      );
+
+    dialogue.open(map, 'final');
+    await fixture.whenStable();
+    expect(portraits()).toEqual(['phyla.png']);
+
     dialogue.next();
     await fixture.whenStable();
-    expect(shown()).toEqual(['naevys.jpg']);
+    expect(portraits()).toEqual(['phyla.png (idle)', 'naevys.png']);
+
+    // Le joueur parle : personne n'est au second plan.
+    dialogue.next();
+    await fixture.whenStable();
+    expect(portraits()).toEqual(['phyla.png', 'naevys.png']);
+
+    dialogue.close();
+    await fixture.whenStable();
+    expect(portraits()).toEqual([]);
   });
 });

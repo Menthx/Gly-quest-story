@@ -1,0 +1,318 @@
+{
+  "$schema": "../../../schemas/map.schema.json",
+  "id": "logement-repos",
+  "name": "Mon logement (journée)",
+  "background": "assets/backgrounds/logement-jour.jpg",
+  "triggers": [
+    {
+      "dialogue": "arrivee"
+    }
+  ],
+  "regions": [
+    {
+      "id": "bureau",
+      "label": "S'installer au bureau et dessiner ?",
+      "ifNot": ["repos-choisi"],
+      "shape": {
+        "type": "rect",
+        "x": 18.4,
+        "y": 33.5,
+        "width": 17.8,
+        "height": 22.8
+      },
+      "action": {
+        "type": "dialogue",
+        "dialogue": "bureau"
+      }
+    },
+    {
+      "id": "banquette",
+      "label": "S'installer sur la banquette et lire un livre ?",
+      "ifNot": ["repos-choisi"],
+      "shape": {
+        "type": "rect",
+        "x": 45,
+        "y": 38.5,
+        "width": 17.8,
+        "height": 17.7
+      },
+      "action": {
+        "type": "dialogue",
+        "dialogue": "banquette"
+      }
+    },
+    {
+      "id": "feu",
+      "label": "S'installer au coin du feu et écouter de la musique ?",
+      "ifNot": ["repos-choisi"],
+      "shape": {
+        "type": "rect",
+        "x": 62.8,
+        "y": 43.9,
+        "width": 17.8,
+        "height": 24.8
+      },
+      "action": {
+        "type": "dialogue",
+        "dialogue": "feu"
+      }
+    },
+    {
+      "id": "lit",
+      "label": "S'installer sur le lit et faire une sieste ?",
+      "ifNot": ["repos-choisi"],
+      "shape": {
+        "type": "polygon",
+        "points": [
+          [2.2, 52.9],
+          [42.1, 58.0],
+          [41.0, 85.9],
+          [1.1, 80.9]
+        ]
+      },
+      "action": {
+        "type": "dialogue",
+        "dialogue": "lit"
+      }
+    }
+  ],
+  "dialogues": {
+    "arrivee": {
+      "lines": [
+        {
+          "text": "Arrivé·e à mon logement, je prends le temps de manger un morceau et de continuer à m'approprier les lieux."
+        },
+        {
+          "text": "Je vais donc appliquer les conseils de Dame Naevys et me reposer…"
+        }
+      ]
+    },
+    "lit": {
+      "lines": [
+        {
+          "text": "S'installer sur le lit et faire une sieste ?",
+          "choices": [
+            {
+              "text": "Oui",
+              "next": "lit-oui",
+              "setFlags": ["attente-sieste", "repos-choisi"]
+            },
+            {
+              "text": "Non"
+            }
+          ]
+        }
+      ]
+    },
+    "lit-oui": {
+      "next": [
+        {
+          "dialogue": "pensee-rassure",
+          "ifMore": {
+            "flags": [
+              "jour2-rassure-1",
+              "jour2-rassure-2",
+              "jour2-rassure-3",
+              "jour2-rassure-4",
+              "jour2-rassure-5"
+            ],
+            "than": [
+              "jour2-apprehende-1",
+              "jour2-apprehende-2",
+              "jour2-apprehende-3",
+              "jour2-apprehende-4",
+              "jour2-apprehende-5"
+            ]
+          }
+        },
+        {
+          "dialogue": "pensee-apprehende"
+        }
+      ],
+      "lines": [
+        {
+          "text": "Je m'installe donc sur le lit. Je commence à regarder le plafond et je laisse mes pensées divaguer."
+        }
+      ]
+    },
+    "bureau": {
+      "lines": [
+        {
+          "text": "S'installer au bureau et dessiner ?",
+          "choices": [
+            {
+              "text": "Oui",
+              "next": "bureau-oui",
+              "setFlags": ["attente-dessin", "repos-choisi"]
+            },
+            {
+              "text": "Non"
+            }
+          ]
+        }
+      ]
+    },
+    "bureau-oui": {
+      "next": [
+        {
+          "dialogue": "pensee-rassure",
+          "ifMore": {
+            "flags": [
+              "jour2-rassure-1",
+              "jour2-rassure-2",
+              "jour2-rassure-3",
+              "jour2-rassure-4",
+              "jour2-rassure-5"
+            ],
+            "than": [
+              "jour2-apprehende-1",
+              "jour2-apprehende-2",
+              "jour2-apprehende-3",
+              "jour2-apprehende-4",
+              "jour2-apprehende-5"
+            ]
+          }
+        },
+        {
+          "dialogue": "pensee-apprehende"
+        }
+      ],
+      "lines": [
+        {
+          "text": "Je m'installe donc au bureau. Je commence à griffonner un peu, mais je suis vite rattrapé·e par mes pensées."
+        }
+      ]
+    },
+    "banquette": {
+      "lines": [
+        {
+          "text": "S'installer sur la banquette et lire un livre ?",
+          "choices": [
+            {
+              "text": "Oui",
+              "next": "banquette-oui",
+              "setFlags": ["attente-lecture", "repos-choisi"]
+            },
+            {
+              "text": "Non"
+            }
+          ]
+        }
+      ]
+    },
+    "banquette-oui": {
+      "next": [
+        {
+          "dialogue": "pensee-rassure",
+          "ifMore": {
+            "flags": [
+              "jour2-rassure-1",
+              "jour2-rassure-2",
+              "jour2-rassure-3",
+              "jour2-rassure-4",
+              "jour2-rassure-5"
+            ],
+            "than": [
+              "jour2-apprehende-1",
+              "jour2-apprehende-2",
+              "jour2-apprehende-3",
+              "jour2-apprehende-4",
+              "jour2-apprehende-5"
+            ]
+          }
+        },
+        {
+          "dialogue": "pensee-apprehende"
+        }
+      ],
+      "lines": [
+        {
+          "text": "Je m'installe donc près de la fenêtre. Je commence à lire un livre qui se trouvait là, mais je n'y trouve pas un grand intérêt. Mon esprit est ailleurs."
+        }
+      ]
+    },
+    "feu": {
+      "lines": [
+        {
+          "text": "S'installer au coin du feu et écouter de la musique ?",
+          "choices": [
+            {
+              "text": "Oui",
+              "next": "feu-oui",
+              "setFlags": ["attente-musique", "repos-choisi"]
+            },
+            {
+              "text": "Non"
+            }
+          ]
+        }
+      ]
+    },
+    "feu-oui": {
+      "next": [
+        {
+          "dialogue": "pensee-rassure",
+          "ifMore": {
+            "flags": [
+              "jour2-rassure-1",
+              "jour2-rassure-2",
+              "jour2-rassure-3",
+              "jour2-rassure-4",
+              "jour2-rassure-5"
+            ],
+            "than": [
+              "jour2-apprehende-1",
+              "jour2-apprehende-2",
+              "jour2-apprehende-3",
+              "jour2-apprehende-4",
+              "jour2-apprehende-5"
+            ]
+          }
+        },
+        {
+          "dialogue": "pensee-apprehende"
+        }
+      ],
+      "lines": [
+        {
+          "text": "Je m'installe confortablement près du feu. Je me laisse porter par la musique, certaines pensées me viennent en tête."
+        }
+      ]
+    },
+    "pensee-rassure": {
+      "next": "reveil-soir",
+      "lines": [
+        {
+          "character": "joueur",
+          "text": "« Le rituel va être accompli ce soir, ça arrive si vite ! Je ne m'attendais pas à participer à une activité aussi importante pour Glyglyland. Je suis sûr·e que tout va bien se passer ! »"
+        }
+      ]
+    },
+    "pensee-apprehende": {
+      "next": "reveil-soir",
+      "lines": [
+        {
+          "character": "joueur",
+          "text": "« Le rituel va être accompli ce soir, ça arrive si vite ! Je ne m'attendais pas à participer à une activité aussi importante pour Glyglyland. J'espère que tout se passera bien… »"
+        }
+      ]
+    },
+    "reveil-soir": {
+      "lines": [
+        {
+          "text": "Sur cette pensée, je ferme les yeux."
+        },
+        {
+          "text": "À mon réveil, le soleil est déjà en train de se coucher. Je prends mes affaires et commence à me diriger vers la bibliothèque.",
+          "media": "assets/backgrounds/logement-soiree.jpg",
+          "choices": [
+            {
+              "text": "Suite",
+              "goto": "inter-scene-6-7"
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

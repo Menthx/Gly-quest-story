@@ -20,9 +20,9 @@
       "shape": {
         "type": "rect",
         "x": 0,
-        "y": 30,
-        "width": 22,
-        "height": 42
+        "y": 0,
+        "width": 22.8,
+        "height": 70.5
       },
       "action": {
         "type": "goto",
@@ -36,9 +36,9 @@
       "shape": {
         "type": "rect",
         "x": 31,
-        "y": 12,
-        "width": 40,
-        "height": 58
+        "y": 0,
+        "width": 41.7,
+        "height": 70.5
       },
       "action": {
         "type": "goto",
@@ -51,10 +51,10 @@
       "if": ["mission-visite"],
       "shape": {
         "type": "rect",
-        "x": 82,
-        "y": 10,
-        "width": 18,
-        "height": 62
+        "x": 80.5,
+        "y": 0,
+        "width": 19.5,
+        "height": 70.5
       },
       "action": {
         "type": "goto",
@@ -68,10 +68,10 @@
       "if": ["mission-visite"],
       "shape": {
         "type": "rect",
-        "x": 85,
-        "y": 83,
-        "width": 13,
-        "height": 11
+        "x": 82.4,
+        "y": 79.6,
+        "width": 17.6,
+        "height": 20.4
       },
       "action": {
         "type": "goto",
@@ -83,7 +83,8 @@
     "accueil": {
       "lines": [
         {
-          "text": "« Je vois une personne en pleine réflexion. Je m'approche d'elle. »"
+          "text": "« Je vois une personne en pleine réflexion. Je m'approche d'elle. »",
+          "media": "assets/backgrounds/biblio-bureau.jpg"
         },
         {
           "character": "joueur",
@@ -106,11 +107,13 @@
           "choices": [
             {
               "text": "« Je suis là pour ça ! Par quoi on commence ? »",
-              "next": "accueil-glyglyland"
+              "next": "accueil-glyglyland",
+              "setFlags": ["jour1-confiant-1"]
             },
             {
               "text": "« Il y a tant de travail que ça ?? »",
-              "next": "accueil-glyglyland"
+              "next": "accueil-glyglyland",
+              "setFlags": ["jour1-peu-assure-1"]
             }
           ]
         }
@@ -166,11 +169,13 @@
           "choices": [
             {
               "text": "« D'accord, j'y vais de ce pas ! »",
-              "next": "accueil-fin"
+              "next": "accueil-fin",
+              "setFlags": ["jour1-confiant-2"]
             },
             {
               "text": "« Merci, je vais en avoir besoin. »",
-              "next": "accueil-fin"
+              "next": "accueil-fin",
+              "setFlags": ["jour1-peu-assure-2"]
             }
           ]
         }
@@ -193,7 +198,8 @@
         },
         {
           "character": "joueur",
-          "text": "« Bonjour Dame Naevys ! »"
+          "text": "« Bonjour Dame Naevys ! »",
+          "media": "assets/backgrounds/biblio-bureau.jpg"
         },
         {
           "character": "naevys",
@@ -201,11 +207,13 @@
           "choices": [
             {
               "text": "« Et comment ! »",
-              "next": "retour-plan"
+              "next": "retour-plan",
+              "setFlags": ["jour2-rassure-1"]
             },
             {
               "text": "« J'espère que ça va bien se passer… »",
-              "next": "retour-plan"
+              "next": "retour-plan",
+              "setFlags": ["jour2-apprehende-1"]
             }
           ]
         }

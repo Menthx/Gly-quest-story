@@ -206,6 +206,8 @@ La map `credits.json` affiche les crédits sur son `background` flouté, puis le
 
 Appuie sur **D** (ou ajoute `?debug` à l'URL, ex. `http://localhost:4200/?debug#/map/train-exterieur`, qui saute aussi l'écran titre ; `?debug=zones` ouvre directement l'onglet Zones). Toutes les zones s'affichent avec leur id, même celles masquées par une condition (bleu = dialogue, jaune = sortie, pointillés = condition non remplie). Le panneau en haut à gauche a deux onglets et peut être replié.
 
+Le mode debug n'existe qu'en dev (`npm start`, ou `ng build --configuration development`). Dans le build de production, celui publié sur GitHub Pages, la touche **D** et `?debug` sont ignorés.
+
 **Partie** : pour tester l'histoire sans la rejouer depuis le début. Le jeu reste jouable.
 
 - **Aller à** : saute sur n'importe quelle map ;

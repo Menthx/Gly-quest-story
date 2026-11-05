@@ -2,12 +2,15 @@ import { Injectable, effect, inject } from '@angular/core';
 import { DebugService } from './debug.service';
 import { GameDataService } from './game-data.service';
 import { GameStateService } from './game-state.service';
+import { Profile, StatsCounts } from '../utils/credits';
 
 const PLAYER_KEY = 'gly-quest-story/player';
 /** Délai avant l'envoi groupé des événements. */
 const FLUSH_DELAY = 3000;
 /** Longueur maximale des données dans l'URL (Apps Script refuse les URL trop longues). */
 const MAX_QUERY = 6000;
+/** Délai maximal pour recevoir les statistiques affichées dans les crédits. */
+const RESULTS_TIMEOUT = 10000;
 
 /** Un événement de progression, écrit comme une ligne dans le Google Sheet. */
 export interface StatsEvent {
@@ -106,6 +109,32 @@ export class StatsService {
       }).catch(() => {
         // Hors ligne ou script indisponible : ces statistiques sont perdues, la partie continue.
       });
+    }
+  }
+
+  /**
+   * Fin de partie : envoie les réponses du joueur (une ligne par joueur dans l'onglet « Fins ») et renvoie
+   * le nombre de joueurs par réponse, ce joueur compris. En mode debug, lit seulement les résultats sans
+   * enregistrer la partie. `null` sans `statsUrl`, hors ligne ou si le script ne répond pas.
+   */
+  async finish(answers: Profile): Promise<StatsCounts | null> {
+    const url = this.data.config()?.statsUrl;
+    if (!url) return null;
+    this.flush();
+    const params = this.debug.enabled()
+      ? 'resultats=1'
+      : `fin=${encodeURIComponent(
+          JSON.stringify({ player: this.playerId(), pseudo: this.state.pseudo(), answers }),
+        )}`;
+    try {
+      // GET sans `no-cors` : Apps Script autorise la lecture de la réponse (en-tête CORS ouvert).
+      const response = await fetch(`${url}${url.includes('?') ? '&' : '?'}${params}`, {
+        signal: AbortSignal.timeout(RESULTS_TIMEOUT),
+      });
+      const body = (await response.json()) as { stats?: StatsCounts };
+      return body.stats ?? null;
+    } catch {
+      return null;
     }
   }
 

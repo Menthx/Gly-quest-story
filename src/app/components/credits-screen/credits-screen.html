@@ -1,0 +1,27 @@
+<div class="credits" [style.background]="backgroundColor()">
+  @if (background()) {
+    <img class="background" [src]="background()" alt="" draggable="false" />
+  }
+  <div class="content">
+    @for (p of paragraphs(); track $index) {
+      <p [class.title]="$first">{{ p }}</p>
+    }
+
+    @if (credits().thanks || credits().stats?.length) {
+      <section class="stats" aria-live="polite">
+        @if (credits().thanks) {
+          <h2>{{ credits().thanks }}</h2>
+        }
+        @if (lines(); as lines) {
+          @for (line of lines; track $index) {
+            <p>{{ line }}</p>
+          }
+        } @else {
+          <p class="pending">Calcul des statistiques…</p>
+        }
+      </section>
+    }
+
+    <button type="button" (click)="backToTitle()">Retour à l'accueil</button>
+  </div>
+</div>

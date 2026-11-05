@@ -98,4 +98,41 @@ describe('StatsService', () => {
     stats.flush();
     expect(fetchSpy).not.toHaveBeenCalled();
   });
+
+  describe('finish', () => {
+    const counts = { 'jour-1': { confiant: 3, 'peu-assure': 1 } };
+
+    it('envoie les réponses du joueur et renvoie les résultats', async () => {
+      const { stats, state } = setup('https://exemple/exec');
+      state.start('Gly');
+      TestBed.tick();
+      fetchSpy.mockReset().mockResolvedValue(Response.json({ joueurs: 4, stats: counts }));
+
+      expect(await stats.finish({ 'jour-1': 'confiant' })).toEqual(counts);
+      const url = new URL(fetchSpy.mock.calls.at(-1)![0] as string);
+      expect(JSON.parse(url.searchParams.get('fin')!)).toEqual({
+        player: localStorage.getItem('gly-quest-story/player'),
+        pseudo: 'Gly',
+        answers: { 'jour-1': 'confiant' },
+      });
+    });
+
+    it('en mode debug, lit les résultats sans enregistrer la partie', async () => {
+      const { stats, state } = setup('https://exemple/exec');
+      TestBed.inject(DebugService).enabled.set(true);
+      state.start('Testeur');
+      fetchSpy.mockResolvedValue(Response.json({ stats: counts }));
+
+      expect(await stats.finish({ 'jour-1': 'confiant' })).toEqual(counts);
+      expect(fetchSpy.mock.calls.at(-1)![0]).toBe('https://exemple/exec?resultats=1');
+    });
+
+    it('renvoie null sans statsUrl ou si le script ne répond pas', async () => {
+      const { stats } = setup();
+      expect(await stats.finish({})).toBeNull();
+      TestBed.inject(GameDataService).config.update((c) => c && { ...c, statsUrl: 'https://x' });
+      fetchSpy.mockRejectedValue(new TypeError('offline'));
+      expect(await stats.finish({})).toBeNull();
+    });
+  });
 });

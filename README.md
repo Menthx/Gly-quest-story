@@ -155,6 +155,32 @@ C'est ce qui rend l'histoire conditionnelle :
 
 `next` affiche un bouton « Suite » vers la map indiquée. Une ligne vide dans `text` (`\n\n`) sépare deux paragraphes. Comme toute map, un interlude peut poser des flags avec `setFlags` (ex. `nouvelle-journee` pour lancer la scène 4).
 
+### Crédits et statistiques
+
+La map `credits.json` affiche les crédits sur son `background` flouté, puis les statistiques du joueur comparées à celles des autres joueurs. La scène finale y mène par un choix `"goto": "credits"`.
+
+```json
+"credits": {
+  "text": "Glyglyland et l'énergie ancienne\n\nHistoire : Phyla_Miila",
+  "thanks": "Merci d'avoir joué !",
+  "stats": [
+    {
+      "id": "jour-1",
+      "answers": [
+        { "id": "confiant", "flags": ["jour1-confiant-1", "jour1-confiant-2", "jour1-confiant-3"], "text": "Vous avez été confiant·e comme {pct} % des joueurs, contre {pct:peu-assure} %…" },
+        { "id": "peu-assure", "flags": ["jour1-peu-assure-1", "jour1-peu-assure-2", "jour1-peu-assure-3"], "text": "…" }
+      ]
+    }
+  ]
+}
+```
+
+- Le premier paragraphe de `text` s'affiche en titre.
+- Pour chaque statistique, le joueur reçoit la réponse dont il a posé le plus de `flags` (majorité de choix A ou B) ; égalité : la première. Une réponse sans `flags` sert de réponse par défaut. Un `text` vide n'affiche rien pour cette réponse, mais le joueur est compté.
+- `{pct}` = % des joueurs ayant la même réponse, `{pct:<id>}` = % ayant la réponse `<id>`.
+- À l'arrivée sur les crédits, le jeu envoie les réponses au script Google (`stats/apps-script.gs`), qui les range dans l'onglet **Fins** (une ligne par joueur : seule sa dernière partie terminée compte) et renvoie les pourcentages. Sans réponse du script (hors ligne, pas de `statsUrl`), les crédits s'affichent sans les statistiques. En mode debug, la partie n'est pas comptée mais les pourcentages s'affichent.
+- `npm run check` avertit quand un flag d'une statistique n'est posé par aucun choix.
+
 ## Le mode debug
 
 Appuie sur **D** (ou ajoute `?debug` à l'URL, ex. `http://localhost:4200/?debug#/map/train-exterieur`, qui saute aussi l'écran titre ; `?debug=zones` ouvre directement l'onglet Zones). Toutes les zones s'affichent avec leur id, même celles masquées par une condition (bleu = dialogue, jaune = sortie, pointillés = condition non remplie). Le panneau en haut à gauche a deux onglets et peut être replié.

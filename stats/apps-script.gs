@@ -6,13 +6,21 @@
  * - Événements : une ligne par événement (début de partie, map, flag, choix)
  * - Joueurs    : une ligne par joueur, avec où il en est
  * - Synthèse   : nombre de joueurs par map, par flag, et répartition des choix (formules)
+ * - Fins       : une ligne par joueur ayant atteint les crédits, avec ses réponses aux statistiques
+ *                (une colonne par statistique, ajoutée automatiquement)
+ *
+ * Les crédits du jeu affichent les pourcentages calculés sur l'onglet Fins.
+ * Après avoir collé une nouvelle version du script : Déployer › Gérer les déploiements › modifier (crayon)
+ * › Version : « Nouvelle version » › Déployer. L'URL reste la même.
  */
 
 const EVENTS = 'Événements';
 const PLAYERS = 'Joueurs';
 const SUMMARY = 'Synthèse';
+const ENDINGS = 'Fins';
 
 const EVENT_HEADERS = ['Reçu le', 'Date (joueur)', 'Joueur', 'Pseudo', 'Type', 'Valeur', 'Map'];
+const ENDING_HEADERS = ['Joueur', 'Pseudo', 'Terminé le'];
 const PLAYER_HEADERS = [
   'Joueur',
   'Pseudo',
@@ -27,10 +35,20 @@ const PLAYER_HEADERS = [
 /**
  * Le jeu envoie `?d={"events":[...]}` en GET : un POST peut être redirigé par Google avant
  * d'atteindre le script (plusieurs comptes connectés…) et perdre son contenu en route.
- * Sans `d`, la page affiche simplement « ok » (test de l'URL dans le navigateur).
+ *
+ * Crédits : `?fin={"player","pseudo","answers":{...}}` enregistre les réponses du joueur dans l'onglet
+ * Fins, puis renvoie les résultats en JSON ; `?resultats=1` renvoie seulement les résultats (mode debug).
+ * Sans paramètre, la page affiche simplement « ok » (test de l'URL dans le navigateur).
  */
 function doGet(e) {
-  if (e && e.parameter && e.parameter.d) record(JSON.parse(e.parameter.d).events || []);
+  const p = (e && e.parameter) || {};
+  if (p.d) record(JSON.parse(p.d).events || []);
+  if (p.fin) recordEnding(JSON.parse(p.fin));
+  if (p.fin || p.resultats) {
+    return ContentService.createTextOutput(JSON.stringify(results())).setMimeType(
+      ContentService.MimeType.JSON,
+    );
+  }
   return ContentService.createTextOutput('ok');
 }
 
@@ -65,6 +83,64 @@ function record(events) {
   } finally {
     lock.releaseLock();
   }
+}
+
+/**
+ * Réponses d'un joueur arrivé aux crédits : une ligne par joueur, remplacée s'il termine une autre
+ * partie (seule sa dernière fin compte). Une colonne est ajoutée pour chaque nouvelle statistique.
+ */
+function recordEnding(ending) {
+  if (!ending || !ending.player) return;
+  const lock = LockService.getScriptLock();
+  lock.waitLock(20000);
+  try {
+    const s = sheet(SpreadsheetApp.getActiveSpreadsheet(), ENDINGS, ENDING_HEADERS);
+    const answers = ending.answers || {};
+    const headers = s.getRange(1, 1, 1, s.getLastColumn()).getValues()[0];
+    for (const stat of Object.keys(answers)) {
+      if (headers.indexOf(stat) === -1) {
+        headers.push(stat);
+        s.getRange(1, headers.length).setValue(stat).setFontWeight('bold');
+      }
+    }
+    const row = headers.map((h, i) => {
+      if (i === 0) return ending.player;
+      if (i === 1) return ending.pseudo || '';
+      if (i === 2) return new Date();
+      return answers[h] || '';
+    });
+    const last = s.getLastRow();
+    const ids =
+      last > 1
+        ? s
+            .getRange(2, 1, last - 1, 1)
+            .getValues()
+            .map((r) => r[0])
+        : [];
+    const index = ids.indexOf(ending.player);
+    const line = index === -1 ? last + 1 : index + 2;
+    s.getRange(line, 1, 1, row.length).setValues([row]);
+  } finally {
+    lock.releaseLock();
+  }
+}
+
+/** Nombre de joueurs par réponse pour chaque statistique : `{ joueurs, stats: { stat: { réponse: n } } }`. */
+function results() {
+  const s = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(ENDINGS);
+  const stats = {};
+  if (!s || s.getLastRow() < 2) return { joueurs: 0, stats };
+  const data = s.getDataRange().getValues();
+  const headers = data[0];
+  for (let c = ENDING_HEADERS.length; c < headers.length; c++) {
+    const counts = {};
+    for (let r = 1; r < data.length; r++) {
+      const answer = data[r][c];
+      if (answer !== '') counts[answer] = (counts[answer] || 0) + 1;
+    }
+    stats[headers[c]] = counts;
+  }
+  return { joueurs: data.length - 1, stats };
 }
 
 /** Met à jour la ligne de chaque joueur concerné. */

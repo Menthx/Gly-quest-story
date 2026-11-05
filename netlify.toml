@@ -1,0 +1,12 @@
+# Déploiement Netlify (alternative à GitHub Pages).
+# Le site est servi à la racine du domaine Netlify : on garde le <base href="/">
+# de src/index.html (le --base-href "/Gly-quest-story/" n'est utilisé que par le
+# workflow GitHub Pages). Le routeur utilise des URL en hash (#/...), donc
+# aucune règle de redirection SPA n'est nécessaire.
+
+[build]
+  command = "npm run build"
+  publish = "dist/gly-quest-story/browser"
+
+[build.environment]
+  NODE_VERSION = "24"

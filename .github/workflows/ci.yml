@@ -9,7 +9,8 @@ on:
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
+  # Sur main, on ne coupe pas un déploiement Pages en cours (ça peut bloquer les suivants).
+  cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
 
 jobs:
   build:
@@ -46,3 +47,7 @@ jobs:
     steps:
       - id: deployment
         uses: actions/deploy-pages@v4
+        with:
+          # 30 min au lieu de 10 : quand la file d'attente de GitHub Pages est lente,
+          # le déploiement reste sans statut plusieurs minutes avant de démarrer.
+          timeout: 1800000

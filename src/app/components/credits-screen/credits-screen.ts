@@ -6,9 +6,8 @@ import { StatsService } from '../../services/stats.service';
 import { profile, statLines } from '../../utils/credits';
 import { MediaView } from '../media/media';
 
-/** Durée du générique : une base, plus un temps par ligne de texte (en secondes). */
-const ROLL_BASE = 6;
-const ROLL_PER_LINE = 1.8;
+/** Durée du générique, en secondes. */
+const ROLL_DURATION = 12;
 
 /**
  * Écran de fin : les crédits défilent vers le haut sur le fond flouté, comme un générique de film
@@ -34,10 +33,7 @@ export class CreditsScreen {
   protected readonly paragraphs = computed(() =>
     this.state.format(this.credits().text).split(/\n\s*\n/),
   );
-  /** Durée du défilement, selon la longueur du texte. */
-  protected readonly rollDuration = computed(
-    () => `${ROLL_BASE + ROLL_PER_LINE * this.credits().text.split('\n').length}s`,
-  );
+  protected readonly rollDuration = `${ROLL_DURATION}s`;
   /** Le générique est terminé : l'encadré des statistiques s'affiche. */
   protected readonly rolled = signal(
     !!globalThis.matchMedia?.('(prefers-reduced-motion: reduce)').matches,

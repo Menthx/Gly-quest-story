@@ -5,7 +5,7 @@
 
   @if (!rolled()) {
     <div class="roll-area">
-      <div class="roll" [style.animation-duration]="rollDuration()" (animationend)="endRoll()">
+      <div class="roll" [style.animation-duration]="rollDuration" (animationend)="endRoll()">
         @for (p of paragraphs(); track $index) {
           <p [class.title]="$first">{{ p }}</p>
         }

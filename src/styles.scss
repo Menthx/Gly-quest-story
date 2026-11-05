@@ -4,6 +4,15 @@ body {
   height: 100%;
   background: #000;
   font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  /* Aucun texte sélectionnable (sauf les champs de saisie, plus bas). */
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+input,
+textarea {
+  -webkit-user-select: text;
+  user-select: text;
 }
 
 *,

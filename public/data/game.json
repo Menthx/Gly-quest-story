@@ -239,6 +239,18 @@
       "inMenu": false
     },
     {
+      "id": "inter-scene-7-final-2",
+      "name": "Une nuit à la bibliothèque (2)",
+      "file": "data/maps/inter-scene-7-final-2.json",
+      "inMenu": false
+    },
+    {
+      "id": "inter-scene-7-final-3",
+      "name": "Une nuit à la bibliothèque (3)",
+      "file": "data/maps/inter-scene-7-final-3.json",
+      "inMenu": false
+    },
+    {
       "id": "bibliotheque-matin",
       "name": "Bibliothèque (matin)",
       "file": "data/maps/bibliotheque-matin.json",

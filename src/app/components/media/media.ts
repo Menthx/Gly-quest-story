@@ -21,7 +21,8 @@ import { isVideo, mediaList } from '../../utils/media';
 @Component({
   selector: 'app-media',
   template: `
-    @for (path of paths(); track $index) {
+    <!-- Un élément par chemin : une vidéo qui change de source en cours de lecture se met en pause. -->
+    @for (path of paths(); track $index + ':' + path) {
       @if (isVideo(path)) {
         <video
           #video

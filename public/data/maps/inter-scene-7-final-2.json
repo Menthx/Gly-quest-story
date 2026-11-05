@@ -1,0 +1,10 @@
+{
+  "$schema": "../../../schemas/map.schema.json",
+  "id": "inter-scene-7-final-2",
+  "name": "Une nuit à la bibliothèque",
+  "backgroundColor": "#1c1730",
+  "interlude": {
+    "text": "Dame Naevys m'explique également que cette nuit, les Gardiens de Glyglyland sont mobilisés auprès de la Grande Glyctatrice pour garantir que rien d'inhabituel ne survienne à cause de l'énergie ancienne : c'est une garantie au cas où le rituel ne se serait pas déroulé comme prévu.",
+    "next": "inter-scene-7-final-3"
+  }
+}

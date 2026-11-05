@@ -44,7 +44,7 @@ public/
 │       ├── logement-repos.json   ← scène 6 : se reposer avant le rituel
 │       ├── inter-scene-6-7.json  ← trajet de nuit vers la bibliothèque
 │       ├── bibliotheque-nuit.json← scène 7 : le rituel (vidéos du sort)
-│       ├── inter-scene-7-final.json ← la nuit au coin du feu
+│       ├── inter-scene-7-final(-2,-3).json ← la nuit au coin du feu, en trois écrans
 │       ├── bibliotheque-matin.json  ← scène finale avec Phyla, puis les crédits
 │       └── credits.json          ← crédits et statistiques
 └── assets/

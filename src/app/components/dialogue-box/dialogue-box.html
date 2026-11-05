@@ -1,10 +1,12 @@
 @if (line()) {
   <div class="overlay" (click)="dialogue.next()">
-    @if (fullPortrait(); as full) {
-      <img class="portrait full" [src]="full" alt="" />
+    @if (sceneMedia(); as media) {
+      <app-media class="portrait full" [src]="media" />
+    } @else if (fullPortrait(); as full) {
+      <app-media class="portrait full" [src]="full" />
     }
     @if (!character()?.portraitFull && character()?.portrait) {
-      <img class="portrait" [src]="character()?.portrait" [alt]="character()?.name" />
+      <app-media class="portrait" [src]="character()?.portrait" [alt]="character()?.name ?? ''" />
     }
     <div class="box" [class.narrator]="!character()">
       @if (character(); as c) {

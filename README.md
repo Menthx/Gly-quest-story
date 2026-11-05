@@ -42,11 +42,12 @@ public/
 │       └── inter-scene-3-4.json  ← texte de transition vers la bibliothèque (scène 4 au foyer, scènes 5-6 au bureau)
 └── assets/
     ├── backgrounds/              ← images de fond
-    └── characters/               ← portraits des personnages
+    ├── characters/               ← portraits des personnages
+    └── videos/                   ← vidéos (fonds, plans de dialogue)
 schemas/                          ← schémas JSON : autocomplétion et vérification dans VS Code
 ```
 
-Tous les chemins d'images sont relatifs à `public/`. Partout dans les textes, `{pseudo}` est remplacé par le pseudo du joueur.
+Tous les chemins d'images et de vidéos sont relatifs à `public/`. Partout dans les textes, `{pseudo}` est remplacé par le pseudo du joueur.
 
 ### game.json
 
@@ -141,6 +142,19 @@ C'est ce qui rend l'histoire conditionnelle :
 - un dialogue (ou un choix) pose des **flags** avec `setFlags` ;
 - une zone, une quête, un objectif, un choix ou un trigger peut porter une **condition** : `if` (tous ces flags posés) et/ou `ifNot` (aucun de ces flags) ;
 - les **triggers** d'une map lancent un dialogue tout seuls, une seule fois, dès que leur condition est remplie : à l'arrivée sur la map et après chaque dialogue.
+
+### Vidéos
+
+Partout où une image est attendue (`background` d'une map, `portrait`, `titleBackground`, `media` d'une réplique), on peut mettre une vidéo `.mp4` ou `.webm` : elle a le même cadrage que l'image, les zones cliquables restent par-dessus, et elle tourne en boucle.
+
+- **Une liste** est jouée à la suite, la dernière en boucle : `"background": ["assets/videos/lancement-sort-naevys.mp4", "assets/videos/loop-sort-naevys.mp4"]`. Pour qu'une vidéo ne se joue qu'une fois, la faire suivre d'une image : `["assets/videos/lancement-sort-naevys.mp4", "assets/backgrounds/biblio-bureau-nuit.jpg"]`.
+- **`media` sur une réplique** : image ou vidéo plein écran sur la scène à partir de cette réplique, jusqu'à la fin du dialogue (dialogues enchaînés compris). Pratique pour un changement de plan ou une cinématique en plein dialogue. Les portraits s'affichent par-dessus. `"media": ""` la retire.
+
+```json
+{ "text": "Naevys se dirige vers le sol arcanique…", "media": "assets/videos/loop-sort-naevys.mp4" }
+```
+
+Le son est joué si le navigateur l'autorise (c'est le cas après le clic sur « Jouer »), sinon la vidéo est lue sans le son. Pour un chargement rapide, garder les vidéos légères (1080p en H.264, quelques Mo).
 
 ### Interlude (fond uni)
 

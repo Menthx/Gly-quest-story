@@ -2,7 +2,7 @@
  * Vérifie le contenu du jeu (public/data) : `npm run check`.
  *
  * - chaque JSON respecte son schéma (schemas/) : une clé mal écrite est signalée ;
- * - chaque id référencé existe : maps, dialogues, personnages, images ;
+ * - chaque id référencé existe : maps, dialogues, personnages, images et vidéos ;
  * - chaque flag testé (`if`, `ifNot`, objectifs de quête) est posé quelque part.
  *
  * Sans cette vérification, une faute de frappe ne provoque aucune erreur dans le jeu :
@@ -42,8 +42,12 @@ function validate(kind, data, where) {
   }
 }
 
-function checkImage(path, where) {
-  if (path && !existsSync(join(pub, path))) errors.push(`${where} : image introuvable « ${path} »`);
+/** Image ou vidéo : un chemin, ou une liste de chemins (vidéos jouées à la suite). */
+function checkMedia(media, where) {
+  for (const path of Array.isArray(media) ? media : [media]) {
+    if (path && !existsSync(join(pub, path)))
+      errors.push(`${where} : image ou vidéo introuvable « ${path} »`);
+  }
 }
 
 // --- game.json ---
@@ -54,9 +58,9 @@ validate('game', game, gameFile);
 
 const mapIds = new Set((game.maps ?? []).map((m) => m.id));
 const characters = game.characters ?? {};
-checkImage(game.titleBackground, `${gameFile} titleBackground`);
+checkMedia(game.titleBackground, `${gameFile} titleBackground`);
 for (const [id, c] of Object.entries(characters))
-  checkImage(c.portrait, `${gameFile} personnage « ${id} »`);
+  checkMedia(c.portrait, `${gameFile} personnage « ${id} »`);
 if (!mapIds.has(game.startMap))
   errors.push(`${gameFile} : startMap « ${game.startMap} » n'est pas dans "maps"`);
 
@@ -96,7 +100,7 @@ for (const entry of game.maps ?? []) {
   validate('map', map, file);
   if (map.id !== entry.id)
     errors.push(`${file} : id « ${map.id} » différent de celui de game.json (« ${entry.id} »)`);
-  checkImage(map.background, `${file} background`);
+  checkMedia(map.background, `${file} background`);
   for (const f of map.setFlags ?? []) flagsSet.add(f);
 
   const dialogues = map.dialogues ?? {};
@@ -141,6 +145,7 @@ for (const entry of game.maps ?? []) {
     if (d.next) refDialogue(d.next, `dialogue « ${id} », fin`);
     (d.lines ?? []).forEach((line, i) => {
       const where = `dialogue « ${id} », réplique ${i + 1}`;
+      checkMedia(line.media, `${file} ${where}, media`);
       if (line.character && !(line.character in characters)) {
         errors.push(`${file} ${where} : personnage « ${line.character} » absent de game.json`);
       }

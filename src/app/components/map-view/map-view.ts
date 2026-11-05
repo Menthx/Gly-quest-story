@@ -19,6 +19,7 @@ import { CreditsScreen } from '../credits-screen/credits-screen';
 import { DebugPanel, DrawMode } from '../debug-panel/debug-panel';
 import { DialogueBox } from '../dialogue-box/dialogue-box';
 import { MapMenu } from '../map-menu/map-menu';
+import { MediaView } from '../media/media';
 import { QuestPanel } from '../quest-panel/quest-panel';
 
 const ARROWS = { left: '◀', right: '▶', up: '▲', down: '▼' } as const;
@@ -26,7 +27,7 @@ const ARROWS = { left: '◀', right: '▶', up: '▲', down: '▼' } as const;
 /** Affiche une map : background, zones cliquables, dialogue, quête, menu et outils de debug (ou un interlude, ou les crédits). */
 @Component({
   selector: 'app-map-view',
-  imports: [CreditsScreen, DialogueBox, MapMenu, DebugPanel, QuestPanel],
+  imports: [CreditsScreen, DialogueBox, MapMenu, DebugPanel, QuestPanel, MediaView],
   templateUrl: './map-view.html',
   styleUrl: './map-view.scss',
   host: {
@@ -48,7 +49,7 @@ export class MapView {
     loader: ({ params }) => this.data.loadMap(params),
   });
 
-  /** Ratio largeur/hauteur de l'image, lu au chargement (16/9 par défaut). */
+  /** Ratio largeur/hauteur de l'image ou de la vidéo de fond, lu au chargement (16/9 par défaut). */
   protected readonly aspectRatio = signal(16 / 9);
   protected readonly hovered = signal<Region | null>(null);
 
@@ -114,12 +115,6 @@ export class MapView {
       this.hovered.set(null);
       this.draft.set(null);
     });
-  }
-
-  protected onImageLoad(img: HTMLImageElement): void {
-    if (img.naturalWidth && img.naturalHeight) {
-      this.aspectRatio.set(img.naturalWidth / img.naturalHeight);
-    }
   }
 
   protected activate(region: Region): void {

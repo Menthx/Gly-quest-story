@@ -1,13 +1,15 @@
 import { Component, computed, inject, linkedSignal, output } from '@angular/core';
-import { DialogueChoice } from '../../models/game.models';
+import { DialogueChoice, Media } from '../../models/game.models';
 import { DialogueService } from '../../services/dialogue.service';
 import { GameDataService } from '../../services/game-data.service';
 import { GameStateService } from '../../services/game-state.service';
 import { StatsService } from '../../services/stats.service';
+import { MediaView } from '../media/media';
 
 /** Popup de dialogue : portrait du personnage, nom, texte et choix éventuels. */
 @Component({
   selector: 'app-dialogue-box',
+  imports: [MediaView],
   templateUrl: './dialogue-box.html',
   styleUrl: './dialogue-box.scss',
   host: {
@@ -36,10 +38,24 @@ export class DialogueBox {
     return { ...character, name: this.state.format(character.name) };
   });
   /**
-   * Image plein écran (`portraitFull`) : une fois que ce personnage a parlé, elle reste affichée
-   * sur les répliques suivantes (joueur, narration) jusqu'à la fermeture du dialogue.
+   * Image ou vidéo plein écran posée par le `media` d'une réplique : elle reste affichée sur les
+   * répliques suivantes jusqu'à la fermeture du dialogue (`""` la retire). Les portraits s'affichent
+   * par-dessus.
    */
-  protected readonly fullPortrait = linkedSignal<ReturnType<typeof this.line>, string | null>({
+  protected readonly sceneMedia = linkedSignal<ReturnType<typeof this.line>, Media | null>({
+    source: this.line,
+    computation: (line, previous) => {
+      if (!line) return null;
+      if (line.media !== undefined) return line.media || null;
+      return previous?.value ?? null;
+    },
+  });
+  /**
+   * Portrait plein écran (`portraitFull`) : une fois que ce personnage a parlé, il reste affiché
+   * sur les répliques suivantes (joueur, narration) jusqu'à la fermeture du dialogue. Masqué tant
+   * qu'un `media` de réplique est affiché.
+   */
+  protected readonly fullPortrait = linkedSignal<ReturnType<typeof this.line>, Media | null>({
     source: this.line,
     computation: (line, previous) => {
       if (!line) return null;

@@ -189,7 +189,7 @@ Le son est joué si le navigateur l'autorise (c'est le cas après le clic sur «
 
 ### Crédits et statistiques
 
-La map `credits.json` fait défiler les crédits vers le haut sur son `background` flouté, comme un générique de film (un clic le passe ; la durée suit la longueur du texte). Ensuite, l'encadré « Merci d'avoir joué » avec les statistiques du joueur comparées à celles des autres joueurs reste affiché jusqu'au retour à l'accueil. La scène finale y mène par un choix `"goto": "credits"`.
+La map `credits.json` fait défiler les crédits vers le haut sur son `background` flouté, comme un générique de film (la durée suit la longueur du texte, on ne peut pas le passer). Ensuite, l'encadré « Merci d'avoir joué » avec les statistiques du joueur comparées à celles des autres joueurs reste affiché jusqu'au retour à l'accueil. La scène finale y mène par un choix `"goto": "credits"`.
 
 ```json
 "credits": {

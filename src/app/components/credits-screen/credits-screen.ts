@@ -7,12 +7,12 @@ import { profile, statLines } from '../../utils/credits';
 import { MediaView } from '../media/media';
 
 /** Durée du générique : une base, plus un temps par ligne de texte (en secondes). */
-const ROLL_BASE = 8;
-const ROLL_PER_LINE = 2.2;
+const ROLL_BASE = 6;
+const ROLL_PER_LINE = 1.8;
 
 /**
  * Écran de fin : les crédits défilent vers le haut sur le fond flouté, comme un générique de film
- * (un clic le passe), puis l'encadré « Merci d'avoir joué » affiche les statistiques du joueur
+ * (on ne peut pas le passer), puis l'encadré « Merci d'avoir joué » affiche les statistiques du joueur
  * comparées à celles des autres joueurs (« … comme 62 % des joueurs ») et reste à l'écran.
  * Sans réponse du script, les statistiques sont omises.
  */
@@ -38,7 +38,7 @@ export class CreditsScreen {
   protected readonly rollDuration = computed(
     () => `${ROLL_BASE + ROLL_PER_LINE * this.credits().text.split('\n').length}s`,
   );
-  /** Le générique est terminé (ou passé) : l'encadré des statistiques s'affiche. */
+  /** Le générique est terminé : l'encadré des statistiques s'affiche. */
   protected readonly rolled = signal(
     !!globalThis.matchMedia?.('(prefers-reduced-motion: reduce)').matches,
   );

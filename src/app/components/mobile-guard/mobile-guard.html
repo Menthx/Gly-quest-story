@@ -1,0 +1,23 @@
+@if (isPhone()) {
+  @if (isPortrait()) {
+    <div class="overlay rotate" role="alertdialog" aria-label="Tourne ton téléphone">
+      <div class="phone" aria-hidden="true"></div>
+      <p class="big">Tourne ton téléphone</p>
+      <p>Le jeu se joue en mode paysage.</p>
+    </div>
+  } @else if (showNotice()) {
+    <div class="overlay" role="alertdialog" aria-labelledby="mobile-notice-title">
+      <div class="card">
+        <p id="mobile-notice-title" class="big">Petit écran détecté</p>
+        <p>
+          Le jeu est pensé pour un ordinateur. Sur téléphone, l'affichage peut ne pas être parfait :
+          pour un meilleur confort, joue plutôt sur un écran plus grand.
+        </p>
+        @if (canFullscreen) {
+          <button type="button" class="primary" (click)="fullscreen()">Jouer en plein écran</button>
+        }
+        <button type="button" (click)="dismiss()">Continuer quand même</button>
+      </div>
+    </div>
+  }
+}

@@ -158,6 +158,13 @@ for (const entry of game.maps ?? []) {
     (d.lines ?? []).forEach((line, i) => {
       const where = `dialogue « ${id} », réplique ${i + 1}`;
       checkMedia(line.media, `${file} ${where}, media`);
+      if (line.waitMedia) {
+        const list = Array.isArray(line.media) ? line.media : [];
+        if (!list.slice(0, -1).some((path) => /\.(mp4|webm|ogv|m4v|mov)$/i.test(path)))
+          errors.push(
+            `${file} ${where} : waitMedia attend une liste de media dont une vidéo n'est pas la dernière (sinon elle tourne en boucle et la réplique ne finit jamais)`,
+          );
+      }
       if (line.character && !(line.character in characters)) {
         errors.push(`${file} ${where} : personnage « ${line.character} » absent de game.json`);
       }

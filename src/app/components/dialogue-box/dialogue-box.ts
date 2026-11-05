@@ -83,6 +83,19 @@ export class DialogueBox {
     return id && this.data.config()?.characters[id]?.portraitFull ? id : null;
   });
 
+  /** Réplique `waitMedia` : on attend la fin de la vidéo, le joueur ne peut pas la passer. */
+  protected readonly waiting = computed(() => !!this.line()?.waitMedia);
+
+  /** Clic ou touche : réplique suivante, sauf pendant une vidéo à regarder jusqu'au bout. */
+  protected advance(): void {
+    if (!this.waiting()) this.dialogue.next();
+  }
+
+  /** Fin de la vidéo de scène : une réplique `waitMedia` avance d'elle-même. */
+  protected onSceneEnded(): void {
+    if (this.waiting()) this.dialogue.next();
+  }
+
   protected choose(choice: DialogueChoice): void {
     this.stats.choice(this.dialogue.openId(), choice.text);
     this.state.setFlags(choice.setFlags);
@@ -101,7 +114,7 @@ export class DialogueBox {
     if (event.target instanceof Element && event.target.closest('app-debug-panel')) return;
     if (event.key === 'Enter' || event.key === ' ') {
       event.preventDefault();
-      this.dialogue.next();
+      this.advance();
     }
   }
 }

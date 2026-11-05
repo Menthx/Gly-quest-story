@@ -6,7 +6,13 @@
     </div>
   }
 
-  @if (map.value()?.interlude; as interlude) {
+  @if (map.value()?.credits; as credits) {
+    <app-credits-screen
+      [credits]="credits"
+      [background]="map.value()?.background"
+      [backgroundColor]="map.value()?.backgroundColor"
+    />
+  } @else if (map.value()?.interlude; as interlude) {
     <div class="interlude" [style.background]="map.value()?.backgroundColor">
       <p>{{ interludeText() }}</p>
       @if (interlude.next) {

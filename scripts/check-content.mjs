@@ -63,6 +63,8 @@ if (!mapIds.has(game.startMap))
 /** Flags posés quelque part, et flags testés (avec l'endroit où ils le sont). */
 const flagsSet = new Set();
 const flagsUsed = [];
+/** Flags comptés par les statistiques des crédits (avertissement seulement : la scène peut être à venir). */
+const creditFlags = [];
 const useFlags = (cond, where) => {
   for (const f of [...(cond?.if ?? []), ...(cond?.ifNot ?? [])]) flagsUsed.push({ flag: f, where });
 };
@@ -122,6 +124,17 @@ for (const entry of game.maps ?? []) {
     refDialogue(t.dialogue, 'trigger');
   }
   if (map.interlude?.next) refMap(map.interlude.next, 'interlude');
+  for (const stat of map.credits?.stats ?? []) {
+    const where = `${file} statistique « ${stat.id} »`;
+    const ids = new Set((stat.answers ?? []).map((a) => a.id));
+    for (const a of stat.answers ?? []) {
+      for (const f of a.flags ?? [])
+        creditFlags.push({ flag: f, where: `${where}, réponse « ${a.id} »` });
+      for (const [, id] of (a.text ?? '').matchAll(/\{pct:([^}]+)\}/g))
+        if (!ids.has(id))
+          errors.push(`${where}, réponse « ${a.id} » : {pct:${id}}, réponse introuvable`);
+    }
+  }
 
   for (const [id, d] of Object.entries(dialogues)) {
     for (const f of d.setFlags ?? []) flagsSet.add(f);
@@ -147,6 +160,10 @@ for (const entry of game.maps ?? []) {
 for (const { flag, where } of flagsUsed) {
   if (!flagsSet.has(flag))
     errors.push(`${where} : flag « ${flag} » testé mais jamais posé (setFlags)`);
+}
+
+for (const { flag, where } of creditFlags) {
+  if (!flagsSet.has(flag)) warnings.push(`${where} : flag « ${flag} » jamais posé (setFlags)`);
 }
 
 report();

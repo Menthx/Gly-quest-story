@@ -95,6 +95,36 @@ export interface GameMap {
   interlude?: Interlude;
   /** Flags posés à l'arrivée sur la map (ex. lieu visité, pour une quête d'exploration). */
   setFlags?: string[];
+  /** Écran de fin : crédits sur le fond flouté, avec les statistiques des joueurs. */
+  credits?: Credits;
+}
+
+export interface Credits {
+  /** Texte des crédits (`\n` : retour à la ligne, ligne vide : nouveau paragraphe). */
+  text: string;
+  /** Titre affiché au-dessus des statistiques (ex. « Merci d'avoir joué ! »). */
+  thanks?: string;
+  /** Statistiques : chaque joueur reçoit une réponse par statistique, comparée à celles des autres joueurs. */
+  stats?: CreditStat[];
+}
+
+/** Une statistique (ex. « jour-1 ») et ses réponses possibles (ex. « confiant », « peu-assure »). */
+export interface CreditStat {
+  id: string;
+  answers: CreditAnswer[];
+}
+
+/**
+ * Réponse du joueur à une statistique : celle dont il a posé le plus de `flags` (une majorité de choix A
+ * ou B, par exemple). Égalité : la première de la liste. Une réponse sans `flags` sert de réponse par
+ * défaut quand aucun flag des autres n'est posé ; sans réponse par défaut, la statistique est ignorée.
+ *
+ * Dans `text`, `{pct}` = % des joueurs ayant la même réponse, `{pct:<id>}` = % ayant la réponse `<id>`.
+ */
+export interface CreditAnswer {
+  id: string;
+  flags?: string[];
+  text: string;
 }
 
 export interface Trigger extends Condition {

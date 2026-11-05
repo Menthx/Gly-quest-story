@@ -212,6 +212,12 @@
       "name": "Retour à la bibliothèque",
       "file": "data/maps/inter-scene-3-4.json",
       "inMenu": false
+    },
+    {
+      "id": "credits",
+      "name": "Crédits",
+      "file": "data/maps/credits.json",
+      "inMenu": false
     }
   ]
 }

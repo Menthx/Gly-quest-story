@@ -15,6 +15,7 @@ import { DialogueService } from '../../services/dialogue.service';
 import { GameDataService } from '../../services/game-data.service';
 import { GameStateService } from '../../services/game-state.service';
 import { boundingBox, polygonPoints, round } from '../../utils/shapes';
+import { CreditsScreen } from '../credits-screen/credits-screen';
 import { DebugPanel, DrawMode } from '../debug-panel/debug-panel';
 import { DialogueBox } from '../dialogue-box/dialogue-box';
 import { MapMenu } from '../map-menu/map-menu';
@@ -22,10 +23,10 @@ import { QuestPanel } from '../quest-panel/quest-panel';
 
 const ARROWS = { left: '◀', right: '▶', up: '▲', down: '▼' } as const;
 
-/** Affiche une map : background, zones cliquables, dialogue, quête, menu et outils de debug (ou un interlude). */
+/** Affiche une map : background, zones cliquables, dialogue, quête, menu et outils de debug (ou un interlude, ou les crédits). */
 @Component({
   selector: 'app-map-view',
-  imports: [DialogueBox, MapMenu, DebugPanel, QuestPanel],
+  imports: [CreditsScreen, DialogueBox, MapMenu, DebugPanel, QuestPanel],
   templateUrl: './map-view.html',
   styleUrl: './map-view.scss',
   host: {

@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "title": "Map",
-  "description": "Une map = un background, ses zones cliquables et ses dialogues (ou un interlude). Coordonnées en % de l'image (0 à 100). {pseudo} dans un texte = pseudo du joueur.",
+  "description": "Une map = un background, ses zones cliquables et ses dialogues (ou un interlude, ou les crédits). Coordonnées en % de l'image (0 à 100). {pseudo} dans un texte = pseudo du joueur.",
   "type": "object",
   "required": [
     "id",
@@ -88,6 +88,70 @@
         "type": "string"
       },
       "description": "Flags posés à l'arrivée sur la map (ex. lieu visité)."
+    },
+    "credits": {
+      "type": "object",
+      "description": "Écran de fin : crédits sur le fond flouté (background), puis les statistiques du joueur comparées aux autres joueurs (envoyées au script Google de statsUrl).",
+      "required": [
+        "text"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "text": {
+          "type": "string",
+          "description": "Texte des crédits. Le premier paragraphe est affiché en titre ; une ligne vide sépare deux paragraphes."
+        },
+        "thanks": {
+          "type": "string",
+          "description": "Titre au-dessus des statistiques (ex. « Merci d'avoir joué ! »)."
+        },
+        "stats": {
+          "type": "array",
+          "description": "Statistiques : le joueur reçoit une réponse par statistique.",
+          "items": {
+            "type": "object",
+            "required": [
+              "id",
+              "answers"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "id": {
+                "type": "string",
+                "description": "Nom de la statistique (colonne de l'onglet « Fins » du Google Sheet)."
+              },
+              "answers": {
+                "type": "array",
+                "minItems": 1,
+                "items": {
+                  "type": "object",
+                  "required": [
+                    "id",
+                    "text"
+                  ],
+                  "additionalProperties": false,
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "flags": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      },
+                      "description": "Le joueur a cette réponse s'il en a posé plus de flags que pour les autres réponses (égalité : la première). Absent = réponse par défaut, quand aucun flag des autres réponses n'est posé."
+                    },
+                    "text": {
+                      "type": "string",
+                      "description": "Phrase affichée. {pct} = % des joueurs ayant cette réponse, {pct:<id>} = % ayant la réponse <id>."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "$defs": {

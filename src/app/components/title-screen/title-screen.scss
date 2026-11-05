@@ -3,11 +3,20 @@
   place-items: center;
   width: 100vw;
   height: 100dvh;
+  position: relative;
   padding: 16px;
-  background: #1c1730 center / cover no-repeat;
+  background: #1c1730;
+}
+
+/* Image ou vidéo de fond (`titleBackground`), sous la carte. */
+.background {
+  position: absolute;
+  inset: 0;
+  object-fit: cover;
 }
 
 .card {
+  position: relative;
   display: flex;
   flex-direction: column;
   gap: 12px;

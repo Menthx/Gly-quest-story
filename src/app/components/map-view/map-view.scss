@@ -33,9 +33,8 @@ app-debug-panel {
 }
 
 .background {
-  display: block;
-  width: 100%;
-  height: 100%;
+  position: absolute;
+  inset: 0;
   object-fit: fill;
   pointer-events: none;
 }

@@ -18,8 +18,8 @@
       "type": "string"
     },
     "background": {
-      "type": "string",
-      "description": "Image de fond, relative à public/. Absent = fond uni (backgroundColor)."
+      "$ref": "#/$defs/media",
+      "description": "Image ou vidéo de fond, relative à public/. Absent = fond uni (backgroundColor)."
     },
     "regions": {
       "type": "array",
@@ -327,6 +327,10 @@
               "text": {
                 "type": "string"
               },
+              "media": {
+                "$ref": "#/$defs/media",
+                "description": "Image ou vidéo plein écran sur la scène à partir de cette réplique, jusqu'à la fin du dialogue (prioritaire sur les portraits plein écran). \"\" la retire."
+              },
               "choices": {
                 "type": "array",
                 "items": {
@@ -386,6 +390,21 @@
           "description": "Id du dialogue enchaîné après la dernière réplique (même map). Absent = ferme le dialogue."
         }
       }
+    },
+    "media": {
+      "description": "Image ou vidéo (.mp4, .webm…), relative à public/. Une vidéo tourne en boucle. Une liste de vidéos est jouée à la suite, la dernière en boucle.",
+      "oneOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string"
+          }
+        }
+      ]
     }
   }
 }

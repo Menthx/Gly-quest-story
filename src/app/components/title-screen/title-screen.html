@@ -1,9 +1,5 @@
-<div
-  class="screen"
-  [style.background-image]="
-    config()?.titleBackground ? 'url(' + config()?.titleBackground + ')' : null
-  "
->
+<div class="screen">
+  <app-media class="background" [src]="config()?.titleBackground" />
   @if (save(); as s) {
     <div class="card">
       <h1>{{ config()?.title }}</h1>

@@ -33,13 +33,11 @@
       (pointerleave)="onPointerLeave()"
     >
       @if (m.background) {
-        <img
-          #bg
+        <app-media
           class="background"
           [src]="m.background"
           [alt]="m.name"
-          draggable="false"
-          (load)="onImageLoad(bg)"
+          (ratio)="aspectRatio.set($event)"
         />
       }
 

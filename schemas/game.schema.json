@@ -64,8 +64,8 @@
             "description": "Nom affiché. {pseudo} = pseudo du joueur."
           },
           "portrait": {
-            "type": "string",
-            "description": "Image du personnage, relative à public/. Absent = pas de portrait."
+            "$ref": "#/$defs/media",
+            "description": "Image ou vidéo du personnage, relative à public/. Absent = pas de portrait."
           },
           "color": {
             "type": "string",
@@ -79,8 +79,8 @@
       }
     },
     "titleBackground": {
-      "type": "string",
-      "description": "Image de fond de l'écran titre (saisie du pseudo), relative à public/."
+      "$ref": "#/$defs/media",
+      "description": "Image ou vidéo de fond de l'écran titre (saisie du pseudo), relative à public/."
     },
     "statsUrl": {
       "type": "string",
@@ -173,6 +173,23 @@
           }
         }
       }
+    }
+  },
+  "$defs": {
+    "media": {
+      "description": "Image ou vidéo (.mp4, .webm…), relative à public/. Une vidéo tourne en boucle. Une liste de vidéos est jouée à la suite, la dernière en boucle.",
+      "oneOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string"
+          }
+        }
+      ]
     }
   }
 }

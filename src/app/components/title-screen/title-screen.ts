@@ -5,11 +5,12 @@ import { DialogueService } from '../../services/dialogue.service';
 import { GameDataService } from '../../services/game-data.service';
 import { GameStateService } from '../../services/game-state.service';
 import { SaveService } from '../../services/save.service';
+import { MediaView } from '../media/media';
 
 /** Écran titre : reprendre la partie sauvegardée, ou en commencer une en donnant son pseudo. */
 @Component({
   selector: 'app-title-screen',
-  imports: [FormsModule],
+  imports: [FormsModule, MediaView],
   templateUrl: './title-screen.html',
   styleUrl: './title-screen.scss',
 })

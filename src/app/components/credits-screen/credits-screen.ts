@@ -1,9 +1,10 @@
 import { Component, computed, inject, input, signal, untracked, effect } from '@angular/core';
 import { Router } from '@angular/router';
-import { Credits } from '../../models/game.models';
+import { Credits, Media } from '../../models/game.models';
 import { GameStateService } from '../../services/game-state.service';
 import { StatsService } from '../../services/stats.service';
 import { profile, statLines } from '../../utils/credits';
+import { MediaView } from '../media/media';
 
 /**
  * Écran de fin : crédits sur le fond flouté, puis les statistiques du joueur comparées à celles des
@@ -11,12 +12,13 @@ import { profile, statLines } from '../../utils/credits';
  */
 @Component({
   selector: 'app-credits-screen',
+  imports: [MediaView],
   templateUrl: './credits-screen.html',
   styleUrl: './credits-screen.scss',
 })
 export class CreditsScreen {
   readonly credits = input.required<Credits>();
-  readonly background = input<string>();
+  readonly background = input<Media>();
   readonly backgroundColor = input<string>();
 
   private readonly state = inject(GameStateService);

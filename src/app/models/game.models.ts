@@ -11,6 +11,13 @@
  */
 
 /**
+ * Image ou vidéo (chemin relatif à `public/`). Une vidéo (`.mp4`, `.webm`…) s'affiche avec le même
+ * cadrage qu'une image et tourne en boucle. Une liste de vidéos est jouée à la suite, la dernière en
+ * boucle (ex. lancement d'un sort puis son effet en boucle).
+ */
+export type Media = string | string[];
+
+/**
  * Condition sur les flags (drapeaux) posés par les dialogues.
  * `if` : tous ces flags doivent être posés. `ifNot` : aucun de ces flags ne doit l'être.
  */
@@ -23,7 +30,7 @@ export interface Condition {
 export interface GameConfig {
   title: string;
   /** Image de fond de l'écran titre (saisie du pseudo). */
-  titleBackground?: string;
+  titleBackground?: Media;
   /** Id de la map affichée au lancement. */
   startMap: string;
   /** URL de l'application Web Apps Script qui reçoit les statistiques (script : `stats/apps-script.gs`). */
@@ -68,7 +75,7 @@ export interface Character {
   /** Nom affiché. `{pseudo}` pour le joueur. */
   name: string;
   /** Image du personnage (relative à `public/`). Absent = pas de portrait (joueur, annonce…). */
-  portrait?: string;
+  portrait?: Media;
   /** Couleur du nom dans la boîte de dialogue (optionnel). */
   color?: string;
   /** `true` : le portrait est une image plein écran (personnage devant un décor) qui couvre la scène. */
@@ -79,8 +86,8 @@ export interface Character {
 export interface GameMap {
   id: string;
   name: string;
-  /** Image de fond (relative à `public/`). Absent = fond uni (`backgroundColor`). */
-  background?: string;
+  /** Image ou vidéo de fond (relative à `public/`). Absent = fond uni (`backgroundColor`). */
+  background?: Media;
   /** Couleur de fond quand il n'y a pas d'image. */
   backgroundColor?: string;
   regions?: Region[];
@@ -192,6 +199,11 @@ export interface DialogueLine {
   /** Id du personnage (clé de `characters` dans game.json). Absent = narrateur. */
   character?: string;
   text: string;
+  /**
+   * Image ou vidéo plein écran affichée sur la scène à partir de cette réplique, jusqu'à la fin du
+   * dialogue (dialogues enchaînés compris). Prioritaire sur les portraits plein écran. `""` la retire.
+   */
+  media?: Media;
   /** Choix proposés après cette réplique : chaque choix enchaîne sur un autre dialogue ou change de map. */
   choices?: DialogueChoice[];
 }

@@ -1,6 +1,6 @@
 <div class="credits" [style.background]="backgroundColor()">
   @if (background()) {
-    <img class="background" [src]="background()" alt="" draggable="false" />
+    <app-media class="background" [src]="background()" />
   }
   <div class="content">
     @for (p of paragraphs(); track $index) {

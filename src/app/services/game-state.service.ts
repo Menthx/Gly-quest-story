@@ -38,13 +38,18 @@ export class GameStateService {
     return this.flags().has(flag);
   }
 
-  /** Vrai si tous les flags de `if` sont posés et aucun de `ifNot`. */
+  /**
+   * Vrai si tous les flags de `if` sont posés, aucun de `ifNot`, et (avec `ifMore`) plus de flags
+   * posés parmi `ifMore.flags` que parmi `ifMore.than`.
+   */
   check(condition: Condition | undefined): boolean {
     if (!condition) return true;
     const flags = this.flags();
+    const count = (list: string[]) => list.filter((f) => flags.has(f)).length;
     return (
       (condition.if ?? []).every((f) => flags.has(f)) &&
-      !(condition.ifNot ?? []).some((f) => flags.has(f))
+      !(condition.ifNot ?? []).some((f) => flags.has(f)) &&
+      (!condition.ifMore || count(condition.ifMore.flags) > count(condition.ifMore.than))
     );
   }
 

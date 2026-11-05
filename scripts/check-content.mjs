@@ -3,7 +3,7 @@
  *
  * - chaque JSON respecte son schéma (schemas/) : une clé mal écrite est signalée ;
  * - chaque id référencé existe : maps, dialogues, personnages, images et vidéos ;
- * - chaque flag testé (`if`, `ifNot`, objectifs de quête) est posé quelque part.
+ * - chaque flag testé (`if`, `ifNot`, `ifMore`, objectifs de quête) est posé quelque part.
  *
  * Sans cette vérification, une faute de frappe ne provoque aucune erreur dans le jeu :
  * la suite de l'histoire ne se déclenche simplement jamais.
@@ -70,7 +70,14 @@ const flagsUsed = [];
 /** Flags comptés par les statistiques des crédits (avertissement seulement : la scène peut être à venir). */
 const creditFlags = [];
 const useFlags = (cond, where) => {
-  for (const f of [...(cond?.if ?? []), ...(cond?.ifNot ?? [])]) flagsUsed.push({ flag: f, where });
+  const more = cond?.ifMore;
+  for (const f of [
+    ...(cond?.if ?? []),
+    ...(cond?.ifNot ?? []),
+    ...(more?.flags ?? []),
+    ...(more?.than ?? []),
+  ])
+    flagsUsed.push({ flag: f, where });
 };
 
 for (const q of game.quests ?? []) {
@@ -142,7 +149,12 @@ for (const entry of game.maps ?? []) {
 
   for (const [id, d] of Object.entries(dialogues)) {
     for (const f of d.setFlags ?? []) flagsSet.add(f);
-    if (d.next) refDialogue(d.next, `dialogue « ${id} », fin`);
+    if (typeof d.next === 'string') refDialogue(d.next, `dialogue « ${id} », fin`);
+    else
+      for (const b of d.next ?? []) {
+        useFlags(b, `${file} dialogue « ${id} », fin vers « ${b.dialogue} »`);
+        refDialogue(b.dialogue, `dialogue « ${id} », fin`);
+      }
     (d.lines ?? []).forEach((line, i) => {
       const where = `dialogue « ${id} », réplique ${i + 1}`;
       checkMedia(line.media, `${file} ${where}, media`);

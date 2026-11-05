@@ -1,9 +1,14 @@
 @if (line()) {
   <div class="overlay" (click)="dialogue.next()">
     @if (sceneMedia(); as media) {
-      <app-media class="portrait full" [src]="media" />
-    } @else if (fullPortrait(); as full) {
-      <app-media class="portrait full" [src]="full" />
+      <app-media class="portrait full scene" [src]="media" />
+    }
+    @for (p of sceneIsVideo() ? [] : fullPortraits(); track p.id) {
+      <app-media
+        class="portrait full"
+        [class.idle]="fullSpeaker() && fullSpeaker() !== p.id"
+        [src]="p.src"
+      />
     }
     @if (!character()?.portraitFull && character()?.portrait) {
       <app-media class="portrait" [src]="character()?.portrait" [alt]="character()?.name ?? ''" />

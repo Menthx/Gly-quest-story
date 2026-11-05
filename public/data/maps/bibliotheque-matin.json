@@ -1,0 +1,43 @@
+{
+  "$schema": "../../../schemas/map.schema.json",
+  "id": "bibliotheque-matin",
+  "name": "Bibliothèque (matin)",
+  "background": "assets/backgrounds/bibliotheque-matin.jpg",
+  "triggers": [
+    {
+      "dialogue": "final"
+    }
+  ],
+  "dialogues": {
+    "final": {
+      "setFlags": ["fin"],
+      "lines": [
+        {
+          "character": "phyla",
+          "text": "« On dirait que le rituel a fonctionné ! Nous n'avons relevé aucun événement cette nuit ! »"
+        },
+        {
+          "character": "naevys",
+          "text": "« Dame Phyla, c'est vous ! C'est une excellente nouvelle ! »"
+        },
+        {
+          "character": "phyla",
+          "text": "« Bravo à toi Naevys, et à ton assistant·e… Quel est ton nom, d'ailleurs ? »"
+        },
+        {
+          "text": "Je suis surpris·e de voir la Grande Glyctatrice m'adresser la parole ! Finalement, elle semble franche et très accessible. À son regard interrogateur, accompagné de celui de Dame Naevys, je me rends compte que je suis en train de la faire attendre…"
+        },
+        {
+          "character": "phyla",
+          "text": "« Tu es donc {pseudo} ? Enchantée, {pseudo}, je m'en souviendrai ! Merci infiniment à vous deux pour votre aide. Venez, je vous invite à déjeuner pour fêter ça ! »",
+          "choices": [
+            {
+              "text": "Suite",
+              "goto": "credits"
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

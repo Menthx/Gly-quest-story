@@ -10,6 +10,8 @@ export function collectFlags(config: GameConfig, maps: GameMap[]): string[] {
   const cond = (c: Condition | undefined) => {
     add(c?.if);
     add(c?.ifNot);
+    add(c?.ifMore?.flags);
+    add(c?.ifMore?.than);
   };
 
   for (const quest of config.quests ?? []) {
@@ -26,6 +28,7 @@ export function collectFlags(config: GameConfig, maps: GameMap[]): string[] {
     map.triggers?.forEach(cond);
     for (const dialogue of Object.values(map.dialogues ?? {})) {
       add(dialogue.setFlags);
+      if (Array.isArray(dialogue.next)) dialogue.next.forEach(cond);
       for (const line of dialogue.lines) {
         for (const choice of line.choices ?? []) {
           cond(choice);

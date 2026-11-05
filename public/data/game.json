@@ -15,9 +15,15 @@
     },
     "naevys": {
       "name": "Naevys",
-      "portrait": "assets/characters/naevys.jpg",
+      "portrait": "assets/characters/naevys.png",
       "portraitFull": true,
       "color": "#a8e6cf"
+    },
+    "phyla": {
+      "name": "Phyla",
+      "portrait": "assets/characters/phyla.png",
+      "portraitFull": true,
+      "color": "#d9a8f0"
     }
   },
   "quests": [
@@ -100,36 +106,25 @@
           "done": "plume-prise"
         },
         {
-          "text": "Rose",
-          "done": "rose-prise"
-        },
-        {
           "text": "Lavande somnolente",
           "done": "lavande-prise"
         },
         {
           "text": "Retourne voir Naevys",
           "done": "ingredients-apportes",
-          "if": [
-            "glycine-prise",
-            "terre-prise",
-            "amethyste-prise",
-            "plume-prise",
-            "rose-prise",
-            "lavande-prise"
-          ]
+          "if": ["glycine-prise", "terre-prise", "amethyste-prise", "plume-prise", "lavande-prise"]
         }
       ]
     },
     {
-      "id": "mise-en-place-rituel",
-      "title": "Mise en place du rituel",
-      "if": ["ingredients-apportes"],
-      "ifNot": ["ingredients-deposes"],
+      "id": "repos",
+      "title": "Repose-toi avant le rituel",
+      "if": ["retour-logement"],
+      "ifNot": ["repos-choisi"],
       "objectives": [
         {
-          "text": "Dépose les ingrédients sur le sol arcanique",
-          "done": "ingredients-deposes"
+          "text": "Choisis où te reposer : le lit, le bureau, la banquette ou le coin du feu",
+          "done": "repos-choisi"
         }
       ]
     }
@@ -203,7 +198,7 @@
     },
     {
       "id": "logement",
-      "name": "Mon logement",
+      "name": "Mon logement (soirée)",
       "file": "data/maps/logement.json",
       "inMenu": false
     },
@@ -211,6 +206,42 @@
       "id": "inter-scene-3-4",
       "name": "Retour à la bibliothèque",
       "file": "data/maps/inter-scene-3-4.json",
+      "inMenu": false
+    },
+    {
+      "id": "inter-scene-6",
+      "name": "Retour au logement",
+      "file": "data/maps/inter-scene-6.json",
+      "inMenu": false
+    },
+    {
+      "id": "logement-repos",
+      "name": "Mon logement (journée)",
+      "file": "data/maps/logement-repos.json",
+      "inMenu": false
+    },
+    {
+      "id": "inter-scene-6-7",
+      "name": "Vers le rituel",
+      "file": "data/maps/inter-scene-6-7.json",
+      "inMenu": false
+    },
+    {
+      "id": "bibliotheque-nuit",
+      "name": "Bibliothèque (nuit)",
+      "file": "data/maps/bibliotheque-nuit.json",
+      "inMenu": false
+    },
+    {
+      "id": "inter-scene-7-final",
+      "name": "Une nuit à la bibliothèque",
+      "file": "data/maps/inter-scene-7-final.json",
+      "inMenu": false
+    },
+    {
+      "id": "bibliotheque-matin",
+      "name": "Bibliothèque (matin)",
+      "file": "data/maps/bibliotheque-matin.json",
       "inMenu": false
     },
     {

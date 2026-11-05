@@ -21,6 +21,24 @@
       }
     },
     {
+      "id": "passage",
+      "label": "Un passage",
+      "ifNot": ["mission-ingredients"],
+      "shape": {
+        "type": "polygon",
+        "points": [
+          [24.9, 53.2],
+          [43.8, 48.5],
+          [45.3, 67.4],
+          [26.4, 72.1]
+        ]
+      },
+      "action": {
+        "type": "dialogue",
+        "dialogue": "passage"
+      }
+    },
+    {
       "id": "acces-bosquet",
       "label": "Accès au bosquet",
       "if": ["mission-ingredients"],
@@ -38,31 +56,14 @@
       }
     },
     {
-      "id": "roses",
-      "label": "Le parterre de roses",
-      "if": ["mission-ingredients"],
-      "ifNot": ["rose-prise"],
-      "shape": {
-        "type": "rect",
-        "x": 72.6,
-        "y": 66,
-        "width": 16.4,
-        "height": 16.3
-      },
-      "action": {
-        "type": "dialogue",
-        "dialogue": "roses"
-      }
-    },
-    {
       "id": "vers-cours",
       "label": "Redescendre dans la cour",
       "shape": {
         "type": "rect",
-        "x": 56,
-        "y": 72,
-        "width": 20,
-        "height": 18
+        "x": 53.6,
+        "y": 68.5,
+        "width": 25.6,
+        "height": 30.8
       },
       "action": {
         "type": "goto",
@@ -96,11 +97,10 @@
         }
       ]
     },
-    "roses": {
-      "setFlags": ["rose-prise"],
+    "passage": {
       "lines": [
         {
-          "text": "Je cueille une rose du parterre."
+          "text": "Je crois voir un passage. En me faufilant, je pourrais sûrement atteindre le bosquet juste derrière le jardin… Je ferais mieux de ne pas y aller pour l'instant."
         }
       ]
     }

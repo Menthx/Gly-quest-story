@@ -103,9 +103,13 @@ export class DebugPanel {
   protected why(condition: Condition): string {
     const missing = (condition.if ?? []).filter((f) => !this.state.has(f));
     const forbidden = (condition.ifNot ?? []).filter((f) => this.state.has(f));
+    const more = condition.ifMore;
+    const count = (list: string[]) => list.filter((f) => this.state.has(f)).length;
+    const notMore = more && count(more.flags) <= count(more.than);
     return [
       missing.length ? `manque ${missing.join(', ')}` : '',
       forbidden.length ? `bloqué par ${forbidden.join(', ')}` : '',
+      notMore ? `pas majoritaire (${count(more.flags)} contre ${count(more.than)})` : '',
     ]
       .filter(Boolean)
       .join(' · ');

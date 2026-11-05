@@ -1,35 +1,38 @@
 {
   "$schema": "../../../schemas/map.schema.json",
   "id": "logement",
-  "name": "Mon logement",
-  "backgroundColor": "#2a2140",
+  "name": "Mon logement (soirée)",
+  "background": "assets/backgrounds/logement-soiree.jpg",
+  "triggers": [
+    {
+      "dialogue": "arrivee"
+    }
+  ],
   "regions": [
     {
-      "id": "affaires",
-      "label": "Mes affaires",
-      "button": "Mes affaires",
+      "id": "bureau",
+      "label": "Le bureau",
       "shape": {
         "type": "rect",
-        "x": 10,
-        "y": 40,
-        "width": 20,
-        "height": 14
+        "x": 16.5,
+        "y": 34.1,
+        "width": 18,
+        "height": 22.9
       },
       "action": {
         "type": "dialogue",
-        "dialogue": "affaires"
+        "dialogue": "bureau"
       }
     },
     {
       "id": "fenetre",
       "label": "La fenêtre",
-      "button": "La fenêtre",
       "shape": {
         "type": "rect",
-        "x": 40,
-        "y": 20,
-        "width": 20,
-        "height": 14
+        "x": 43.3,
+        "y": 39.2,
+        "width": 18,
+        "height": 17.9
       },
       "action": {
         "type": "dialogue",
@@ -37,15 +40,31 @@
       }
     },
     {
-      "id": "lit",
-      "label": "Le lit",
-      "button": "Le lit",
+      "id": "feu",
+      "label": "Le coin du feu",
       "shape": {
         "type": "rect",
-        "x": 70,
-        "y": 40,
-        "width": 20,
-        "height": 14
+        "x": 61.2,
+        "y": 44.6,
+        "width": 18,
+        "height": 25
+      },
+      "action": {
+        "type": "dialogue",
+        "dialogue": "feu"
+      }
+    },
+    {
+      "id": "lit",
+      "label": "Le lit",
+      "shape": {
+        "type": "polygon",
+        "points": [
+          [2.3, 53.0],
+          [42.5, 58.1],
+          [41.4, 86.3],
+          [1.2, 81.2]
+        ]
       },
       "action": {
         "type": "dialogue",
@@ -54,32 +73,95 @@
     }
   ],
   "dialogues": {
-    "affaires": {
+    "arrivee": {
       "lines": [
         {
-          "text": "Je range mes quelques affaires. (texte à venir)"
+          "text": "Arrivé·e dans mon appartement, je peux enfin me poser un peu, ranger mes quelques affaires et me préparer à ma journée de demain."
+        }
+      ]
+    },
+    "bureau": {
+      "lines": [
+        {
+          "character": "joueur",
+          "text": "« Un bureau de qualité pour lire, dessiner, jouer… ou faire de l'administratif… (rire jaune) »"
         }
       ]
     },
     "fenetre": {
       "lines": [
         {
-          "text": "Je regarde par la fenêtre. (texte à venir)"
+          "character": "joueur",
+          "text": "« J'aperçois à travers la fenêtre un bosquet avec la ville non loin de là, c'est reposant. »"
+        }
+      ]
+    },
+    "feu": {
+      "lines": [
+        {
+          "character": "joueur",
+          "text": "« La chaleur du feu est réconfortante. »"
         }
       ]
     },
     "lit": {
       "lines": [
         {
-          "character": "joueur",
-          "text": "« La journée de demain s'annonce intense, je ferais bien d'aller dormir. »",
+          "text": "Aller se coucher ?",
           "choices": [
             {
-              "text": "Dormir",
-              "goto": "inter-scene-3-4"
+              "text": "Oui",
+              "next": "pensee-confiant",
+              "ifMore": {
+                "flags": ["jour1-confiant-1", "jour1-confiant-2", "jour1-confiant-3"],
+                "than": ["jour1-peu-assure-1", "jour1-peu-assure-2", "jour1-peu-assure-3"]
+              }
             },
             {
-              "text": "Pas tout de suite"
+              "text": "Oui",
+              "next": "pensee-peu-assure",
+              "ifMore": {
+                "flags": ["jour1-peu-assure-1", "jour1-peu-assure-2", "jour1-peu-assure-3"],
+                "than": ["jour1-confiant-1", "jour1-confiant-2", "jour1-confiant-3"]
+              }
+            },
+            {
+              "text": "Non, pas encore"
+            }
+          ]
+        }
+      ]
+    },
+    "pensee-confiant": {
+      "next": "reveil",
+      "lines": [
+        {
+          "character": "joueur",
+          "text": "« Je suis content·e d'être venu·e assister Dame Naevys, je sens que la journée s'annonce intéressante, j'ai hâte de voir comment ça va se passer demain ! »",
+          "media": "assets/backgrounds/logement-nuit.jpg"
+        }
+      ]
+    },
+    "pensee-peu-assure": {
+      "next": "reveil",
+      "lines": [
+        {
+          "character": "joueur",
+          "text": "« Dame Naevys a l'air gentille, j'espère être à la hauteur pour l'aider ! Je ne voudrais pas la décevoir. J'aimerais que tout se passe bien. »",
+          "media": "assets/backgrounds/logement-nuit.jpg"
+        }
+      ]
+    },
+    "reveil": {
+      "lines": [
+        {
+          "character": "joueur",
+          "text": "« Je me réveille. J'ai passé une bonne nuit. Il est temps de me préparer pour ma journée et de rejoindre Dame Naevys à la bibliothèque ! »",
+          "media": "assets/backgrounds/logement-jour.jpg",
+          "choices": [
+            {
+              "text": "Suite",
+              "goto": "inter-scene-3-4"
             }
           ]
         }

@@ -23,7 +23,10 @@
   filter: drop-shadow(0 0 12px rgba(0, 0, 0, 0.5));
   animation: slide-up 0.25s ease-out;
 
-  /* Personnage déjà posé dans un décor, ou `media` d'une réplique (16/9) : couvre toute la scène. */
+  /*
+   * Image 16/9 qui couvre toute la scène : personnage déjà placé (PNG transparent posé sur le décor),
+   * ou `media` d'une réplique (`.scene`, changement de plan ou vidéo).
+   */
   &.full {
     inset: 0;
     left: 0;
@@ -31,8 +34,18 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
-    filter: none;
+    filter: drop-shadow(0 0 12px rgba(0, 0, 0, 0.45));
+    transition: filter 0.25s ease-out;
     animation: fade-in 0.25s ease-out;
+
+    /* Un autre personnage parle : celui-ci passe au second plan. */
+    &.idle {
+      filter: brightness(0.6) drop-shadow(0 0 12px rgba(0, 0, 0, 0.45));
+    }
+  }
+
+  &.scene {
+    filter: none;
   }
 }
 

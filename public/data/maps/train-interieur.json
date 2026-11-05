@@ -65,10 +65,8 @@
       "setFlags": ["lettre-lue"],
       "lines": [
         {
-          "text": "À l'intérieur de la valise, il y a une lettre."
-        },
-        {
-          "text": "La lettre indique un stage à Glyglyland. (contenu à venir)"
+          "character": "joueur",
+          "text": "« Ma valise contient mes affaires pour mon séjour à Glyglyland. Il y a également la lettre de mon acceptation en stage à la bibliothèque de Glyglyland. »"
         }
       ]
     },

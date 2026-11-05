@@ -5,6 +5,7 @@ import { GameDataService } from '../../services/game-data.service';
 import { GameStateService } from '../../services/game-state.service';
 import { StatsService } from '../../services/stats.service';
 import { MediaView } from '../media/media';
+import { isVideo, mediaList } from '../../utils/media';
 
 /** Popup de dialogue : portrait du personnage, nom, texte et choix éventuels. */
 @Component({
@@ -51,18 +52,35 @@ export class DialogueBox {
     },
   });
   /**
-   * Portrait plein écran (`portraitFull`) : une fois que ce personnage a parlé, il reste affiché
-   * sur les répliques suivantes (joueur, narration) jusqu'à la fermeture du dialogue. Masqué tant
-   * qu'un `media` de réplique est affiché.
+   * Portraits plein cadre (`portraitFull`) : images 16/9 transparentes où le personnage est déjà placé
+   * (Naevys à droite, Phyla à gauche), affichées par-dessus le décor et le `media` de réplique. Une fois
+   * qu'un personnage a parlé, son portrait reste affiché (répliques du joueur, narration, dialogues
+   * enchaînés) jusqu'à la fermeture du dialogue. Plusieurs personnages peuvent être à l'écran ensemble.
    */
-  protected readonly fullPortrait = linkedSignal<ReturnType<typeof this.line>, Media | null>({
+  protected readonly fullPortraits = linkedSignal<
+    ReturnType<typeof this.line>,
+    { id: string; src: Media }[]
+  >({
     source: this.line,
     computation: (line, previous) => {
-      if (!line) return null;
-      const character = line.character ? this.data.config()?.characters[line.character] : null;
-      if (character?.portraitFull) return character.portrait ?? null;
-      return previous?.value ?? null;
+      if (!line) return [];
+      const shown = previous?.value ?? [];
+      const id = line.character;
+      const character = id ? this.data.config()?.characters[id] : null;
+      if (!id || !character?.portraitFull || !character.portrait) return shown;
+      if (shown.some((p) => p.id === id)) return shown;
+      return [...shown, { id, src: character.portrait }];
     },
+  });
+  /**
+   * Une vidéo de réplique montre déjà le personnage (ex. le sort de Naevys) : les portraits plein cadre
+   * sont masqués tant qu'elle est affichée. Une image de réplique (changement de plan) les garde.
+   */
+  protected readonly sceneIsVideo = computed(() => mediaList(this.sceneMedia()).some(isVideo));
+  /** Personnage à portrait plein cadre qui parle : les autres portraits affichés passent au second plan. */
+  protected readonly fullSpeaker = computed(() => {
+    const id = this.line()?.character;
+    return id && this.data.config()?.characters[id]?.portraitFull ? id : null;
   });
 
   protected choose(choice: DialogueChoice): void {

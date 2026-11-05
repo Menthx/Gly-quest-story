@@ -65,11 +65,18 @@ export class DialogueService {
     if (!dialogue || line?.choices?.some((c) => this.state.check(c))) return;
     if (this.index() + 1 < dialogue.lines.length) {
       this.index.update((i) => i + 1);
-    } else if (dialogue.next) {
-      this.jumpTo(dialogue.next);
     } else {
-      this.close();
+      const next = this.resolveNext(dialogue.next);
+      if (next) this.jumpTo(next);
+      else this.close();
     }
+  }
+
+  /** `next` d'un dialogue : un id, ou le premier dialogue d'une liste de branches dont la condition est remplie. */
+  private resolveNext(next: Dialogue['next']): string | null {
+    if (!next) return null;
+    if (typeof next === 'string') return next;
+    return next.find((branch) => this.state.check(branch))?.dialogue ?? null;
   }
 
   /** Enchaîne sur un autre dialogue de la même map (utilisé par les choix). */

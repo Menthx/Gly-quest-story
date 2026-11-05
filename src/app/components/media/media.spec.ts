@@ -5,7 +5,12 @@ import { MediaView } from './media';
 
 @Component({
   imports: [MediaView],
-  template: `<app-media [src]="src()" alt="Décor" (ratio)="ratio = $event" (ended)="ended = ended + 1" />`,
+  template: `<app-media
+    [src]="src()"
+    alt="Décor"
+    (ratio)="ratio = $event"
+    (ended)="ended = ended + 1"
+  />`,
 })
 class Host {
   readonly src = signal<Media | undefined>(undefined);
@@ -86,16 +91,58 @@ describe('MediaView', () => {
     // chemin a donc son propre élément, lancé à son tour.
     fixture.componentInstance.src.set(['lancement.mp4', 'fond.jpg']);
     await fixture.whenStable();
-    const lancement = el.querySelector('video')!;
+    const lancement = el.querySelector<HTMLVideoElement>('video[src="lancement.mp4"]')!;
     expect(lancement).not.toBe(loop);
-    expect(lancement.getAttribute('src')).toBe('lancement.mp4');
+
+    // La boucle finit son tour (elle ne reboucle plus) avant que la suite démarre : la vidéo
+    // suivante commence là où la boucle recommence, sans saut d'image.
+    expect(loop.classList.contains('held')).toBe(true);
+    expect(loop.loop).toBe(false);
+    expect(loop.paused).toBe(false);
+    expect(lancement.classList.contains('hidden')).toBe(true);
+    expect(play.mock.contexts).toEqual([loop]);
+
+    loop.dispatchEvent(new Event('ended'));
+    await fixture.whenStable();
+    expect(lancement.classList.contains('hidden')).toBe(false);
     expect(play.mock.contexts).toEqual([loop, lancement]);
+
+    // L'ancienne vidéo reste dessous jusqu'à la première image de la nouvelle : pas d'écran vide.
+    expect(loop.isConnected).toBe(true);
+    lancement.dispatchEvent(new Event('playing'));
+    await fixture.whenStable();
+    expect(loop.isConnected).toBe(false);
+    expect(el.querySelectorAll('video')).toHaveLength(1);
 
     expect(fixture.componentInstance.ended).toBe(0);
     lancement.dispatchEvent(new Event('ended'));
     await fixture.whenStable();
     expect(el.querySelector('img')?.getAttribute('src')).toBe('fond.jpg');
     expect(fixture.componentInstance.ended).toBe(1);
+  });
+
+  it('garde la dernière image affichée sous la nouvelle tant qu’elle n’est pas chargée', async () => {
+    const { fixture, el } = await render(['lancement.mp4', 'fond.jpg']);
+    el.querySelector('video')!.dispatchEvent(new Event('ended'));
+    await fixture.whenStable();
+    const fond = el.querySelector('img')!;
+
+    fixture.componentInstance.src.set('loop.mp4');
+    await fixture.whenStable();
+    expect(fond.isConnected).toBe(true);
+    expect(fond.classList.contains('held')).toBe(true);
+    expect(el.querySelectorAll('video')).toHaveLength(1);
+
+    el.querySelector('video')!.dispatchEvent(new Event('playing'));
+    await fixture.whenStable();
+    expect(fond.isConnected).toBe(false);
+  });
+
+  it('ne garde rien quand le média disparaît', async () => {
+    const { fixture, el } = await render('loop.mp4');
+    fixture.componentInstance.src.set(undefined);
+    await fixture.whenStable();
+    expect(el.querySelector('img, video')).toBeNull();
   });
 
   it('passe au média suivant si une vidéo ne peut pas être lue', async () => {

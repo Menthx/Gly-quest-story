@@ -57,7 +57,7 @@
       "lines": [
         {
           "character": "annonce",
-          "text": "« Bienvenue dans ce train direct à destination de Glyglyland, le train va partir. Prenez garde à la fermeture des portes, attention au départ. »"
+          "text": "Bienvenue dans ce train direct à destination de Glyglyland, le train va partir. Prenez garde à la fermeture des portes, attention au départ."
         }
       ]
     },
@@ -66,7 +66,7 @@
       "lines": [
         {
           "character": "joueur",
-          "text": "« Ma valise contient mes affaires pour mon séjour à Glyglyland. Il y a également la lettre de mon acceptation en stage à la bibliothèque de Glyglyland. »"
+          "text": "Ma valise contient mes affaires pour mon séjour à Glyglyland. Il y a également la lettre de mon acceptation en stage à la bibliothèque de Glyglyland."
         }
       ]
     },
@@ -75,7 +75,7 @@
       "lines": [
         {
           "character": "annonce",
-          "text": "« Le train arrive en gare de Glyglyland, tous les passagers sont invités à descendre. »"
+          "text": "Le train arrive en gare de Glyglyland, tous les passagers sont invités à descendre."
         },
         {
           "character": "joueur",

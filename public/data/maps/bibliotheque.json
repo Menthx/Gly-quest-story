@@ -86,35 +86,35 @@
           "text": "J'entre dans la bibliothèque."
         },
         {
-          "text": "« Je vois une personne en pleine réflexion. Je m'approche d'elle. »",
+          "text": "Je vois une personne en pleine réflexion. Je m'approche d'elle.",
           "media": "assets/backgrounds/biblio-bureau.jpg"
         },
         {
           "character": "joueur",
-          "text": "« Excusez-moi... »"
+          "text": "Excusez-moi..."
         },
         {
           "text": "Elle lève les yeux vers moi."
         },
         {
           "character": "naevys",
-          "text": "« Oui ? En quoi puis-je t'aider, mon enfant ? »"
+          "text": "Oui ? En quoi puis-je t'aider, mon enfant ?"
         },
         {
           "character": "joueur",
-          "text": "« Je cherche Dame Naevys, je suis son/sa nouvelle assistant·e. »"
+          "text": "Je cherche Dame Naevys, je suis son/sa nouvelle assistant·e."
         },
         {
           "character": "naevys",
-          "text": "« Oh ! Alors tu dois être {pseudo}. Enchantée, je suis Naevys, ton arrivée tombe à pic ! Tu n'imagines pas à quel point j'étais impatiente de t'accueillir. Es-tu prêt·e à te mettre au travail ? »",
+          "text": "Oh ! Alors tu dois être {pseudo}. Enchantée, je suis Naevys, ton arrivée tombe à pic ! Tu n'imagines pas à quel point j'étais impatiente de t'accueillir. Es-tu prêt·e à te mettre au travail ?",
           "choices": [
             {
-              "text": "« Je suis là pour ça ! Par quoi on commence ? »",
+              "text": "Je suis là pour ça ! Par quoi on commence ?",
               "next": "accueil-glyglyland",
               "setFlags": ["jour1-confiant-1"]
             },
             {
-              "text": "« Il y a tant de travail que ça ?? »",
+              "text": "Il y a tant de travail que ça ??",
               "next": "accueil-glyglyland",
               "setFlags": ["jour1-peu-assure-1"]
             }
@@ -126,38 +126,38 @@
       "lines": [
         {
           "character": "naevys",
-          "text": "« Haha, je vois que j'ai piqué ta curiosité... j'aime ça ! »"
+          "text": "Haha, je vois que j'ai piqué ta curiosité... j'aime ça !"
         },
         {
           "character": "naevys",
-          "text": "« Laisse-moi d'abord te parler de Glyglyland. Chaque année, quand l'automne cède la place à l'hiver, le royaume subit d'étranges transformations. »"
+          "text": "Laisse-moi d'abord te parler de Glyglyland. Chaque année, quand l'automne cède la place à l'hiver, le royaume subit d'étranges transformations."
         },
         {
           "character": "naevys",
-          "text": "« Une énergie ancienne ressurgit à cette période, et elle donne lieu à toutes sortes de phénomènes étranges : transformation du royaume, disparitions, malédictions… »"
+          "text": "Une énergie ancienne ressurgit à cette période, et elle donne lieu à toutes sortes de phénomènes étranges : transformation du royaume, disparitions, malédictions…"
         },
         {
           "character": "naevys",
-          "text": "« L'année dernière, nous en avons payé le prix fort : Saku, l'animal gardien de notre grande Glyctatrice, a été corrompu par les ténèbres. Nous ne pouvons pas subir une telle tragédie une seconde fois. »"
+          "text": "L'année dernière, nous en avons payé le prix fort : Saku, l'animal gardien de notre grande Glyctatrice, a été corrompu par les ténèbres. Nous ne pouvons pas subir une telle tragédie une seconde fois."
         },
         {
           "character": "naevys",
-          "text": "« C'est pourquoi nous devons trouver une solution pour réduire l'impact de cette énergie sur le royaume avant les prochaines vagues. »"
+          "text": "C'est pourquoi nous devons trouver une solution pour réduire l'impact de cette énergie sur le royaume avant les prochaines vagues."
         },
         {
           "character": "naevys",
-          "text": "« Seulement voilà... nous ne pouvons étudier cette énergie que lorsqu'elle apparaît. C'est pour cette raison que j'avais besoin d'un assistant, et te voilà ! Il y a encore beaucoup de choses à faire avant que le pic d'énergie atteigne son paroxysme. Chaque minute compte ! »"
+          "text": "Seulement voilà... nous ne pouvons étudier cette énergie que lorsqu'elle apparaît. C'est pour cette raison que j'avais besoin d'un assistant, et te voilà ! Il y a encore beaucoup de choses à faire avant que le pic d'énergie atteigne son paroxysme. Chaque minute compte !"
         },
         {
           "character": "naevys",
-          "text": "« Cela fait peut-être beaucoup d'infos en une fois, désolée ! »",
+          "text": "Cela fait peut-être beaucoup d'infos en une fois, désolée !",
           "choices": [
             {
-              "text": "« Non ça va, j'étais préparé·e ! »",
+              "text": "Non ça va, j'étais préparé·e !",
               "next": "accueil-exploration"
             },
             {
-              "text": "« C'est vrai que ça a l'air un peu compliqué... »",
+              "text": "C'est vrai que ça a l'air un peu compliqué...",
               "next": "accueil-exploration"
             }
           ]
@@ -168,15 +168,15 @@
       "lines": [
         {
           "character": "naevys",
-          "text": "« Que dirais-tu d'explorer un peu ton nouveau lieu de travail ? Quoi de mieux, pour te familiariser avec notre nouvel environnement, que de laisser libre cours à ta curiosité ? »",
+          "text": "Que dirais-tu d'explorer un peu ton nouveau lieu de travail ? Quoi de mieux, pour te familiariser avec notre nouvel environnement, que de laisser libre cours à ta curiosité ?",
           "choices": [
             {
-              "text": "« D'accord, j'y vais de ce pas ! »",
+              "text": "D'accord, j'y vais de ce pas !",
               "next": "accueil-fin",
               "setFlags": ["jour1-confiant-2"]
             },
             {
-              "text": "« Merci, je vais en avoir besoin. »",
+              "text": "Merci, je vais en avoir besoin.",
               "next": "accueil-fin",
               "setFlags": ["jour1-peu-assure-2"]
             }
@@ -189,7 +189,7 @@
       "lines": [
         {
           "character": "naevys",
-          "text": "« N'hésite pas si tu as des questions. Reviens me voir quand tu auras fait ton tour du propriétaire ! »"
+          "text": "N'hésite pas si tu as des questions. Reviens me voir quand tu auras fait ton tour du propriétaire !"
         }
       ]
     },
@@ -197,24 +197,24 @@
       "lines": [
         {
           "character": "joueur",
-          "text": "« J'aperçois Naevys à son bureau, comme à son habitude. »"
+          "text": "J'aperçois Naevys à son bureau, comme à son habitude."
         },
         {
           "character": "joueur",
-          "text": "« Bonjour Dame Naevys ! »",
+          "text": "Bonjour Dame Naevys !",
           "media": "assets/backgrounds/biblio-bureau.jpg"
         },
         {
           "character": "naevys",
-          "text": "« Oh, bonjour {pseudo} ! Prêt·e à attaquer cette journée ? »",
+          "text": "Oh, bonjour {pseudo} ! Prêt·e à attaquer cette journée ?",
           "choices": [
             {
-              "text": "« Et comment ! »",
+              "text": "Et comment !",
               "next": "retour-plan",
               "setFlags": ["jour2-rassure-1"]
             },
             {
-              "text": "« J'espère que ça va bien se passer… »",
+              "text": "J'espère que ça va bien se passer…",
               "next": "retour-plan",
               "setFlags": ["jour2-apprehende-1"]
             }
@@ -227,7 +227,7 @@
       "lines": [
         {
           "character": "naevys",
-          "text": "« Il est enfin temps que je t'explique le plan que j'ai imaginé. Installons-nous près du foyer. »"
+          "text": "Il est enfin temps que je t'explique le plan que j'ai imaginé. Installons-nous près du foyer."
         }
       ]
     }

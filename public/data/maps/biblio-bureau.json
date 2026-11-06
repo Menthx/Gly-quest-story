@@ -85,7 +85,7 @@
     "arrivee": {
       "lines": [
         {
-          "text": "« Au centre se trouve le bureau de Dame Naevys. Les étagères sont remplies d'ouvrages et d'articles de magie divers et variés. Au fond se trouve un sol arcanique pour pratiquer la magie. Il y a également des reliques entreposées par-ci par-là. »"
+          "text": "Au centre se trouve le bureau de Dame Naevys. Les étagères sont remplies d'ouvrages et d'articles de magie divers et variés. Au fond se trouve un sol arcanique pour pratiquer la magie. Il y a également des reliques entreposées par-ci par-là."
         }
       ]
     },
@@ -93,22 +93,22 @@
       "lines": [
         {
           "character": "naevys",
-          "text": "« Tu as besoin de quelque chose, mon enfant ? »",
+          "text": "Tu as besoin de quelque chose, mon enfant ?",
           "choices": [
             {
-              "text": "« À quoi sert cette bibliothèque ? »",
+              "text": "À quoi sert cette bibliothèque ?",
               "next": "naevys-bibliotheque"
             },
             {
-              "text": "« Y a-t-il un moyen de neutraliser totalement les énergies ? »",
+              "text": "Y a-t-il un moyen de neutraliser totalement les énergies ?",
               "next": "naevys-energies"
             },
             {
-              "text": "« Je retourne visiter. »",
+              "text": "Je retourne visiter.",
               "next": "naevys-au-revoir"
             },
             {
-              "text": "« J'ai fini de faire le tour, qu'est-ce que je peux faire maintenant ? »",
+              "text": "J'ai fini de faire le tour, qu'est-ce que je peux faire maintenant ?",
               "next": "naevys-fin-visite",
               "if": [
                 "foyer-vu",
@@ -128,11 +128,11 @@
       "lines": [
         {
           "character": "naevys",
-          "text": "« C'est le point central des recherches magiques et des archives de Glyglyland. En cette période, je consacre tout mon temps aux recherches sur les énergies et aux préparatifs du rituel. »"
+          "text": "C'est le point central des recherches magiques et des archives de Glyglyland. En cette période, je consacre tout mon temps aux recherches sur les énergies et aux préparatifs du rituel."
         },
         {
           "character": "naevys",
-          "text": "« Le reste de l'année, je mène différentes missions en parallèle : tenir les archives à jour, faire des cultures de plantes magiques, et parfois j'apporte mon aide à qui veut bien passer la porte de cet humble endroit. »"
+          "text": "Le reste de l'année, je mène différentes missions en parallèle : tenir les archives à jour, faire des cultures de plantes magiques, et parfois j'apporte mon aide à qui veut bien passer la porte de cet humble endroit."
         }
       ]
     },
@@ -141,11 +141,11 @@
       "lines": [
         {
           "character": "naevys",
-          "text": "« Malheureusement, on ne sait pas si c'est possible, c'est pour ça que nous devons mettre notre effort sur les recherches lorsque l'Énergie est présente. »"
+          "text": "Malheureusement, on ne sait pas si c'est possible, c'est pour ça que nous devons mettre notre effort sur les recherches lorsque l'Énergie est présente."
         },
         {
           "character": "naevys",
-          "text": "« J'ai tout de même une théorie : nous avons constaté que certaines actions avec le flux d'Énergie permettent d'en réduire l'intensité. Je t'en parlerai un peu plus tard, mon enfant. »"
+          "text": "J'ai tout de même une théorie : nous avons constaté que certaines actions avec le flux d'Énergie permettent d'en réduire l'intensité. Je t'en parlerai un peu plus tard, mon enfant."
         }
       ]
     },
@@ -153,7 +153,7 @@
       "lines": [
         {
           "character": "naevys",
-          "text": "« N'hésite pas si tu as des questions. Reviens me voir quand tu auras fait le tour du propriétaire ! »"
+          "text": "N'hésite pas si tu as des questions. Reviens me voir quand tu auras fait le tour du propriétaire !"
         }
       ]
     },
@@ -161,15 +161,15 @@
       "lines": [
         {
           "character": "naevys",
-          "text": "« Super ! Alors, ton premier ressenti sur les lieux ? »",
+          "text": "Super ! Alors, ton premier ressenti sur les lieux ?",
           "choices": [
             {
-              "text": "« Rien d'anormal, il me semble ? »",
+              "text": "Rien d'anormal, il me semble ?",
               "setFlags": ["visite-terminee"],
               "next": "naevys-fin-journee"
             },
             {
-              "text": "« Est-ce qu'il est possible de ressentir l'énergie en ce moment même ? »",
+              "text": "Est-ce qu'il est possible de ressentir l'énergie en ce moment même ?",
               "setFlags": ["visite-terminee"],
               "next": "naevys-fin-journee"
             }
@@ -181,19 +181,19 @@
       "lines": [
         {
           "character": "naevys",
-          "text": "« Si tu t'inquiètes de l'Énergie, rassure-toi : il n'est pas simple de la ressentir aussi facilement, même pour moi. Il n'y a pour l'instant pas eu d'événement alarmant cette année, donc nous sommes encore en sécurité. »"
+          "text": "Si tu t'inquiètes de l'Énergie, rassure-toi : il n'est pas simple de la ressentir aussi facilement, même pour moi. Il n'y a pour l'instant pas eu d'événement alarmant cette année, donc nous sommes encore en sécurité."
         },
         {
           "character": "naevys",
-          "text": "« Il est déjà tard, je te propose de finir ta journée ici ! »",
+          "text": "Il est déjà tard, je te propose de finir ta journée ici !",
           "choices": [
             {
-              "text": "« Déjà ??? »",
+              "text": "Déjà ???",
               "next": "naevys-bonne-nuit",
               "setFlags": ["jour1-confiant-3"]
             },
             {
-              "text": "« Oh ouiiiii, merci beaucoup ! »",
+              "text": "Oh ouiiiii, merci beaucoup !",
               "next": "naevys-bonne-nuit",
               "setFlags": ["jour1-peu-assure-3"]
             }
@@ -205,7 +205,7 @@
       "lines": [
         {
           "character": "naevys",
-          "text": "« Haha, je sens qu'on va bien s'amuser avec toi ! Ne t'en fais pas, demain je te mettrai à contribution. Repose-toi bien ce soir, la journée s'annonce intense demain. »",
+          "text": "Haha, je sens qu'on va bien s'amuser avec toi ! Ne t'en fais pas, demain je te mettrai à contribution. Repose-toi bien ce soir, la journée s'annonce intense demain.",
           "choices": [
             {
               "text": "Suite",
@@ -219,10 +219,10 @@
       "lines": [
         {
           "character": "naevys",
-          "text": "« Alors, tu as rassemblé tous les éléments ? »",
+          "text": "Alors, tu as rassemblé tous les éléments ?",
           "choices": [
             {
-              "text": "« Oui, j'ai tout, voilà ! »",
+              "text": "Oui, j'ai tout, voilà !",
               "next": "naevys-rituel",
               "if": [
                 "glycine-prise",
@@ -233,7 +233,7 @@
               ]
             },
             {
-              "text": "« Non, pas encore… »",
+              "text": "Non, pas encore…",
               "next": "naevys-compte-sur-toi"
             }
           ]
@@ -244,7 +244,7 @@
       "lines": [
         {
           "character": "naevys",
-          "text": "« Je compte sur toi ! »"
+          "text": "Je compte sur toi !"
         }
       ]
     },
@@ -253,23 +253,23 @@
       "lines": [
         {
           "character": "naevys",
-          "text": "« Parfait, on va pouvoir préparer le rituel pour ce soir. Dépose les ingrédients près du sol arcanique, juste derrière moi. »"
+          "text": "Parfait, on va pouvoir préparer le rituel pour ce soir. Dépose les ingrédients près du sol arcanique, juste derrière moi."
         },
         {
           "character": "joueur",
-          "text": "« Je dépose les ingrédients comme demandé. »"
+          "text": "Je dépose les ingrédients comme demandé."
         },
         {
           "character": "naevys",
-          "text": "« Merci pour ton aide ! Comme tu le sais, nous ferons le rituel ce soir, alors ta prochaine mission consiste à… te reposer ! »",
+          "text": "Merci pour ton aide ! Comme tu le sais, nous ferons le rituel ce soir, alors ta prochaine mission consiste à… te reposer !",
           "choices": [
             {
-              "text": "« Déjà ?? Mais il n'est que midi ! »",
+              "text": "Déjà ?? Mais il n'est que midi !",
               "next": "naevys-repos",
               "setFlags": ["jour2-rassure-4"]
             },
             {
-              "text": "« Génial, j'ai ma journée libre alors ? »",
+              "text": "Génial, j'ai ma journée libre alors ?",
               "next": "naevys-repos",
               "setFlags": ["jour2-apprehende-4"]
             }
@@ -289,15 +289,15 @@
       "lines": [
         {
           "character": "naevys",
-          "text": "« Eh oui ! Comme tu seras avec moi ce soir, pas question de te faire travailler toute la journée, ce serait du surmenage ! Alors rentre chez toi et repose-toi. Rendez-vous ce soir ici même, dès le coucher du soleil. »",
+          "text": "Eh oui ! Comme tu seras avec moi ce soir, pas question de te faire travailler toute la journée, ce serait du surmenage ! Alors rentre chez toi et repose-toi. Rendez-vous ce soir ici même, dès le coucher du soleil.",
           "choices": [
             {
-              "text": "« Très bien Dame Naevys, à ce soir ! »",
+              "text": "Très bien Dame Naevys, à ce soir !",
               "goto": "inter-scene-6",
               "setFlags": ["jour2-rassure-5"]
             },
             {
-              "text": "« Merci beaucoup, à ce soir ! »",
+              "text": "Merci beaucoup, à ce soir !",
               "goto": "inter-scene-6",
               "setFlags": ["jour2-apprehende-5"]
             }

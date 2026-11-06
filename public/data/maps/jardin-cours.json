@@ -128,7 +128,7 @@
     "paon": {
       "lines": [
         {
-          "text": "« Tiens ? J'ai entendu un paon dans le bois ! Mince, je crois que je lui ai fait peur… »"
+          "text": "Tiens ? J'ai entendu un paon dans le bois ! Mince, je crois que je lui ai fait peur…"
         }
       ]
     },
@@ -137,7 +137,7 @@
       "lines": [
         {
           "character": "joueur",
-          "text": "« Je prends un peu de terre dans mon bocal. »"
+          "text": "Je prends un peu de terre dans mon bocal."
         }
       ]
     },
@@ -145,7 +145,7 @@
       "lines": [
         {
           "character": "joueur",
-          "text": "« Il me faudrait un contenant pour transporter la terre. »"
+          "text": "Il me faudrait un contenant pour transporter la terre."
         }
       ]
     }

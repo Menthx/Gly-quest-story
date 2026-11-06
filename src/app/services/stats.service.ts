@@ -14,7 +14,7 @@ const RESULTS_TIMEOUT = 10000;
 
 /** Un événement de progression, écrit comme une ligne dans le Google Sheet. */
 export interface StatsEvent {
-  /** Identifiant anonyme du navigateur (le même d'une partie à l'autre). */
+  /** Identifiant anonyme de la partie (nouveau à chaque « Jouer », conservé à la reprise). */
   player: string;
   pseudo: string;
   /** `partie` (valeur : nouvelle / reprise), `map`, `flag` ou `choix`. */
@@ -42,7 +42,7 @@ export class StatsService {
   private lastFlags: ReadonlySet<string> = new Set();
   private lastMap: string | null = null;
   /** Identifiant de secours quand le localStorage est indisponible (navigation privée). */
-  private readonly sessionId = crypto.randomUUID();
+  private sessionId = crypto.randomUUID();
 
   constructor() {
     effect(() => {
@@ -64,6 +64,21 @@ export class StatsService {
     addEventListener('visibilitychange', () => {
       if (document.visibilityState === 'hidden') this.flush();
     });
+  }
+
+  /**
+   * Nouvelle partie : nouvel identifiant, pour que chaque partie terminée compte comme une ligne à part
+   * dans l'onglet « Fins » (le script remplace la ligne d'un identifiant déjà connu). Les événements
+   * encore en attente de l'ancienne partie sont envoyés avant.
+   */
+  newPlayer(): void {
+    this.flush();
+    this.sessionId = crypto.randomUUID();
+    try {
+      localStorage.setItem(PLAYER_KEY, this.sessionId);
+    } catch {
+      // Stockage indisponible : l'identifiant de secours sert pour cette partie.
+    }
   }
 
   /** Choix de dialogue fait par le joueur (`dialogue : texte du choix`). */

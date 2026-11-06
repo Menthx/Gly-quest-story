@@ -5,6 +5,7 @@ import { DialogueService } from '../../services/dialogue.service';
 import { GameDataService } from '../../services/game-data.service';
 import { GameStateService } from '../../services/game-state.service';
 import { SaveService } from '../../services/save.service';
+import { StatsService } from '../../services/stats.service';
 import { MediaView } from '../media/media';
 
 /**
@@ -22,6 +23,7 @@ export class TitleScreen {
   private readonly state = inject(GameStateService);
   private readonly dialogue = inject(DialogueService);
   private readonly saves = inject(SaveService);
+  private readonly stats = inject(StatsService);
   protected readonly config = inject(GameDataService).config;
 
   /** Partie sauvegardée proposée à la reprise (masquée quand on choisit « Nouvelle partie »). */
@@ -55,6 +57,7 @@ export class TitleScreen {
     const config = this.config();
     const pseudo = this.pseudo().trim();
     if (!config || !pseudo) return;
+    this.stats.newPlayer();
     this.state.start(pseudo);
     this.dialogue.reset();
     this.router.navigate(['/map', config.startMap]);

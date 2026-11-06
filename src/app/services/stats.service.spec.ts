@@ -135,4 +135,19 @@ describe('StatsService', () => {
       expect(await stats.finish({})).toBeNull();
     });
   });
+
+  it('change d\'identifiant à chaque nouvelle partie', () => {
+    const { stats, state } = setup('https://script.test/exec');
+    stats.newPlayer();
+    state.start('Gly');
+    TestBed.tick();
+    stats.flush();
+    stats.newPlayer();
+    state.start('Gly');
+    TestBed.tick();
+    stats.flush();
+    const players = sent().map((e) => e.player);
+    expect(players).toHaveLength(2);
+    expect(players[0]).not.toBe(players[1]);
+  });
 });

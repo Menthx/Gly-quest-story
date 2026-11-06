@@ -14,6 +14,8 @@
       "lines": [
         {
           "character": "phyla",
+          "name": "???",
+          "hidePortraits": true,
           "text": "« On dirait que le rituel a fonctionné ! Nous n'avons relevé aucun événement cette nuit ! »"
         },
         {

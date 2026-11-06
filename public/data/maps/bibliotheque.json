@@ -83,6 +83,9 @@
     "accueil": {
       "lines": [
         {
+          "text": "J'entre dans la bibliothèque."
+        },
+        {
           "text": "« Je vois une personne en pleine réflexion. Je m'approche d'elle. »",
           "media": "assets/backgrounds/biblio-bureau.jpg"
         },

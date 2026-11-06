@@ -6,11 +6,11 @@
     @for (p of sceneIsVideo() ? [] : fullPortraits(); track p.id) {
       <app-media
         class="portrait full"
-        [class.idle]="fullSpeaker() && fullSpeaker() !== p.id"
+        [class.idle]="fullSpeaker() !== p.id"
         [src]="p.src"
       />
     }
-    @if (!character()?.portraitFull && character()?.portrait) {
+    @if (!character()?.portraitFull && character()?.portrait && !line()?.hidePortraits) {
       <app-media class="portrait" [src]="character()?.portrait" [alt]="character()?.name ?? ''" />
     }
     <div class="box" [class.narrator]="!character()">

@@ -237,7 +237,8 @@
       "lines": [
         {
           "text": "Naevys reprend son souffle, le cercle magique disparaît, et l'air devient moins lourd.",
-          "media": ""
+          "media": "",
+          "hidePortraits": true
         },
         {
           "text": "J'attends quelques instants avant de rompre le silence."
@@ -295,7 +296,7 @@
           "text": "« Que dirais-tu d'une tasse de thé ? »",
           "choices": [
             {
-              "text": "« Pas de problème, avec plaisir ! »",
+              "text": "« Avec plaisir ! »",
               "goto": "inter-scene-7-final"
             },
             {

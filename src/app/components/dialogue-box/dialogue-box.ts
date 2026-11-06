@@ -33,10 +33,11 @@ export class DialogueBox {
     (this.line()?.choices ?? []).filter((c) => this.state.check(c)),
   );
   protected readonly character = computed(() => {
-    const id = this.line()?.character;
+    const line = this.line();
+    const id = line?.character;
     if (!id) return null;
     const character = this.data.config()?.characters[id] ?? { name: id };
-    return { ...character, name: this.state.format(character.name) };
+    return { ...character, name: this.state.format(line.name ?? character.name) };
   });
   /**
    * Image ou vidéo plein écran posée par le `media` d'une réplique : elle reste affichée sur les
@@ -56,6 +57,7 @@ export class DialogueBox {
    * (Naevys à droite, Phyla à gauche), affichées par-dessus le décor et le `media` de réplique. Une fois
    * qu'un personnage a parlé, son portrait reste affiché (répliques du joueur, narration, dialogues
    * enchaînés) jusqu'à la fermeture du dialogue. Plusieurs personnages peuvent être à l'écran ensemble.
+   * Une réplique `hidePortraits` les retire, sans afficher celui de son personnage.
    */
   protected readonly fullPortraits = linkedSignal<
     ReturnType<typeof this.line>,
@@ -63,7 +65,7 @@ export class DialogueBox {
   >({
     source: this.line,
     computation: (line, previous) => {
-      if (!line) return [];
+      if (!line || line.hidePortraits) return [];
       const shown = previous?.value ?? [];
       const id = line.character;
       const character = id ? this.data.config()?.characters[id] : null;
@@ -77,7 +79,10 @@ export class DialogueBox {
    * sont masqués tant qu'elle est affichée. Une image de réplique (changement de plan) les garde.
    */
   protected readonly sceneIsVideo = computed(() => mediaList(this.sceneMedia()).some(isVideo));
-  /** Personnage à portrait plein cadre qui parle : les autres portraits affichés passent au second plan. */
+  /**
+   * Personnage à portrait plein cadre qui parle : les autres portraits affichés passent au second plan.
+   * Quand le joueur parle ou pense (ou la narration), tous les portraits sont au second plan.
+   */
   protected readonly fullSpeaker = computed(() => {
     const id = this.line()?.character;
     return id && this.data.config()?.characters[id]?.portraitFull ? id : null;

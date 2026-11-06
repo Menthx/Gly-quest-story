@@ -370,8 +370,16 @@
                 "type": "string",
                 "description": "Id du personnage (game.json). Absent = narrateur."
               },
+              "name": {
+                "type": "string",
+                "description": "Nom affiché à la place de celui du personnage (ex. \"???\" tant qu'il ne s'est pas présenté)."
+              },
               "text": {
                 "type": "string"
+              },
+              "hidePortraits": {
+                "type": "boolean",
+                "description": "Retire les portraits affichés jusque-là et n'affiche pas celui du personnage de cette réplique. Ils reviennent à la réplique suivante de leur personnage."
               },
               "media": {
                 "$ref": "#/$defs/media",

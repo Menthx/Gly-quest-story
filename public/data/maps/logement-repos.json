@@ -283,7 +283,6 @@
       "next": "reveil-soir",
       "lines": [
         {
-          "character": "joueur",
           "text": "Le rituel va être accompli ce soir, ça arrive si vite ! Je ne m'attendais pas à participer à une activité aussi importante pour Glyglyland. Je suis sûr·e que tout va bien se passer !"
         }
       ]
@@ -292,7 +291,6 @@
       "next": "reveil-soir",
       "lines": [
         {
-          "character": "joueur",
           "text": "Le rituel va être accompli ce soir, ça arrive si vite ! Je ne m'attendais pas à participer à une activité aussi importante pour Glyglyland. J'espère que tout se passera bien…"
         }
       ]

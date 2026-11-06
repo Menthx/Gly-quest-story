@@ -128,6 +128,7 @@
     "paon": {
       "lines": [
         {
+          "character": "joueur",
           "text": "Tiens ? J'ai entendu un paon dans le bois ! Mince, je crois que je lui ai fait peur…"
         }
       ]
@@ -136,7 +137,6 @@
       "setFlags": ["terre-prise"],
       "lines": [
         {
-          "character": "joueur",
           "text": "Je prends un peu de terre dans mon bocal."
         }
       ]

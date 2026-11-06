@@ -57,6 +57,7 @@
       ]
     },
     "livre-histoire": {
+      "setFlags": ["livre-histoire-lu"],
       "lines": [
         {
           "text": "« L'histoire de Glyglyland ». Ce livre raconte la fondation de Glyglyland par la Grande Glyctatrice."

@@ -75,6 +75,20 @@
         ]
       },
       {
+        "id": "origines",
+        "answers": [
+          {
+            "id": "livre-lu",
+            "flags": ["livre-histoire-lu"],
+            "text": "Vous faites partie des {pct} % de joueurs à avoir découvert les origines de Glyglyland dans le livre du foyer de la bibliothèque."
+          },
+          {
+            "id": "livre-pas-lu",
+            "text": "Vous ne faites pas partie des {pct:livre-lu} % de joueurs à avoir découvert les origines de Glyglyland dans le livre du foyer de la bibliothèque."
+          }
+        ]
+      },
+      {
         "id": "curiosite",
         "answers": [
           {
@@ -85,7 +99,7 @@
           {
             "id": "pas-curieux",
             "flags": ["rituel-presse"],
-            "text": ""
+            "text": "Vous ne faites pas partie des {pct:curieux} % de joueurs à avoir été curieux à propos de la personne qui sortait de la bibliothèque avant le rituel."
           }
         ]
       },

@@ -36,9 +36,7 @@ export class CreditsScreen {
   private readonly stats = inject(StatsService);
   private readonly router = inject(Router);
 
-  protected readonly paragraphs = computed(() =>
-    this.format(this.credits().text).split(/\n\s*\n/),
-  );
+  protected readonly paragraphs = computed(() => this.format(this.credits().text).split(/\n\s*\n/));
   protected readonly rollDuration = `${ROLL_DURATION}s`;
   /** Le générique est terminé : l'encadré des statistiques s'affiche. */
   protected readonly rolled = signal(

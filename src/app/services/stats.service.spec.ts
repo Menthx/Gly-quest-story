@@ -52,11 +52,12 @@ describe('StatsService', () => {
       /^https:\/\/script\.google\.com\/macros\/s\/x\/exec\?d=/,
     );
     const player = localStorage.getItem('gly-quest-story/player');
+    const browser = localStorage.getItem('gly-quest-story/browser');
     expect(sent()).toEqual([
-      { player, pseudo: 'Gly', type: 'partie', value: 'nouvelle', map: null },
-      { player, pseudo: 'Gly', type: 'flag', value: 'lettre-lue', map: 'a' },
-      { player, pseudo: 'Gly', type: 'map', value: 'a', map: 'a' },
-      { player, pseudo: 'Gly', type: 'choix', value: 'intro : Oui', map: 'a' },
+      { player, browser, pseudo: 'Gly', type: 'partie', value: 'nouvelle', map: null },
+      { player, browser, pseudo: 'Gly', type: 'flag', value: 'lettre-lue', map: 'a' },
+      { player, browser, pseudo: 'Gly', type: 'map', value: 'a', map: 'a' },
+      { player, browser, pseudo: 'Gly', type: 'choix', value: 'intro : Oui', map: 'a' },
     ]);
   });
 
@@ -112,6 +113,7 @@ describe('StatsService', () => {
       const url = new URL(fetchSpy.mock.calls.at(-1)![0] as string);
       expect(JSON.parse(url.searchParams.get('fin')!)).toEqual({
         player: localStorage.getItem('gly-quest-story/player'),
+        browser: localStorage.getItem('gly-quest-story/browser'),
         pseudo: 'Gly',
         answers: { 'jour-1': 'confiant' },
       });
@@ -136,7 +138,7 @@ describe('StatsService', () => {
     });
   });
 
-  it('change d\'identifiant à chaque nouvelle partie', () => {
+  it("change d'identifiant à chaque nouvelle partie", () => {
     const { stats, state } = setup('https://script.test/exec');
     stats.newPlayer();
     state.start('Gly');
@@ -149,5 +151,20 @@ describe('StatsService', () => {
     const players = sent().map((e) => e.player);
     expect(players).toHaveLength(2);
     expect(players[0]).not.toBe(players[1]);
+    // Même navigateur : la personne reste la même.
+    const browsers = sent().map((e) => e.browser);
+    expect(browsers[0]).toBeTruthy();
+    expect(browsers[0]).toBe(browsers[1]);
+  });
+
+  it("reprend l'ancien identifiant comme identifiant du navigateur", () => {
+    localStorage.setItem('gly-quest-story/player', 'ancien');
+    const { stats, state } = setup('https://script.test/exec');
+    stats.newPlayer();
+    state.start('Gly');
+    TestBed.tick();
+    stats.flush();
+    expect(sent()[0].browser).toBe('ancien');
+    expect(sent()[0].player).not.toBe('ancien');
   });
 });

@@ -5,6 +5,7 @@ import { GameStateService } from './game-state.service';
 import { Profile, StatsCounts } from '../utils/credits';
 
 const PLAYER_KEY = 'gly-quest-story/player';
+const BROWSER_KEY = 'gly-quest-story/browser';
 /** Délai avant l'envoi groupé des événements. */
 const FLUSH_DELAY = 3000;
 /** Longueur maximale des données dans l'URL (Apps Script refuse les URL trop longues). */
@@ -16,6 +17,8 @@ const RESULTS_TIMEOUT = 10000;
 export interface StatsEvent {
   /** Identifiant anonyme de la partie (nouveau à chaque « Jouer », conservé à la reprise). */
   player: string;
+  /** Identifiant anonyme du navigateur, le même d'une partie à l'autre : compte les personnes uniques. */
+  browser: string;
   pseudo: string;
   /** `partie` (valeur : nouvelle / reprise), `map`, `flag` ou `choix`. */
   type: 'partie' | 'map' | 'flag' | 'choix';
@@ -43,6 +46,7 @@ export class StatsService {
   private lastMap: string | null = null;
   /** Identifiant de secours quand le localStorage est indisponible (navigation privée). */
   private sessionId = crypto.randomUUID();
+  private readonly browserId = this.loadBrowserId();
 
   constructor() {
     effect(() => {
@@ -91,6 +95,7 @@ export class StatsService {
     if (!pseudo || this.debug.enabled() || !this.data.config()?.statsUrl) return;
     this.queue.push({
       player: this.playerId(),
+      browser: this.browserId,
       pseudo,
       type,
       value,
@@ -140,7 +145,12 @@ export class StatsService {
     return this.fetchStats(
       url,
       `fin=${encodeURIComponent(
-        JSON.stringify({ player: this.playerId(), pseudo: this.state.pseudo(), answers }),
+        JSON.stringify({
+          player: this.playerId(),
+          browser: this.browserId,
+          pseudo: this.state.pseudo(),
+          answers,
+        }),
       )}`,
     );
   }
@@ -169,6 +179,23 @@ export class StatsService {
 
   private query(events: StatsEvent[]): string {
     return encodeURIComponent(JSON.stringify({ events }));
+  }
+
+  /**
+   * Identifiant du navigateur. Avant, l'identifiant de partie servait pour toutes les parties du
+   * navigateur : on le reprend, pour que les lignes déjà envoyées comptent pour la même personne.
+   */
+  private loadBrowserId(): string {
+    try {
+      let id = localStorage.getItem(BROWSER_KEY);
+      if (!id) {
+        id = localStorage.getItem(PLAYER_KEY) ?? crypto.randomUUID();
+        localStorage.setItem(BROWSER_KEY, id);
+      }
+      return id;
+    } catch {
+      return this.sessionId;
+    }
   }
 
   private playerId(): string {

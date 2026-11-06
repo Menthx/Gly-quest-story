@@ -12,7 +12,7 @@
       <button type="button" class="primary" (click)="resume()">Reprendre la partie</button>
       <button type="button" (click)="newGame()">Nouvelle partie</button>
       @if (hasEnding) {
-        <button type="button" class="secondary" (click)="showCredits()">Crédits et statistiques</button>
+        <button type="button" class="secondary" (click)="showCredits()">Crédits et Stats</button>
       }
     </div>
   } @else {
@@ -31,7 +31,7 @@
       />
       <button type="submit" class="primary" [disabled]="!pseudo().trim()">Jouer</button>
       @if (hasEnding) {
-        <button type="button" class="secondary" (click)="showCredits()">Crédits et statistiques</button>
+        <button type="button" class="secondary" (click)="showCredits()">Crédits et Stats</button>
       }
     </form>
   }

@@ -1,10 +1,7 @@
 import { DestroyRef, Component, inject, signal } from '@angular/core';
+import { PHONE_QUERY, query } from '../../utils/phone';
 
 const NOTICE_KEY = 'gly-quest-story/mobile-notice';
-
-/** Téléphone : écran tactile dont le petit côté est celui d'un téléphone (les tablettes passent). */
-const PHONE_QUERY =
-  '(pointer: coarse) and (max-width: 600px), (pointer: coarse) and (max-height: 600px)';
 
 /** Verrouillage d'orientation (absent des types DOM de TypeScript). */
 type LockableOrientation = ScreenOrientation & { lock?: (o: 'landscape') => Promise<void> };
@@ -60,17 +57,6 @@ export class MobileGuard {
       // refusé par le navigateur : le message « tourne ton téléphone » reste le recours
     }
   }
-}
-
-/** `matchMedia`, ou une requête qui ne correspond jamais là où il n'existe pas (tests). */
-function query(media: string): MediaQueryList {
-  return typeof matchMedia === 'function'
-    ? matchMedia(media)
-    : ({
-        matches: false,
-        addEventListener() {},
-        removeEventListener() {},
-      } as unknown as MediaQueryList);
 }
 
 function readNoticeSeen(): boolean {

@@ -1,5 +1,6 @@
 import {
   Component,
+  DestroyRef,
   computed,
   effect,
   inject,
@@ -14,6 +15,7 @@ import { DebugService } from '../../services/debug.service';
 import { DialogueService } from '../../services/dialogue.service';
 import { GameDataService } from '../../services/game-data.service';
 import { GameStateService } from '../../services/game-state.service';
+import { PHONE_QUERY, query } from '../../utils/phone';
 import { boundingBox, polygonPoints, round } from '../../utils/shapes';
 import { CreditsScreen } from '../credits-screen/credits-screen';
 import { DebugPanel, DrawMode } from '../debug-panel/debug-panel';
@@ -52,6 +54,13 @@ export class MapView {
   /** Ratio largeur/hauteur de l'image ou de la vidéo de fond, lu au chargement (16/9 par défaut). */
   protected readonly aspectRatio = signal(16 / 9);
   protected readonly hovered = signal<Region | null>(null);
+
+  private readonly phoneQuery = query(PHONE_QUERY);
+  /**
+   * Sur téléphone, l'écran est plus allongé que l'image : au lieu de bandes noires sur les côtés,
+   * on remplit l'écran avec l'image floutée (l'image nette reste entière, aucune zone n'est coupée).
+   */
+  protected readonly isPhone = signal(this.phoneQuery.matches);
 
   protected readonly interludeText = computed(() => {
     const interlude = this.map.value()?.interlude;
@@ -95,6 +104,10 @@ export class MapView {
   private leavingTo: string | null = null;
 
   constructor() {
+    const onPhone = () => this.isPhone.set(this.phoneQuery.matches);
+    this.phoneQuery.addEventListener('change', onPhone);
+    inject(DestroyRef).onDestroy(() => this.phoneQuery.removeEventListener('change', onPhone));
+
     // À l'arrivée sur la map puis à chaque fermeture de dialogue : position du joueur, reprise de partie, triggers.
     effect(() => {
       const map = this.map.value();

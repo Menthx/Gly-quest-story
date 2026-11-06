@@ -21,6 +21,15 @@ app-debug-panel {
   display: contents;
 }
 
+/* Téléphone : l'image floutée remplit les bandes de chaque côté de la scène. */
+.backdrop {
+  position: absolute;
+  inset: -40px;
+  object-fit: cover;
+  filter: blur(20px) brightness(0.7);
+  pointer-events: none;
+}
+
 /* La scène garde le ratio de l'image et tient toujours entière dans l'écran. */
 .stage {
   position: relative;

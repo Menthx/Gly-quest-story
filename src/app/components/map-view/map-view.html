@@ -20,6 +20,9 @@
       }
     </div>
   } @else if (map.value(); as m) {
+    @if (isPhone() && m.background) {
+      <app-media class="backdrop" [src]="m.background" aria-hidden="true" />
+    }
     <div
       #stage
       class="stage"

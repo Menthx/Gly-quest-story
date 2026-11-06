@@ -5,6 +5,7 @@ import { GameStateService } from './game-state.service';
 import { Profile, StatsCounts } from '../utils/credits';
 
 const PLAYER_KEY = 'gly-quest-story/player';
+const BROWSER_KEY = 'gly-quest-story/browser';
 /** Délai avant l'envoi groupé des événements. */
 const FLUSH_DELAY = 3000;
 /** Longueur maximale des données dans l'URL (Apps Script refuse les URL trop longues). */
@@ -14,8 +15,10 @@ const RESULTS_TIMEOUT = 10000;
 
 /** Un événement de progression, écrit comme une ligne dans le Google Sheet. */
 export interface StatsEvent {
-  /** Identifiant anonyme du navigateur (le même d'une partie à l'autre). */
+  /** Identifiant anonyme de la partie (nouveau à chaque « Jouer », conservé à la reprise). */
   player: string;
+  /** Identifiant anonyme du navigateur, le même d'une partie à l'autre : compte les personnes uniques. */
+  browser: string;
   pseudo: string;
   /** `partie` (valeur : nouvelle / reprise), `map`, `flag` ou `choix`. */
   type: 'partie' | 'map' | 'flag' | 'choix';
@@ -42,7 +45,8 @@ export class StatsService {
   private lastFlags: ReadonlySet<string> = new Set();
   private lastMap: string | null = null;
   /** Identifiant de secours quand le localStorage est indisponible (navigation privée). */
-  private readonly sessionId = crypto.randomUUID();
+  private sessionId = crypto.randomUUID();
+  private readonly browserId = this.loadBrowserId();
 
   constructor() {
     effect(() => {
@@ -66,6 +70,21 @@ export class StatsService {
     });
   }
 
+  /**
+   * Nouvelle partie : nouvel identifiant, pour que chaque partie terminée compte comme une ligne à part
+   * dans l'onglet « Fins » (le script remplace la ligne d'un identifiant déjà connu). Les événements
+   * encore en attente de l'ancienne partie sont envoyés avant.
+   */
+  newPlayer(): void {
+    this.flush();
+    this.sessionId = crypto.randomUUID();
+    try {
+      localStorage.setItem(PLAYER_KEY, this.sessionId);
+    } catch {
+      // Stockage indisponible : l'identifiant de secours sert pour cette partie.
+    }
+  }
+
   /** Choix de dialogue fait par le joueur (`dialogue : texte du choix`). */
   choice(dialogueId: string | null, text: string): void {
     this.record('choix', dialogueId ? `${dialogueId} : ${text}` : text);
@@ -76,6 +95,7 @@ export class StatsService {
     if (!pseudo || this.debug.enabled() || !this.data.config()?.statsUrl) return;
     this.queue.push({
       player: this.playerId(),
+      browser: this.browserId,
       pseudo,
       type,
       value,
@@ -121,11 +141,30 @@ export class StatsService {
     const url = this.data.config()?.statsUrl;
     if (!url) return null;
     this.flush();
-    const params = this.debug.enabled()
-      ? 'resultats=1'
-      : `fin=${encodeURIComponent(
-          JSON.stringify({ player: this.playerId(), pseudo: this.state.pseudo(), answers }),
-        )}`;
+    if (this.debug.enabled()) return this.results();
+    return this.fetchStats(
+      url,
+      `fin=${encodeURIComponent(
+        JSON.stringify({
+          player: this.playerId(),
+          browser: this.browserId,
+          pseudo: this.state.pseudo(),
+          answers,
+        }),
+      )}`,
+    );
+  }
+
+  /**
+   * Lit le nombre de joueurs par réponse sans rien enregistrer (crédits réaffichés depuis l'écran titre,
+   * mode debug). `null` sans `statsUrl`, hors ligne ou si le script ne répond pas.
+   */
+  async results(): Promise<StatsCounts | null> {
+    const url = this.data.config()?.statsUrl;
+    return url ? this.fetchStats(url, 'resultats=1') : null;
+  }
+
+  private async fetchStats(url: string, params: string): Promise<StatsCounts | null> {
     try {
       // GET sans `no-cors` : Apps Script autorise la lecture de la réponse (en-tête CORS ouvert).
       const response = await fetch(`${url}${url.includes('?') ? '&' : '?'}${params}`, {
@@ -140,6 +179,23 @@ export class StatsService {
 
   private query(events: StatsEvent[]): string {
     return encodeURIComponent(JSON.stringify({ events }));
+  }
+
+  /**
+   * Identifiant du navigateur. Avant, l'identifiant de partie servait pour toutes les parties du
+   * navigateur : on le reprend, pour que les lignes déjà envoyées comptent pour la même personne.
+   */
+  private loadBrowserId(): string {
+    try {
+      let id = localStorage.getItem(BROWSER_KEY);
+      if (!id) {
+        id = localStorage.getItem(PLAYER_KEY) ?? crypto.randomUUID();
+        localStorage.setItem(BROWSER_KEY, id);
+      }
+      return id;
+    } catch {
+      return this.sessionId;
+    }
   }
 
   private playerId(): string {

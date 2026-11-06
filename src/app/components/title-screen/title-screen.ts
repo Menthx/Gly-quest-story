@@ -5,9 +5,13 @@ import { DialogueService } from '../../services/dialogue.service';
 import { GameDataService } from '../../services/game-data.service';
 import { GameStateService } from '../../services/game-state.service';
 import { SaveService } from '../../services/save.service';
+import { StatsService } from '../../services/stats.service';
 import { MediaView } from '../media/media';
 
-/** Écran titre : reprendre la partie sauvegardée, ou en commencer une en donnant son pseudo. */
+/**
+ * Écran titre : reprendre la partie sauvegardée, ou en commencer une en donnant son pseudo.
+ * Une fois le jeu terminé, un bouton permet aussi de revoir les crédits et les statistiques.
+ */
 @Component({
   selector: 'app-title-screen',
   imports: [FormsModule, MediaView],
@@ -19,6 +23,7 @@ export class TitleScreen {
   private readonly state = inject(GameStateService);
   private readonly dialogue = inject(DialogueService);
   private readonly saves = inject(SaveService);
+  private readonly stats = inject(StatsService);
   protected readonly config = inject(GameDataService).config;
 
   /** Partie sauvegardée proposée à la reprise (masquée quand on choisit « Nouvelle partie »). */
@@ -28,6 +33,8 @@ export class TitleScreen {
     return this.config()?.maps.find((m) => m.id === id)?.name ?? null;
   });
   protected readonly pseudo = signal(this.state.pseudo());
+  /** Le joueur a déjà terminé le jeu : il peut revoir les crédits et ses statistiques. */
+  protected readonly hasEnding = !!this.saves.loadEnding();
 
   protected resume(): void {
     const save = this.save();
@@ -35,6 +42,10 @@ export class TitleScreen {
     if (!save || !config) return;
     const map = this.saves.restore(save);
     this.router.navigate(['/map', map ?? config.startMap]);
+  }
+
+  protected showCredits(): void {
+    this.router.navigate(['/credits']);
   }
 
   protected newGame(): void {
@@ -46,6 +57,7 @@ export class TitleScreen {
     const config = this.config();
     const pseudo = this.pseudo().trim();
     if (!config || !pseudo) return;
+    this.stats.newPlayer();
     this.state.start(pseudo);
     this.dialogue.reset();
     this.router.navigate(['/map', config.startMap]);

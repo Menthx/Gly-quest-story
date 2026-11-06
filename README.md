@@ -210,7 +210,7 @@ La map `credits.json` fait défiler les crédits vers le haut sur son `backgroun
 - Le premier paragraphe de `text` s'affiche en titre.
 - Pour chaque statistique, le joueur reçoit la réponse dont il a posé le plus de `flags` (majorité de choix A ou B) ; égalité : la première. Une réponse sans `flags` sert de réponse par défaut. Un `text` vide n'affiche rien pour cette réponse, mais le joueur est compté.
 - `{pct}` = % des joueurs ayant la même réponse, `{pct:<id>}` = % ayant la réponse `<id>`.
-- À l'arrivée sur les crédits, le jeu envoie les réponses au script Google (`stats/apps-script.gs`), qui les range dans l'onglet **Fins** (une ligne par joueur : seule sa dernière partie terminée compte) et renvoie les pourcentages. Sans réponse du script (hors ligne, pas de `statsUrl`), les crédits s'affichent sans les statistiques. En mode debug, la partie n'est pas comptée mais les pourcentages s'affichent.
+- À l'arrivée sur les crédits, le jeu envoie les réponses au script Google (`stats/apps-script.gs`), qui les range dans l'onglet **Fins** (une ligne par partie terminée : chaque « Jouer » crée un nouvel identifiant de partie) et renvoie les pourcentages. Un identifiant de navigateur, le même d'une partie à l'autre, permet de compter les personnes uniques (onglet **Synthèse**, colonne « Personnes »). Sans réponse du script (hors ligne, pas de `statsUrl`), les crédits s'affichent sans les statistiques. En mode debug, la partie n'est pas comptée mais les pourcentages s'affichent.
 - `npm run check` avertit quand un flag d'une statistique n'est posé par aucun choix.
 
 ## Le mode debug

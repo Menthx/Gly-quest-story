@@ -53,4 +53,15 @@ describe('SaveService', () => {
     localStorage.setItem('gly-quest-story/save', JSON.stringify({ version: 0, pseudo: 'x' }));
     expect(saves.load()).toBeNull();
   });
+
+  it('mémorise la fin de partie pour revoir les crédits', () => {
+    const saves = TestBed.inject(SaveService);
+    const state = TestBed.inject(GameStateService);
+    expect(saves.loadEnding()).toBeNull();
+    state.start('Gly', ['lettre-lue']);
+    saves.saveEnding('fin');
+    expect(saves.loadEnding()).toEqual(
+      expect.objectContaining({ pseudo: 'Gly', map: 'fin', flags: ['lettre-lue'] }),
+    );
+  });
 });

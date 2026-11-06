@@ -3,7 +3,7 @@
   "title": "Glyglyland et l'énergie ancienne",
   "titleBackground": "assets/backgrounds/train-exterieur.jpg",
   "startMap": "train-interieur",
-  "statsUrl": "https://script.google.com/macros/s/AKfycby6e_ng8VebpQPuVmFWFzQ-XWyY7XEbODzqJFA-M0JVRfkTfE2NaSMhL9PN_-u-x7mV/exec",
+  "statsUrl": "https://script.google.com/macros/s/AKfycbyyF3gxboUIbtl0eIzf99f6opzc1c14TN3WDM6ykZIgJ0W7kq41oz13f87jQybddyJC/exec",
   "characters": {
     "joueur": {
       "name": "{pseudo}",

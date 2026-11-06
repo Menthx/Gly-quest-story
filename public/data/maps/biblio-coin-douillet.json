@@ -65,7 +65,7 @@
     "arrivee": {
       "lines": [
         {
-          "text": "« Les étagères sont remplies de livres de recettes et d'ingrédients divers pour la préparation de potions. »"
+          "text": "Les étagères sont remplies de livres de recettes et d'ingrédients divers pour la préparation de potions."
         }
       ]
     },
@@ -77,7 +77,7 @@
         },
         {
           "character": "joueur",
-          "text": "« Ça me sera utile pour transporter la terre. »"
+          "text": "Ça me sera utile pour transporter la terre."
         }
       ]
     },

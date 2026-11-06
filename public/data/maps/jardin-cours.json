@@ -121,14 +121,15 @@
     "champignon": {
       "lines": [
         {
-          "text": "Le champignon du jardin."
+          "text": "Les champignons du jardin."
         }
       ]
     },
     "paon": {
       "lines": [
         {
-          "text": "« Tiens ? J'ai entendu un paon dans le bois ! Mince, je crois que je lui ai fait peur… »"
+          "character": "joueur",
+          "text": "Tiens ? J'ai entendu un paon dans le bois ! Mince, je crois que je lui ai fait peur…"
         }
       ]
     },
@@ -136,8 +137,7 @@
       "setFlags": ["terre-prise"],
       "lines": [
         {
-          "character": "joueur",
-          "text": "« Je prends un peu de terre dans mon bocal. »"
+          "text": "Je prends un peu de terre dans mon bocal."
         }
       ]
     },
@@ -145,7 +145,7 @@
       "lines": [
         {
           "character": "joueur",
-          "text": "« Il me faudrait un contenant pour transporter la terre. »"
+          "text": "Il me faudrait un contenant pour transporter la terre."
         }
       ]
     }

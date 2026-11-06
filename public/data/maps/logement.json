@@ -83,24 +83,21 @@
     "bureau": {
       "lines": [
         {
-          "character": "joueur",
-          "text": "« Un bureau de qualité pour lire, dessiner, jouer… ou faire de l'administratif… (rire jaune) »"
+          "text": "Un bureau de qualité pour lire, dessiner, jouer… ou faire de l'administratif… (rire jaune)"
         }
       ]
     },
     "fenetre": {
       "lines": [
         {
-          "character": "joueur",
-          "text": "« J'aperçois à travers la fenêtre un bosquet avec la ville non loin de là, c'est reposant. »"
+          "text": "J'aperçois à travers la fenêtre un bosquet avec la ville non loin de là, c'est reposant."
         }
       ]
     },
     "feu": {
       "lines": [
         {
-          "character": "joueur",
-          "text": "« La chaleur du feu est réconfortante. »"
+          "text": "La chaleur du feu est réconfortante."
         }
       ]
     },
@@ -136,8 +133,7 @@
       "next": "reveil",
       "lines": [
         {
-          "character": "joueur",
-          "text": "« Je suis content·e d'être venu·e assister Dame Naevys, je sens que la journée s'annonce intéressante, j'ai hâte de voir comment ça va se passer demain ! »",
+          "text": "Je suis content·e d'être venu·e assister Dame Naevys, je sens que la journée s'annonce intéressante, j'ai hâte de voir comment ça va se passer demain !",
           "media": "assets/backgrounds/logement-nuit.jpg"
         }
       ]
@@ -146,8 +142,7 @@
       "next": "reveil",
       "lines": [
         {
-          "character": "joueur",
-          "text": "« Dame Naevys a l'air gentille, j'espère être à la hauteur pour l'aider ! Je ne voudrais pas la décevoir. J'aimerais que tout se passe bien. »",
+          "text": "Dame Naevys a l'air gentille, j'espère être à la hauteur pour l'aider ! Je ne voudrais pas la décevoir. J'aimerais que tout se passe bien.",
           "media": "assets/backgrounds/logement-nuit.jpg"
         }
       ]
@@ -155,8 +150,7 @@
     "reveil": {
       "lines": [
         {
-          "character": "joueur",
-          "text": "« Je me réveille. J'ai passé une bonne nuit. Il est temps de me préparer pour ma journée et de rejoindre Dame Naevys à la bibliothèque ! »",
+          "text": "Je me réveille. J'ai passé une bonne nuit. Il est temps de me préparer pour ma journée et de rejoindre Dame Naevys à la bibliothèque !",
           "media": "assets/backgrounds/logement-jour.jpg",
           "choices": [
             {

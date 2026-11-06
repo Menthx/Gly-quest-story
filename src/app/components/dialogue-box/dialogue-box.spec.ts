@@ -43,6 +43,15 @@ const map: GameMap = {
         { character: 'joueur', text: '…' },
       ],
     },
+    annonce: {
+      lines: [
+        { character: 'naevys', text: 'Que l’énergie soit scellée !' },
+        { text: 'Le cercle disparaît.', hidePortraits: true },
+        { character: 'phyla', name: '???', hidePortraits: true, text: 'On dirait que le rituel a fonctionné !' },
+        { character: 'naevys', text: 'Dame Phyla, c’est vous !' },
+        { character: 'phyla', text: 'Bravo !' },
+      ],
+    },
   },
 };
 
@@ -108,14 +117,45 @@ describe('DialogueBox', () => {
     await fixture.whenStable();
     expect(portraits()).toEqual(['phyla.png (idle)', 'naevys.png']);
 
-    // Le joueur parle : personne n'est au second plan.
+    // Le joueur parle ou pense : tous les portraits passent au second plan.
     dialogue.next();
     await fixture.whenStable();
-    expect(portraits()).toEqual(['phyla.png', 'naevys.png']);
+    expect(portraits()).toEqual(['phyla.png (idle)', 'naevys.png (idle)']);
 
     dialogue.close();
     await fixture.whenStable();
     expect(portraits()).toEqual([]);
+  });
+
+  it('hidePortraits retire les portraits jusqu’à la prochaine réplique de leur personnage, name remplace le nom', async () => {
+    const fixture = TestBed.createComponent(DialogueBox);
+    const dialogue = TestBed.inject(DialogueService);
+    const el = fixture.nativeElement as HTMLElement;
+    const portraits = () =>
+      Array.from(el.querySelectorAll('.portrait.full img')).map((img) => img.getAttribute('src'));
+    const name = () => el.querySelector('.name')?.textContent?.trim();
+
+    dialogue.open(map, 'annonce');
+    await fixture.whenStable();
+    expect(portraits()).toEqual(['naevys.png']);
+
+    dialogue.next();
+    await fixture.whenStable();
+    expect(portraits()).toEqual([]);
+
+    dialogue.next();
+    await fixture.whenStable();
+    expect(portraits()).toEqual([]);
+    expect(name()).toBe('???');
+
+    dialogue.next();
+    await fixture.whenStable();
+    expect(portraits()).toEqual(['naevys.png']);
+
+    dialogue.next();
+    await fixture.whenStable();
+    expect(portraits()).toEqual(['naevys.png', 'phyla.png']);
+    expect(name()).toBe('Phyla');
   });
 
   it('attend la fin de la vidéo d’une réplique waitMedia, sans pouvoir la passer', async () => {

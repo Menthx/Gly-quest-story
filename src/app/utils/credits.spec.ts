@@ -54,3 +54,24 @@ describe('statLines', () => {
     expect(lines).toEqual(['Confiant comme 67%, contre 33%.', 'Curieux comme 25%.']);
   });
 });
+
+describe('statLines : phrase négative', () => {
+  const origines: CreditStat[] = [
+    {
+      id: 'origines',
+      answers: [
+        { id: 'livre-lu', flags: ['livre-histoire-lu'], text: 'Vous faites partie des {pct} %.' },
+        { id: 'livre-pas-lu', text: 'Vous ne faites pas partie des {pct:livre-lu} %.' },
+      ],
+    },
+  ];
+  // 1 joueur sur 4 a lu le livre : 25 %, que le joueur l'ait lu ou non.
+  const counts = { origines: { 'livre-lu': 1, 'livre-pas-lu': 3 } };
+
+  it('affiche le % des joueurs qui ont fait l’action, dans les deux cas', () => {
+    expect(statLines(origines, { origines: 'livre-lu' }, counts)).toEqual(['Vous faites partie des 25 %.']);
+    expect(statLines(origines, { origines: 'livre-pas-lu' }, counts)).toEqual([
+      'Vous ne faites pas partie des 25 %.',
+    ]);
+  });
+});

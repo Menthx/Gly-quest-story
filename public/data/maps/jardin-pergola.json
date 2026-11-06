@@ -76,7 +76,7 @@
     "pergola": {
       "lines": [
         {
-          "text": "« Pour prendre une pause en plein air. »"
+          "text": "Pour prendre une pause en plein air."
         }
       ]
     },
@@ -87,7 +87,8 @@
           "text": "Je me glisse dans le passage pour accéder au bosquet."
         },
         {
-          "text": "« Il doit bien y avoir une plume de paon s'il y a un paon dans le coin… »"
+          "character": "joueur",
+          "text": "Il doit bien y avoir une plume de paon s'il y a un paon dans le coin…"
         },
         {
           "text": "Je fouille quelques minutes et finis rapidement par tomber sur une plume de paon."

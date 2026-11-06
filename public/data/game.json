@@ -29,17 +29,13 @@
   "quests": [
     {
       "id": "avant-arrivee",
-      "title": "Avant l'arrivée",
+      "title": "Aller à Glyglyland",
       "if": ["depart"],
       "ifNot": ["arrivee"],
       "objectives": [
         {
-          "text": "Fouiller la valise",
-          "done": "lettre-lue"
-        },
-        {
-          "text": "Explorer l'extérieur du train",
-          "done": "licorne-vue"
+          "text": "Attendre l'arrivée en gare",
+          "done": "arrivee"
         }
       ]
     },
@@ -123,7 +119,7 @@
       "ifNot": ["repos-choisi"],
       "objectives": [
         {
-          "text": "Choisis où te reposer : le lit, le bureau, la banquette ou le coin du feu",
+          "text": "Attends le coucher du soleil",
           "done": "repos-choisi"
         }
       ]

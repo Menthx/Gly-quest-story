@@ -215,7 +215,14 @@ export interface NextBranch extends Condition {
 export interface DialogueLine {
   /** Id du personnage (clé de `characters` dans game.json). Absent = narrateur. */
   character?: string;
+  /** Nom affiché à la place de celui du personnage (ex. `"???"` tant qu'il ne s'est pas présenté). */
+  name?: string;
   text: string;
+  /**
+   * Retire les portraits affichés jusque-là, et n'affiche pas celui du personnage de cette réplique
+   * (personnage pas encore à l'écran). Les portraits reviennent dès la réplique suivante de leur personnage.
+   */
+  hidePortraits?: boolean;
   /**
    * Image ou vidéo plein écran affichée sur la scène à partir de cette réplique, jusqu'à la fin du
    * dialogue (dialogues enchaînés compris). Prioritaire sur les portraits plein écran. `""` la retire.

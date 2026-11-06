@@ -7,7 +7,10 @@ import { GameStateService } from '../../services/game-state.service';
 import { SaveService } from '../../services/save.service';
 import { MediaView } from '../media/media';
 
-/** Écran titre : reprendre la partie sauvegardée, ou en commencer une en donnant son pseudo. */
+/**
+ * Écran titre : reprendre la partie sauvegardée, ou en commencer une en donnant son pseudo.
+ * Une fois le jeu terminé, un bouton permet aussi de revoir les crédits et les statistiques.
+ */
 @Component({
   selector: 'app-title-screen',
   imports: [FormsModule, MediaView],
@@ -28,6 +31,8 @@ export class TitleScreen {
     return this.config()?.maps.find((m) => m.id === id)?.name ?? null;
   });
   protected readonly pseudo = signal(this.state.pseudo());
+  /** Le joueur a déjà terminé le jeu : il peut revoir les crédits et ses statistiques. */
+  protected readonly hasEnding = !!this.saves.loadEnding();
 
   protected resume(): void {
     const save = this.save();
@@ -35,6 +40,10 @@ export class TitleScreen {
     if (!save || !config) return;
     const map = this.saves.restore(save);
     this.router.navigate(['/map', map ?? config.startMap]);
+  }
+
+  protected showCredits(): void {
+    this.router.navigate(['/credits']);
   }
 
   protected newGame(): void {

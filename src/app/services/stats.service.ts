@@ -121,11 +121,25 @@ export class StatsService {
     const url = this.data.config()?.statsUrl;
     if (!url) return null;
     this.flush();
-    const params = this.debug.enabled()
-      ? 'resultats=1'
-      : `fin=${encodeURIComponent(
-          JSON.stringify({ player: this.playerId(), pseudo: this.state.pseudo(), answers }),
-        )}`;
+    if (this.debug.enabled()) return this.results();
+    return this.fetchStats(
+      url,
+      `fin=${encodeURIComponent(
+        JSON.stringify({ player: this.playerId(), pseudo: this.state.pseudo(), answers }),
+      )}`,
+    );
+  }
+
+  /**
+   * Lit le nombre de joueurs par réponse sans rien enregistrer (crédits réaffichés depuis l'écran titre,
+   * mode debug). `null` sans `statsUrl`, hors ligne ou si le script ne répond pas.
+   */
+  async results(): Promise<StatsCounts | null> {
+    const url = this.data.config()?.statsUrl;
+    return url ? this.fetchStats(url, 'resultats=1') : null;
+  }
+
+  private async fetchStats(url: string, params: string): Promise<StatsCounts | null> {
     try {
       // GET sans `no-cors` : Apps Script autorise la lecture de la réponse (en-tête CORS ouvert).
       const response = await fetch(`${url}${url.includes('?') ? '&' : '?'}${params}`, {

@@ -5,6 +5,7 @@ import { GameStateService } from './game-state.service';
 
 const STORAGE_KEY = 'gly-quest-story/save';
 const VERSION = 1;
+const ENDING_KEY = 'gly-quest-story/ending';
 
 /** Partie sauvegardée dans le navigateur (localStorage). */
 export interface SaveData {
@@ -16,6 +17,15 @@ export interface SaveData {
   /** Dialogue affiché au moment de la sauvegarde : il est rouvert au début à la reprise. */
   dialogue: string | null;
   savedAt: string;
+}
+
+/** Dernière fin de partie atteinte : de quoi réafficher les crédits et les statistiques depuis l'écran titre. */
+export interface EndingData {
+  pseudo: string;
+  /** Map des crédits. */
+  map: string;
+  flags: string[];
+  endedAt: string;
 }
 
 /**
@@ -63,6 +73,33 @@ export class SaveService {
       save.map && save.dialogue ? { mapId: save.map, dialogueId: save.dialogue } : null,
     );
     return save.map;
+  }
+
+  /** Mémorise la fin de partie (pas en mode debug). */
+  saveEnding(map: string): void {
+    const pseudo = this.state.pseudo();
+    if (!pseudo || this.debug.enabled()) return;
+    const ending: EndingData = {
+      pseudo,
+      map,
+      flags: [...this.state.flags()],
+      endedAt: new Date().toISOString(),
+    };
+    try {
+      localStorage.setItem(ENDING_KEY, JSON.stringify(ending));
+    } catch {
+      // Stockage indisponible : le bouton des crédits n'apparaîtra pas sur l'écran titre.
+    }
+  }
+
+  /** Dernière fin de partie, ou `null` si le joueur n'a encore jamais terminé le jeu. */
+  loadEnding(): EndingData | null {
+    try {
+      const ending = JSON.parse(localStorage.getItem(ENDING_KEY) ?? 'null') as EndingData | null;
+      return ending?.map && ending.pseudo && Array.isArray(ending.flags) ? ending : null;
+    } catch {
+      return null;
+    }
   }
 
   private write(save: SaveData): void {

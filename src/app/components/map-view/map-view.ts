@@ -15,6 +15,7 @@ import { DialogueService } from '../../services/dialogue.service';
 import { GameDataService } from '../../services/game-data.service';
 import { GameStateService } from '../../services/game-state.service';
 import { boundingBox, polygonPoints, round } from '../../utils/shapes';
+import { SaveService } from '../../services/save.service';
 import { CreditsScreen } from '../credits-screen/credits-screen';
 import { DebugPanel, DrawMode } from '../debug-panel/debug-panel';
 import { DialogueBox } from '../dialogue-box/dialogue-box';
@@ -41,6 +42,7 @@ export class MapView {
   private readonly data = inject(GameDataService);
   private readonly router = inject(Router);
   private readonly state = inject(GameStateService);
+  private readonly saves = inject(SaveService);
   protected readonly dialogue = inject(DialogueService);
   protected readonly debug = inject(DebugService);
 
@@ -104,6 +106,8 @@ export class MapView {
           this.leavingTo = null;
           this.state.currentMap.set(map.id);
           this.state.setFlags(map.setFlags);
+          // Partie terminée : l'écran titre proposera ensuite de revoir les crédits et les statistiques.
+          if (map.credits) this.saves.saveEnding(map.id);
           this.dialogue.resumePending(map);
           this.dialogue.runTriggers(map);
         });
